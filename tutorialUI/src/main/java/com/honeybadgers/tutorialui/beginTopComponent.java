@@ -14,29 +14,29 @@ import org.openide.util.NbBundle.Messages;
  * Top component which displays something.
  */
 @ConvertAsProperties(
-    dtd = "-//com.honeybadgers.tutorialui//beginnings//EN",
+    dtd = "-//com.honeybadgers.tutorialui//begin//EN",
 autostore = false)
 @TopComponent.Description(
-    preferredID = "beginningsTopComponent",
+    preferredID = "beginTopComponent",
 //iconBase="SET/PATH/TO/ICON/HERE", 
 persistenceType = TopComponent.PERSISTENCE_ALWAYS)
-@TopComponent.Registration(mode = "editor", openAtStartup = true)
-@ActionID(category = "Window", id = "com.honeybadgers.tutorialui.beginningsTopComponent")
+@TopComponent.Registration(mode = "output", openAtStartup = true)
+@ActionID(category = "Window", id = "com.honeybadgers.tutorialui.beginTopComponent")
 @ActionReference(path = "Menu/Window" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
-    displayName = "#CTL_beginningsAction",
-preferredID = "beginningsTopComponent")
+    displayName = "#CTL_beginAction",
+preferredID = "beginTopComponent")
 @Messages({
-    "CTL_beginningsAction=beginnings",
-    "CTL_beginningsTopComponent=beginnings Window",
-    "HINT_beginningsTopComponent=This is a beginnings window"
+    "CTL_beginAction=begin",
+    "CTL_beginTopComponent=begin Window",
+    "HINT_beginTopComponent=This is a begin window"
 })
-public final class beginningsTopComponent extends TopComponent {
+public final class beginTopComponent extends TopComponent {
 
-    public beginningsTopComponent() {
+    public beginTopComponent() {
         initComponents();
-        setName(Bundle.CTL_beginningsTopComponent());
-        setToolTipText(Bundle.HINT_beginningsTopComponent());
+        setName(Bundle.CTL_beginTopComponent());
+        setToolTipText(Bundle.HINT_beginTopComponent());
 
     }
 

@@ -69,6 +69,7 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <version>3.7</version>
                 <extensions>true</extensions>
+                <configuration/>
             </plugin>
 
             <plugin>
@@ -77,8 +78,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
 
