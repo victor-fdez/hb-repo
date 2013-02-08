@@ -4,13 +4,24 @@
  */
 package com.honeybadgers.flltutorial.model;
 
+import java.util.List;
+
 /**
  *
  * @author chingaman
  */
-public class Tutorial {
+public class Tutorial extends TutorialBase
+{
+    private List<Option> subTasks;
+    private List<Option> taskDiagram;
+    private List<Option> morphologicalChart;
+    private List<Option> limitationsAndConstraints;
     Tutorial()
     {
         
+    }
+    public int equals(Tutorial anotherTutorial)
+    {
+       return 0; 
     }
 }

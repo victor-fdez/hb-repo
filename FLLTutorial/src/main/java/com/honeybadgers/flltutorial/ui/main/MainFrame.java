@@ -29,8 +29,9 @@ public class MainFrame extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         mainSplitPane = new javax.swing.JSplitPane();
         navigationPanel = new javax.swing.JPanel();
-        contentPanel = new javax.swing.JPanel();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
+        videoPanel = new javax.swing.JPanel();
+        stagePanel = new javax.swing.JPanel();
+        contentPanel = new com.honeybadgers.flltutorial.ui.main.ContentPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(600, 400));
@@ -40,41 +41,53 @@ public class MainFrame extends javax.swing.JFrame {
         navigationPanel.setBackground(new java.awt.Color(255, 255, 255));
         navigationPanel.setMinimumSize(new java.awt.Dimension(150, 100));
 
+        videoPanel.setBackground(new java.awt.Color(0, 0, 0));
+
+        org.jdesktop.layout.GroupLayout videoPanelLayout = new org.jdesktop.layout.GroupLayout(videoPanel);
+        videoPanel.setLayout(videoPanelLayout);
+        videoPanelLayout.setHorizontalGroup(
+            videoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 150, Short.MAX_VALUE)
+        );
+        videoPanelLayout.setVerticalGroup(
+            videoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 147, Short.MAX_VALUE)
+        );
+
+        org.jdesktop.layout.GroupLayout stagePanelLayout = new org.jdesktop.layout.GroupLayout(stagePanel);
+        stagePanel.setLayout(stagePanelLayout);
+        stagePanelLayout.setHorizontalGroup(
+            stagePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 0, Short.MAX_VALUE)
+        );
+        stagePanelLayout.setVerticalGroup(
+            stagePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 250, Short.MAX_VALUE)
+        );
+
         org.jdesktop.layout.GroupLayout navigationPanelLayout = new org.jdesktop.layout.GroupLayout(navigationPanel);
         navigationPanel.setLayout(navigationPanelLayout);
         navigationPanelLayout.setHorizontalGroup(
             navigationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 150, Short.MAX_VALUE)
+            .add(videoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(stagePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         navigationPanelLayout.setVerticalGroup(
             navigationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 400, Short.MAX_VALUE)
+            .add(navigationPanelLayout.createSequentialGroup()
+                .add(videoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(stagePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainSplitPane.setLeftComponent(navigationPanel);
-
-        contentPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLayeredPane1.setMinimumSize(new java.awt.Dimension(200, 400));
-
-        org.jdesktop.layout.GroupLayout contentPanelLayout = new org.jdesktop.layout.GroupLayout(contentPanel);
-        contentPanel.setLayout(contentPanelLayout);
-        contentPanelLayout.setHorizontalGroup(
-            contentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
-        );
-        contentPanelLayout.setVerticalGroup(
-            contentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-        );
-
         mainSplitPane.setRightComponent(contentPanel);
 
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, mainSplitPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, mainSplitPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -85,13 +98,13 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 769, Short.MAX_VALUE)
+            .add(0, 774, Short.MAX_VALUE)
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(mainPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 404, Short.MAX_VALUE)
+            .add(0, 407, Short.MAX_VALUE)
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(mainPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -134,10 +147,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel contentPanel;
-    private javax.swing.JLayeredPane jLayeredPane1;
+    private com.honeybadgers.flltutorial.ui.main.ContentPanel contentPanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JPanel navigationPanel;
+    private javax.swing.JPanel stagePanel;
+    private javax.swing.JPanel videoPanel;
     // End of variables declaration//GEN-END:variables
 }
