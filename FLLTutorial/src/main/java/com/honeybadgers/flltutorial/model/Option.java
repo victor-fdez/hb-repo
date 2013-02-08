@@ -15,7 +15,6 @@ public class Option {
     private String Description;
     private boolean correct;
     private List<Option> options;
-    private File picture;
     public int equals(Option anotherOption)
     {
         return 0;
