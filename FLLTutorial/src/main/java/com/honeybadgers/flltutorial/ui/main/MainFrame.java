@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main;
 
 import com.honeybadgers.flltutorial.ui.main.content.ContentPane;
+import com.honeybadgers.flltutorial.ui.main.navigation.NavigationPanel;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,22 +20,15 @@ import javax.swing.UIManager.LookAndFeelInfo;
  */
 public class MainFrame extends JFrame
 {
-    Dimension mainPreferredDimension = new Dimension(800, 600);
-    Dimension mainMinDimension = new Dimension(800, 500);
-    Dimension mainMaxDimension = new Dimension(32767,32767);
-    JPanel navigationPanel;
+    NavigationPanel navigationPanel;
     JSplitPane splitPane;
     ContentPane contentPane;
     MainFrame()
     {
         super();
         contentPane = new ContentPane();
-        navigationPanel = new JPanel();
+        navigationPanel = new NavigationPanel();
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        
-        /* init content pane */
-        this.contentPane.setPreferredSize(mainPreferredDimension);
-        /* init navigation panel*/
         
         /* init split pane*/
         splitPane.setLeftComponent(this.navigationPanel);
@@ -42,8 +36,10 @@ public class MainFrame extends JFrame
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().add(splitPane);
-        this.pack();
+        this.pack();    
         this.setVisible(true);
+        //this.validate();
+        //this.repaint();
 
         System.out.println(""+contentPane);
     }

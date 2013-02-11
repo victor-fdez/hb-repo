@@ -17,6 +17,13 @@ public class NavigationPanel extends JPanel{
     private Dimension maxDimension = new Dimension(32767, 32767);
     public NavigationPanel()
     {
+        this.initComponents();
         
+    }
+
+    private void initComponents() {
+        this.setPreferredSize(preferedDimension);
+        this.setMinimumSize(minDimension);
+        this.setMaximumSize(maxDimension);
     }
 }

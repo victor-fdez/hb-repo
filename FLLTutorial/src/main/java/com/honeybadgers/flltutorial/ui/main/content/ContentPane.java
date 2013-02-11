@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main.content;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,6 +18,9 @@ import javax.swing.JPanel;
  */
 public class ContentPane extends JLayeredPane
 {
+    private Dimension preferedDimension = new Dimension(800, 500);
+    private Dimension minDimension = new Dimension(750, 400);
+    private Dimension maxDimension = new Dimension(32767, 32767);
     JPanel contentPanel;
     StagePanel stagePanel;
     OptionsPanel optionsPanel;
@@ -37,7 +41,7 @@ public class ContentPane extends JLayeredPane
         contentPanel = new JPanel();
         /* init content panel*/
         this.contentPanel.setBackground(Color.red);
-        this.initContentPanel();
+        this.initComponents();
         this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
         this.contentMouseAdapter = new ContentMouseAdapter();
         this.contentPanel.addMouseListener(this.contentMouseAdapter);
@@ -49,8 +53,11 @@ public class ContentPane extends JLayeredPane
     /**
      * Private method initializes the layout of the default content panel.
      */
-    private void initContentPanel()
+    private void initComponents()
     {
+        this.setPreferredSize(preferedDimension);
+        this.setMinimumSize(minDimension);
+        this.setMaximumSize(maxDimension);
         GroupLayout contentLayout = new GroupLayout(this.contentPanel);
         this.contentPanel.setLayout(contentLayout);
         
@@ -70,8 +77,8 @@ public class ContentPane extends JLayeredPane
     public void paint(Graphics g)
     {
         this.contentPanel.setSize(this.getSize());
-        
-        this.contentPanel.invalidate();
+        // this seems to work this.contentPanel.validate();
+        this.contentPanel.validate();
         //((GroupLayout)this.contentPanel.getLayout()).invalidateLayout(this.contentPanel);
         super.paint(g);
     }
