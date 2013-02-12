@@ -18,8 +18,8 @@ import javax.swing.JPanel;
  */
 public class ContentPane extends JLayeredPane
 {
-    private Dimension preferedDimension = new Dimension(800, 500);
-    private Dimension minDimension = new Dimension(750, 400);
+    private Dimension preferedDimension = new Dimension(900, 500);
+    private Dimension minDimension = new Dimension(900, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
     JPanel contentPanel;
     StagePanel stagePanel;

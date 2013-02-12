@@ -6,14 +6,17 @@ package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.model.Option;
 import java.util.List;
+import javax.swing.JScrollPane;
 
 /**
  *
  * @author chingaman
  */
 public class OptionsSelectorPanel extends OptionsPanel{
+    JScrollPane selections;
     OptionsSelectorPanel(List<Option> options)
     {
         super(options);
+        //this.add()
     }
 }

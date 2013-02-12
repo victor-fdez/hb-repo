@@ -14,10 +14,10 @@ import javax.swing.JScrollPane;
  *
  * @author chingaman
  */
-abstract public class OptionsPanel extends JScrollPane {
-    private Dimension preferedDimension = new Dimension(200, 500);
-    private Dimension minDimension = new Dimension(150, 400);
-    private Dimension maxDimension = new Dimension(32767, 32767);
+abstract public class OptionsPanel extends JPanel {
+    private Dimension preferedDimension = new Dimension(300, 500);
+    private Dimension minDimension = new Dimension(300, 400);
+    private Dimension maxDimension = new Dimension(300, 32767);
     JPanel clickedPanel;
     List<Option> options;
     OptionsPanel(List<Option> options)
