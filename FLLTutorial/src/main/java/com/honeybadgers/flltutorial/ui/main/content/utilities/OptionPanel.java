@@ -5,9 +5,10 @@
 package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
+import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -21,24 +22,25 @@ public class OptionPanel extends JPanel
     }
     OptionState state;
     Option option;
-    JTextArea description;
+    JLabel description;
     public OptionPanel(Option option)
     {
+        super();
         this.option = option;
         this.state = OptionState.UNSELECTED;
         //add text area
-        description.setText("description of option");
-        description.setEditable(false);
+        this.description = new JLabel(option.getDescription());
         //add label to store picture if option contains picture
-        
         //add all components
+        this.setBackground(Color.red);
+        this.setVisible(true);
+        this.setOpaque(true);
         this.add(this.description);
     }
 
-    @Override
     public void paint(Graphics g) {
         super.paint(g);
-        //customize behaviour option panel
+        //System.out.println("repainted "+this.option.getDescription());
     }
     
 }

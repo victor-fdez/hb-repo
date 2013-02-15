@@ -7,6 +7,7 @@ package com.honeybadgers.flltutorial.ui.main.content;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
@@ -21,6 +22,16 @@ public class ContentPane extends JLayeredPane
     private Dimension preferedDimension = new Dimension(900, 500);
     private Dimension minDimension = new Dimension(900, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
+    /*
+     * this panel covers the whole layered pane, but it will be transparent and
+     * it will mainly intercept all mouse and keyboard event to jcomponents on other
+     * layers
+     */
+    JPanel glassPanel;  
+    /*
+     * this panel contains all the main panels that will contain the activity panels
+     * and options panel needed for the user to go throught a stage
+     */
     JPanel contentPanel;
     StagePanel stagePanel;
     OptionsPanel optionsPanel;
@@ -36,11 +47,12 @@ public class ContentPane extends JLayeredPane
     public ContentPane()
     {
         super();
-        stagePanel = new ProblemDescriptionPanel();
-        optionsPanel = stagePanel.getOptionsPanel();
-        contentPanel = new JPanel();
+        this.stagePanel = new ProblemDescriptionPanel();
+        this.optionsPanel = stagePanel.getOptionsPanel();
+        this.contentPanel = new JPanel();
+        this.glassPanel = new JPanel();
         /* init content panel*/
-        this.contentPanel.setBackground(Color.red);
+        //this.contentPanel.setBackground(Color.red);
         this.initComponents();
         this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
         this.contentMouseAdapter = new ContentMouseAdapter();
@@ -49,6 +61,8 @@ public class ContentPane extends JLayeredPane
         this.setBackground(Color.BLACK);
         this.setOpaque(true);
         this.setVisible(true);
+        //
+        Toolkit.getDefaultToolkit();
     }
     /**
      * Private method initializes the layout of the default content panel.
@@ -77,9 +91,10 @@ public class ContentPane extends JLayeredPane
     public void paint(Graphics g)
     {
         this.contentPanel.setSize(this.getSize());
+        this.glassPanel.setSize(this.getSize());
         // this seems to work this.contentPanel.validate();
         this.contentPanel.validate();
-        //((GroupLayout)this.contentPanel.getLayout()).invalidateLayout(this.contentPanel);
+        
         super.paint(g);
     }
     /**
@@ -91,7 +106,8 @@ public class ContentPane extends JLayeredPane
         return super.toString() + "\n"
                 + this.contentPanel + "\n"
                 + this.stagePanel + "\n"
-                + this.optionsPanel;
+                + this.optionsPanel+ "\n"
+                + ((OptionsSelectorPanel)this.optionsPanel).selections;
     }
     private class ContentMouseAdapter extends MouseAdapter{
         @Override
