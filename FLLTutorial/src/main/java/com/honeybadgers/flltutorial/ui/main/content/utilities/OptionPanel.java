@@ -16,12 +16,12 @@ import javax.swing.JPanel;
  */
 public class OptionPanel extends JPanel 
 {
-    private enum OptionState
+    public enum OptionState
     {
         UNSELECTED, SELECTED, DRAGGED, DROPPED
     }
     OptionState state;
-    Option option;
+    public Option option;
     JLabel description;
     public OptionPanel(Option option)
     {
@@ -38,6 +38,7 @@ public class OptionPanel extends JPanel
         this.add(this.description);
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         //System.out.println("repainted "+this.option.getDescription());

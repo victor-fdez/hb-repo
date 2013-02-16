@@ -10,22 +10,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
  * @author chingaman
  */
-public class OptionsSelectorPanel extends OptionsPanel{
-    JScrollPane selections;
-    JPanel selectionsViewPort;
-    JPanel columnViewPort;
+public class OptionsSelectorPanel extends OptionsPanel implements ComponentListener{
+
     OptionsSelectorPanel(List<Option> options)
     {
         super(options);
@@ -33,7 +30,6 @@ public class OptionsSelectorPanel extends OptionsPanel{
     }
     private void initComponents()
     {
-        this.columnViewPort = new JPanel();
         //selection view port contains a column panel
         this.selectionsViewPort = new JPanel();
         this.selectionsViewPort.setLayout(new GridLayout(0,1,0,1));
@@ -66,26 +62,27 @@ public class OptionsSelectorPanel extends OptionsPanel{
         this.add(this.selections);
         this.setVisible(true);
         this.setOpaque(true);
+        this.setBackground(Color.red);
+        this.addComponentListener(this);
         //this.revalidate();
         this.selections.setLocation(0, 0);
         this.selections.setPreferredSize(this.getPreferredSize());
     }
     @Override
     public void paint(Graphics g) {
-        //this.setBackground(Color.red);
-        //this.selections.setSize(this.getSize());
-        //System.out.println("outer bounds "+this.getBounds()+" size "+this.getSize());
-        //System.out.println("inner bounds "+this.selections.getBounds()+" size "+this.selections.getSize());
-        //System.out.println("-------repainting--------");
+        
         this.selections.setLocation(0, 0);
         this.selections.setPreferredSize(this.selections.getParent().getSize());
         super.paint(g);
-       // System.out.println("-------------------------");
 
-       //this.invalidate();
-        //columnViewPort.paint(g);
     }
- 
 
-    
+    public void componentResized(ComponentEvent e) {
+        //System.out.println("options resizing");
+        this.selections.setSize(this.getSize());
+        this.revalidate();
+    }
+    public void componentMoved(ComponentEvent e) {}
+    public void componentShown(ComponentEvent e) {}
+    public void componentHidden(ComponentEvent e) {} 
 }
