@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  *
  * @author chingaman
  */
-public class OptionPanel extends JPanel 
+public class OptionPanel extends JPanel implements Cloneable
 {
     public enum OptionState
     {
@@ -42,6 +42,17 @@ public class OptionPanel extends JPanel
     public void paint(Graphics g) {
         super.paint(g);
         //System.out.println("repainted "+this.option.getDescription());
+    }
+    //TODO: create methods that will draw a button under different STATES
+    public OptionPanel copy()
+    {
+        try
+        {
+            return (OptionPanel)this.clone();
+        }
+        catch(Exception e)
+        {System.out.println("OptionPanel.copy is not cloning");}
+        return null;
     }
     
 }

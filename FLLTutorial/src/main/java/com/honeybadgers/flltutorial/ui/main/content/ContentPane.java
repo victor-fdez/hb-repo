@@ -8,6 +8,7 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -40,6 +41,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     JPanel contentPanel;
     StagePanel stagePanel;
     OptionsPanel optionsPanel;
+    OptionPanel selectedOptionPanel;
+    OptionPanel draggingOptionPanel;
     /**
      * Class constructor initializes all panels for the first stage of the robot
      * design. Both a stage panel, and options panel create by the stage panel are
@@ -62,13 +65,14 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     private void initComponents()
     {
-         this.stagePanel = new ProblemDescriptionPanel();
+        this.stagePanel = new ProblemDescriptionPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
         /*set view configurations*/
         this.glassPanel.setOpaque(false);
         this.glassPanel.setVisible(true);
+        this.glassPanel.setLayout(null);
         
         this.setPreferredSize(preferedDimension);
         this.setMinimumSize(minDimension);
@@ -132,16 +136,26 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     public void mousePressed(MouseEvent e)
     {    
         Component component = this.contentPanel.getComponentAt(e.getPoint());
-        System.out.println("component -> "+component);
+        //System.out.println("component -> "+component);
         //if
         if(component == this.stagePanel)
         {/*don't do anything, althought this will send points to task diagram */}
         else if(component == this.optionsPanel)
         {
-            OptionPanel panel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());
-            if(panel != null)
+            this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());
+            if(this.selectedOptionPanel != null)
             {
-                System.out.println("pressed button "+panel.option.getDescription());
+                this.draggingOptionPanel = this.selectedOptionPanel.copy();
+                /*add dragging option panel to glass pane*/
+                System.out.println("not equal "+(this.draggingOptionPanel != this.selectedOptionPanel));
+                System.out.println("pressed button "+this.draggingOptionPanel.option.getDescription());
+                this.glassPanel.add(this.draggingOptionPanel);
+                this.draggingOptionPanel.setOpaque(true);
+                /*draw panel initially as is selected*/
+                int halfWidth = this.draggingOptionPanel.getWidth()/2;
+                int halfHeight = this.draggingOptionPanel.getHeight()/2;
+                this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
+                this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
             }
         }
         else //there is only two components this should no happen
@@ -150,13 +164,30 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         }
     }
     public void mouseReleased(MouseEvent e) {
+        if(this.selectedOptionPanel != null)
+        {
+            //Rectangle rect = this.draggingOptionPanel.getVisibleRect();
+            this.glassPanel.remove(this.draggingOptionPanel);
+            this.glassPanel.repaint();
+            this.draggingOptionPanel = null;
+            this.selectedOptionPanel = null;
+        }
         System.out.println("mouse released");
     }
     /* mouse movement listener*/
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {} 
-    public void mouseDragged(MouseEvent e) {
-        System.out.println("mouse dragged");
+    public void mouseDragged(MouseEvent e) 
+    {
+        if(this.selectedOptionPanel != null)
+        {
+            System.out.println("x: "+e.getX()+" y: "+e.getY());
+            int halfWidth = this.draggingOptionPanel.getWidth()/2;
+            int halfHeight = this.draggingOptionPanel.getHeight()/2;
+            this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);            
+            this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
+        }
+        //System.out.println("mouse dragged");
     }
     public void mouseMoved(MouseEvent e) {}
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -169,7 +200,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             
                 //e.translatePoint(-this.optionsPanel.getX(), -this.optionsPanel.getY());
                 //e.setSource(this.optionsPanel.selections);
-                this.optionsPanel.selections.dispatchEvent(e);
+                this.optionsPanel.dispatchInterceptedEvent(e);
         }
         else //there is only two components this should no happen
         {

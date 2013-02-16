@@ -78,7 +78,6 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
     }
 
     public void componentResized(ComponentEvent e) {
-        //System.out.println("options resizing");
         this.selections.setSize(this.getSize());
         this.revalidate();
     }

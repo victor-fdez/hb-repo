@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.model.Option;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -26,5 +27,10 @@ public class ProblemDescriptionPanel extends StagePanel
     @Override
     OptionsPanel getOptionsPanel() {
         return this.optionsPanel;
+    }
+
+    @Override
+    boolean dropOptionPanel(OptionPanel optionPanel) {
+        return false;
     }
 }

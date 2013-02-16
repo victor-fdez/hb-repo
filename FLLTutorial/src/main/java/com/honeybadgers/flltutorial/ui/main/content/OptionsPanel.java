@@ -6,9 +6,11 @@ package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -34,7 +36,6 @@ abstract public class OptionsPanel extends JPanel{
         this.setMaximumSize(maxDimension);
         this.options = options;
     }
-
     OptionPanel getButtonAt(Point point) 
     {
         Component component;
@@ -50,6 +51,25 @@ abstract public class OptionsPanel extends JPanel{
         else 
         {
             return null;
+        }
+    }
+    //TODO: add support for deleting button on either incorrect or correct option
+    //selected
+    void removeOption(OptionPanel optionPanel)
+    {
+        
+    }
+    void leaveUnmodifiedOption(OptionPanel optionPanel)
+    {
+        
+    }
+    void dispatchInterceptedEvent(AWTEvent e)
+    {
+        if(e instanceof MouseWheelEvent)
+        {
+            //MouseWheelEvent mouseWheelEvent = (MouseWheelEvent)e;
+            //mouseWheelEvent.translatePoint(WIDTH, WIDTH);
+            this.selections.dispatchEvent(e);
         }
     }
  
