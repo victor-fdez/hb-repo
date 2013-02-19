@@ -11,6 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -21,21 +23,24 @@ import javax.swing.JPanel;
  * @author chingaman
  */
 public class TaskDiagramPanel extends StagePanel{
-    String subtaskArray[] = {"subtask 1", "subtask 2", "subtask 3"};
+    private String subtaskArray[] = {"subtask 1", "subtask 2", "subtask 3"};
     /*tutorial options*/
-    Option problemOption;
+    private Option problemOption;
     /*selected options, there are the options the student chooses*/
-    Option selectedOption;
+    private Option selectedOption;
     /*pointers into respective trees*/
-    Option[] currentOption = new Option[2];
+    private Option[] currentOption = new Option[2];
     /*array of panels to hold current options shown*/
-    JPanel[] depthPanels = new JPanel[11];
+    private JPanel[] depthPanels = new JPanel[11];
+    /*the current depth of the leaves shown*/
+    private int currentDepth;
     TaskDiagramPanel()
     {
         super();
         /*setup name*/
         this.stageName = "Task Diagram";
         this.setBackground(Color.GRAY);
+        this.currentDepth = 1; //current depth
         /*TODO: pass in actual options for this panel*/
         /*creating some fake options for testing purposes*/
         ArrayList<Option> options = new ArrayList<Option>();
@@ -112,23 +117,6 @@ public class TaskDiagramPanel extends StagePanel{
             optionPanel.setState(OptionPanel.OptionState.UNOCCUPIED);
             setupPanel.add(optionPanel);
         }
-        /*
-        for(int i = 0; i < this.depthPanels.length; i++)
-        {
-            for(int j = 0; j < 10; j++)
-            {
-                JPanel panel = new JPanel();
-                panel.setBackground(Color.WHITE);
-                if(i == 2 && j > 4)
-                {
-                    this.depthPanels[i].remove(0);
-                    break;
-                }
-                this.depthPanels[i].add(panel);
-            }
-        }
-        */
-        //this.setBackground(Color.red);
     }
     @Override
     OptionsPanel getOptionsPanel() {
@@ -137,7 +125,17 @@ public class TaskDiagramPanel extends StagePanel{
 
     @Override
     boolean dropOptionPanel(OptionPanel optionPanel) {
-        return true;
+        /*check if the give option panel can be dropped as one of the children*/
+        Rectangle rectangle = optionPanel.getBounds();
+        int x = rectangle.x + (rectangle.width/2);
+        int y = rectangle.y + (rectangle.height/2);
+        Point point = new Point(x,y);
+        /*check if current depth contains the drop position*/
+        if(this.getComponentAt(point) == this.depthPanels[this.currentDepth])
+        {
+            /*normalize point to */
+            return true;
+        }
+        return false;
     }
-    
 }

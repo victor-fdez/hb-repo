@@ -49,6 +49,30 @@ public final class OptionPanel extends JPanel implements Cloneable
             OptionPanel optionPanel = new OptionPanel(this.option);
             return optionPanel;
     }
+    /**
+     * This object method transfers in a give option, and stores it. It may not show
+     * the option immediately, unless the state of the option panel is NORMAL.
+     * 
+     * @param option the Option object that will be stored in this OptionPanel
+     */
+    public void transferOption(Option option)
+    {
+        this.option = option;
+        if(this.description != null)
+        {
+            this.description.setText(this.option.getDescription());
+            if(this.description.getParent() != null)
+            {
+                this.description.revalidate();
+            }
+        }
+    }
+    /**
+     * This object method sets the state of this OptionPanel. It is mainly used for display
+     * purposes.
+     * 
+     * @param state the enumerate type OptionPanel.OptionState which denotes the state of the panel.
+     */
     public void setState(OptionState state)
     {
         this.state = state;

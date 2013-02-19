@@ -14,11 +14,25 @@ public class Option {
     private String description;
     private boolean correct;
     private List<Option> options;
+    private int childId;
+    private Option parent;
+    public Option(String description, boolean correct, List<Option> options, Option parent, int childId)
+    {
+        this(description, correct, options, parent);
+        this.childId = childId;
+    }
+    public Option(String description, boolean correct, List<Option> options, Option parent)
+    {
+        this(description, correct, options);
+        this.parent = parent;
+    }
     public Option(String description, boolean correct, List<Option> options)
     {
         this.description = description;
         this.correct = correct;
         this.options = options;
+        this.parent = null;
+        this.childId = -1;
     }
 
     public String getDescription() {
