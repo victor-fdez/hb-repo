@@ -42,7 +42,7 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.options = new ArrayList();
         this.optionPanels = new ArrayList();
         //create a new panel for each option
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < 3; i++)
         {
             Option option = new Option("button "+i, true, null);
             OptionPanel optionPanel = new OptionPanel(option);

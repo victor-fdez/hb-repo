@@ -71,7 +71,7 @@ public class Option {
     public boolean equals(Option anotherOption)
     {
         /*TODO: this needs to be amplified*/
-        if(this.description.equals(anotherOption.getDescription()) && this.correct == anotherOption.isCorrect())
+        if(super.equals(anotherOption))
         {
             return true;
         }

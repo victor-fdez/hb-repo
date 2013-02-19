@@ -157,7 +157,7 @@ public class TaskDiagramPanel extends StagePanel{
         int index;
         if(checkAllPanels == 1)
         {
-            for(index = 0; index < this.depthPanels.length; index++)
+            for(index = this.depthPanels.length; index >= 0; index--)
             {
                 /*search for the given panel*/
                 JPanel panel = this.depthPanels[index];
