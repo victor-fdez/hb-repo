@@ -4,7 +4,6 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
-import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Dimension;
 import javax.swing.JPanel;
@@ -15,6 +14,7 @@ import javax.swing.JPanel;
  */
 abstract public class StagePanel extends JPanel
 {
+    protected String stageName;
     private Dimension preferedDimension = new Dimension(600, 500);
     private Dimension minDimension = new Dimension(600, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);

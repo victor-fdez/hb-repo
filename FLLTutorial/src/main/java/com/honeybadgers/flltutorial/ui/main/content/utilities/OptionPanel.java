@@ -6,7 +6,8 @@ package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Paint;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -14,45 +15,70 @@ import javax.swing.JPanel;
  *
  * @author chingaman
  */
-public class OptionPanel extends JPanel implements Cloneable
+public final class OptionPanel extends JPanel implements Cloneable
 {
-    public enum OptionState
+    public static enum OptionState
     {
-        UNSELECTED, SELECTED, DRAGGED, DROPPED
+        NORMAL, HIDDEN_OCCUPY, DRAGGED, DROPPED, UNOCCUPIED
     }
     OptionState state;
-    public Option option;
+    private Option option;
     JLabel description;
+    public OptionPanel()
+    {
+        super();
+        this.state = OptionState.UNOCCUPIED;
+        this.setOpaque(true);
+    }
     public OptionPanel(Option option)
     {
         super();
         this.option = option;
-        this.state = OptionState.UNSELECTED;
+        this.state = OptionState.NORMAL;
         //add text area
         this.description = new JLabel(option.getDescription());
+        this.description.setVisible(true);
         //add label to store picture if option contains picture
         //add all components
-        this.setBackground(Color.red);
-        this.setVisible(true);
-        this.setOpaque(true);
-        this.add(this.description);
+        this.setState(OptionState.NORMAL);
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        //System.out.println("repainted "+this.option.getDescription());
-    }
     //TODO: create methods that will draw a button under different STATES
     public OptionPanel copy()
     {
-        try
-        {
-            return (OptionPanel)this.clone();
-        }
-        catch(Exception e)
-        {System.out.println("OptionPanel.copy is not cloning");}
-        return null;
+            OptionPanel optionPanel = new OptionPanel(this.option);
+            return optionPanel;
     }
-    
+    public void setState(OptionState state)
+    {
+        this.state = state;
+        switch(this.state)
+        {
+            case NORMAL: /*beginning state*/
+                if(this.description != null && this.description.getParent() != this)
+                {
+                    this.description.setVisible(true);
+                    this.add(this.description);
+                }
+                this.setOpaque(true);
+                this.setBackground(Color.GREEN);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
+            case HIDDEN_OCCUPY:
+                this.setBorder(null);
+                this.remove(this.description);
+                this.setBackground(Color.GRAY);
+                this.setBorder(null);
+                break;
+            case UNOCCUPIED:
+                if(this.description != null && this.description.getParent() == this)
+                {
+                    this.remove(this.description);
+                }
+                this.setBackground(Color.LIGHT_GRAY);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            default:
+                break;
+        }
+    }
 }

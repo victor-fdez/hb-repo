@@ -32,7 +32,8 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
     {
         //selection view port contains a column panel
         this.selectionsViewPort = new JPanel();
-        this.selectionsViewPort.setLayout(new GridLayout(0,1,0,1));
+        this.selectionsViewPort.setLayout(new GridLayout(0,1,2,2));
+        this.selectionsViewPort.setBackground(Color.GRAY);
 
         this.selections = new JScrollPane();
         this.selections.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -46,7 +47,6 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
             Option option = new Option("button "+i, true, null);
             OptionPanel optionPanel = new OptionPanel(option);
             this.optionPanels.add(optionPanel);
-            optionPanel.setBackground(Color.GREEN);
             optionPanel.setPreferredSize(new Dimension(270, 40));
         }
         //add each option panel to selection scroll pane
@@ -58,13 +58,10 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.selections.setBorder(null);
         this.selections.setViewportView(this.selectionsViewPort);
         
-        //this.setBorder(BorderFactory.createLoweredBevelBorder());
         this.add(this.selections);
         this.setVisible(true);
         this.setOpaque(true);
-        this.setBackground(Color.red);
         this.addComponentListener(this);
-        //this.revalidate();
         this.selections.setLocation(0, 0);
         this.selections.setPreferredSize(this.getPreferredSize());
     }

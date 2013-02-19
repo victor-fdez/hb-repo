@@ -8,7 +8,6 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -65,7 +64,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     private void initComponents()
     {
-        this.stagePanel = new ProblemDescriptionPanel();
+        this.stagePanel = new TaskDiagramPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
@@ -105,7 +104,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     public void paint(Graphics g)
     {        
         /*checking performance*/
-        System.out.println("paint called on jlayered pane");
+        //System.out.println("paint called on jlayered pane");
         super.paint(g);
     }
     /**
@@ -146,11 +145,17 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             if(this.selectedOptionPanel != null)
             {
                 this.draggingOptionPanel = this.selectedOptionPanel.copy();
+                this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
+                //System.out.println("selected panel "+this.selectedOptionPanel+" children "+this.selectedOptionPanel.getComponents());
+                //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
                 /*add dragging option panel to glass pane*/
-                System.out.println("not equal "+(this.draggingOptionPanel != this.selectedOptionPanel));
-                System.out.println("pressed button "+this.draggingOptionPanel.option.getDescription());
+                //System.out.println("not equal "+(this.draggingOptionPanel != this.selectedOptionPanel));
+                //System.out.println("pressed button "+this.draggingOptionPanel.option.getDescription());
+                /*revalidate button after adding it to the glass panel*/
                 this.glassPanel.add(this.draggingOptionPanel);
-                this.draggingOptionPanel.setOpaque(true);
+                this.draggingOptionPanel.revalidate();
+                /*set option panel as hidden*/
+                this.selectedOptionPanel.setState(OptionPanel.OptionState.HIDDEN_OCCUPY);
                 /*draw panel initially as is selected*/
                 int halfWidth = this.draggingOptionPanel.getWidth()/2;
                 int halfHeight = this.draggingOptionPanel.getHeight()/2;
@@ -168,6 +173,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         {
             //Rectangle rect = this.draggingOptionPanel.getVisibleRect();
             this.glassPanel.remove(this.draggingOptionPanel);
+            this.selectedOptionPanel.setState(OptionPanel.OptionState.NORMAL);
             this.glassPanel.repaint();
             this.draggingOptionPanel = null;
             this.selectedOptionPanel = null;
@@ -181,7 +187,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     {
         if(this.selectedOptionPanel != null)
         {
-            System.out.println("x: "+e.getX()+" y: "+e.getY());
+            //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
+            //System.out.println("x: "+e.getX()+" y: "+e.getY());
             int halfWidth = this.draggingOptionPanel.getWidth()/2;
             int halfHeight = this.draggingOptionPanel.getHeight()/2;
             this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);            

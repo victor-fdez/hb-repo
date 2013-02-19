@@ -46,7 +46,8 @@ abstract public class OptionsPanel extends JPanel{
         /*check this is an OptionPanel else no button was clicked*/
         if(component instanceof OptionPanel) 
         {
-            return (OptionPanel)component;
+            OptionPanel optionPanel = (OptionPanel)component;
+            return optionPanel;
         }
         else 
         {
@@ -59,16 +60,11 @@ abstract public class OptionsPanel extends JPanel{
     {
         
     }
-    void leaveUnmodifiedOption(OptionPanel optionPanel)
-    {
-        
-    }
     void dispatchInterceptedEvent(AWTEvent e)
     {
         if(e instanceof MouseWheelEvent)
         {
-            //MouseWheelEvent mouseWheelEvent = (MouseWheelEvent)e;
-            //mouseWheelEvent.translatePoint(WIDTH, WIDTH);
+            /*this dispatches the given mousewheelevent to the option selections panel*/
             this.selections.dispatchEvent(e);
         }
     }
