@@ -4,11 +4,17 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
-import java.awt.Color;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.GroupLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -16,15 +22,26 @@ import javax.swing.JPanel;
  *
  * @author chingaman
  */
-public class ContentPane extends JLayeredPane
+public class ContentPane extends JLayeredPane implements ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener
 {
-    private Dimension preferedDimension = new Dimension(800, 500);
-    private Dimension minDimension = new Dimension(750, 400);
+    private Dimension preferedDimension = new Dimension(900, 500);
+    private Dimension minDimension = new Dimension(900, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
+    /*
+     * this panel covers the whole layered pane, but it will be transparent and
+     * it will mainly intercept all mouse and keyboard event to jcomponents on other
+     * layers
+     */
+    JPanel glassPanel;  
+    /*
+     * this panel contains all the main panels that will contain the activity panels
+     * and options panel needed for the user to go throught a stage
+     */
     JPanel contentPanel;
     StagePanel stagePanel;
     OptionsPanel optionsPanel;
-    ContentMouseAdapter contentMouseAdapter;
+    OptionPanel selectedOptionPanel;
+    OptionPanel draggingOptionPanel;
     /**
      * Class constructor initializes all panels for the first stage of the robot
      * design. Both a stage panel, and options panel create by the stage panel are
@@ -36,28 +53,30 @@ public class ContentPane extends JLayeredPane
     public ContentPane()
     {
         super();
-        stagePanel = new ProblemDescriptionPanel();
-        optionsPanel = stagePanel.getOptionsPanel();
-        contentPanel = new JPanel();
+       
         /* init content panel*/
-        this.contentPanel.setBackground(Color.red);
+        //this.contentPanel.setBackground(Color.red);
         this.initComponents();
-        this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
-        this.contentMouseAdapter = new ContentMouseAdapter();
-        this.contentPanel.addMouseListener(this.contentMouseAdapter);
-        this.contentPanel.addMouseMotionListener(this.contentMouseAdapter);
-        this.setBackground(Color.BLACK);
-        this.setOpaque(true);
-        this.setVisible(true);
+
     }
     /**
      * Private method initializes the layout of the default content panel.
      */
     private void initComponents()
     {
+        this.stagePanel = new TaskDiagramPanel();
+        this.optionsPanel = stagePanel.getOptionsPanel();
+        this.contentPanel = new JPanel();
+        this.glassPanel = new JPanel();
+        /*set view configurations*/
+        this.glassPanel.setOpaque(false);
+        this.glassPanel.setVisible(true);
+        this.glassPanel.setLayout(null);
+        
         this.setPreferredSize(preferedDimension);
         this.setMinimumSize(minDimension);
         this.setMaximumSize(maxDimension);
+
         GroupLayout contentLayout = new GroupLayout(this.contentPanel);
         this.contentPanel.setLayout(contentLayout);
         
@@ -71,15 +90,21 @@ public class ContentPane extends JLayeredPane
             contentLayout.createParallelGroup()
                 .addComponent(this.stagePanel)
                 .addComponent(this.optionsPanel)
-        );       
+        );  
+        
+        this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
+        this.add(this.glassPanel, JLayeredPane.DRAG_LAYER);
+        /* event listeners defined here*/
+        this.glassPanel.addMouseListener(this);
+        this.glassPanel.addMouseMotionListener(this);
+        this.glassPanel.addMouseWheelListener(this);
+        this.addComponentListener(this);
     }
     @Override
     public void paint(Graphics g)
-    {
-        this.contentPanel.setSize(this.getSize());
-        // this seems to work this.contentPanel.validate();
-        this.contentPanel.validate();
-        //((GroupLayout)this.contentPanel.getLayout()).invalidateLayout(this.contentPanel);
+    {        
+        /*checking performance*/
+        //System.out.println("paint called on jlayered pane");
         super.paint(g);
     }
     /**
@@ -91,23 +116,117 @@ public class ContentPane extends JLayeredPane
         return super.toString() + "\n"
                 + this.contentPanel + "\n"
                 + this.stagePanel + "\n"
-                + this.optionsPanel;
+                + this.optionsPanel+ "\n"
+                + ((OptionsSelectorPanel)this.optionsPanel).selections;
     }
-    private class ContentMouseAdapter extends MouseAdapter{
-        @Override
-        public void mousePressed(MouseEvent mouseEvent)
+    /*component listener methods*/
+    public void componentResized(ComponentEvent e) {
+        this.contentPanel.setSize(this.getSize());
+        this.glassPanel.setSize(this.getSize());
+        this.contentPanel.revalidate();
+    }
+    public void componentMoved(ComponentEvent e) {}
+    public void componentShown(ComponentEvent e) {}
+    public void componentHidden(ComponentEvent e) {}
+    /*mouse listener methods*/
+    public void mouseClicked(MouseEvent e) {
+        Component component = this.contentPanel.getComponentAt(e.getPoint());
+        //System.out.println("component -> "+component);
+        //if
+        if(component == this.stagePanel)
         {
-            System.out.println("mouse pressed");
+           this.stagePanel.clicked(e.getPoint()); 
         }
-        @Override
-        public void mouseDragged(MouseEvent mouseEvent)
-        {
-            System.out.println("mouse dragged");
+    }
+    public void mousePressed(MouseEvent e)
+    {    
+        Component component = this.contentPanel.getComponentAt(e.getPoint());
+        //System.out.println("component -> "+component);
+        //if
+        if(component == this.stagePanel)
+        {/*don't do anything, althought this will send points to stage panel*/
+            
         }
-        @Override
-        public void mouseReleased(MouseEvent mouseEvent)
+        else if(component == this.optionsPanel)
         {
-            System.out.println("mouse released");
+            this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());
+            if(this.selectedOptionPanel != null)
+            {
+                this.draggingOptionPanel = this.selectedOptionPanel.copy();
+                this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
+                //System.out.println("selected panel "+this.selectedOptionPanel+" children "+this.selectedOptionPanel.getComponents());
+                //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
+                /*add dragging option panel to glass pane*/
+                //System.out.println("not equal "+(this.draggingOptionPanel != this.selectedOptionPanel));
+                //System.out.println("pressed button "+this.draggingOptionPanel.option.getDescription());
+                /*revalidate button after adding it to the glass panel*/
+                this.glassPanel.add(this.draggingOptionPanel);
+                this.draggingOptionPanel.revalidate();
+                /*set option panel as hidden*/
+                this.selectedOptionPanel.setState(OptionPanel.OptionState.HIDDEN_OCCUPY);
+                /*draw panel initially as is selected*/
+                int halfWidth = this.draggingOptionPanel.getWidth()/2;
+                int halfHeight = this.draggingOptionPanel.getHeight()/2;
+                this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
+                this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
+            }
+        }
+        else //there is only two components this should no happen
+        {
+            System.out.println("mouse pressed unknown component");
+        }
+    }
+    public void mouseReleased(MouseEvent e) {
+        /*check if there is a selectoption to drop*/
+        if(this.selectedOptionPanel != null && this.draggingOptionPanel != null)
+        {
+            Component component = this.contentPanel.getComponentAt(e.getPoint());
+            //Rectangle rect = this.draggingOptionPanel.getVisibleRect();
+            this.glassPanel.remove(this.draggingOptionPanel);
+            this.selectedOptionPanel.setState(OptionPanel.OptionState.NORMAL);
+            this.glassPanel.repaint();
+            if(component == this.stagePanel)
+            {/*don't do anything, althought this will send points to stage panel*/
+                System.out.println("dropping on stage panel");
+                this.stagePanel.dropOptionPanel(this.draggingOptionPanel);
+            }
+            this.draggingOptionPanel = null;
+            this.selectedOptionPanel = null;
+        }
+        System.out.println("mouse released");
+    }
+    /* mouse movement listener*/
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {} 
+    public void mouseDragged(MouseEvent e) 
+    {
+        if(this.selectedOptionPanel != null)
+        {
+            //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
+            //System.out.println("x: "+e.getX()+" y: "+e.getY());
+            int halfWidth = this.draggingOptionPanel.getWidth()/2;
+            int halfHeight = this.draggingOptionPanel.getHeight()/2;
+            this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);            
+            this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
+        }
+        //System.out.println("mouse dragged");
+    }
+    public void mouseMoved(MouseEvent e) {}
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        Component component = this.contentPanel.getComponentAt(e.getPoint());
+        //if
+        if(component == this.stagePanel)
+        {/*don't do anything, althought this will send points to task diagram */}
+        else if(component == this.optionsPanel)
+        {
+            
+                //e.translatePoint(-this.optionsPanel.getX(), -this.optionsPanel.getY());
+                //e.setSource(this.optionsPanel.selections);
+                this.optionsPanel.dispatchInterceptedEvent(e);
+        }
+        else //there is only two components this should no happen
+        {
+            System.out.println("mouse pressed unknown component");
         }
     }
 }
