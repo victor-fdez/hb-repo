@@ -67,7 +67,6 @@ public class MainFrame extends JFrame
             public void run()
             {
                 JFrame mainFrame = new MainFrame();
-                mainFrame.revalidate();
             }
         });
     }
