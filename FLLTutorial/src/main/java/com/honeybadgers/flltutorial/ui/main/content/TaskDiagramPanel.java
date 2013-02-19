@@ -14,6 +14,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -49,7 +50,7 @@ public class TaskDiagramPanel extends StagePanel{
             options.add(new Option(subtaskArray[i], true, optionsChild));
             for(int j = 0; j < 3; j++)
             {
-                optionsChild.add(new Option(subtaskArray[i], ((i%2 == 0) ? true : false), null));
+                optionsChild.add(new Option("sub "+subtaskArray[i], ((i%2 == 0) ? true : false), null));
             }
         }
         this.problemOption = new Option("problem description option - tops", true, options);
@@ -131,7 +132,7 @@ public class TaskDiagramPanel extends StagePanel{
         ChildPanelResult childPanelResult = this.getChildPanel(point, 0);
         if(childPanelResult != null)
         {
-            OptionPanel childPanel = childPanelResult.optionPane;
+            OptionPanel childPanel = childPanelResult.optionPanel;
             /*check that option is actually child of parent option*/
             //NOTE this:OptionPanel parentOptionPanel = (OptionPanel)(this.depthPanels[this.currentDepth - 1].getComponents())[0];
             /*ASSERT: parentOptionPanel can't be null*/
@@ -148,7 +149,35 @@ public class TaskDiagramPanel extends StagePanel{
     }
     @Override
     void clicked(Point point) {
-        
+        /*get the panel clicked*/
+        ChildPanelResult childPanelResult = this.getChildPanel(point, 1);
+        if(childPanelResult != null)
+        {
+            OptionPanel optionPanel = childPanelResult.optionPanel;
+            JPanel optionsPanels = childPanelResult.optionsPanel;
+            int optionPanelDepth = childPanelResult.index;
+            /*if option panel is at currentDepth == depth of this panel
+              then this panel should grow to the width of stage panel, and
+              show children*/
+            OptionsSelectorPanel optionsSelectorPanel = (OptionsSelectorPanel)this.optionsPanel;
+            if(optionPanelDepth == this.currentDepth)
+            {
+                
+                //optionsSelectorPanel.changeOptionPanels()
+                System.out.println("clicked at current depth");
+            }
+            /*else if option panel is at currentDepth > depth of this panel
+              then all children depth panels should be removed, and only the
+              children of this panel should be expanded*/
+            else if (optionPanelDepth < this.currentDepth)
+            {
+                System.out.println("clicked at lower depth");
+            }
+            else
+            {
+                System.err.println("this should not happen");
+            }
+        }
     }
     private ChildPanelResult getChildPanel(Point point, int checkAllPanels)
     {
@@ -157,7 +186,7 @@ public class TaskDiagramPanel extends StagePanel{
         int index;
         if(checkAllPanels == 1)
         {
-            for(index = this.depthPanels.length; index >= 0; index--)
+            for(index = this.depthPanels.length-1; index >= 0; index--)
             {
                 /*search for the given panel*/
                 JPanel panel = this.depthPanels[index];
@@ -189,19 +218,25 @@ public class TaskDiagramPanel extends StagePanel{
         relativePoint.x = relativePoint.x - originChildrenPanel.x;
         relativePoint.y = relativePoint.y - originChildrenPanel.y;
         /*get which child contains this relative point*/
-        OptionPanel childPanel = (OptionPanel)childrenPanel.getComponentAt(relativePoint);
-        if(childPanel != null)
+        JComponent panel = (JComponent)childrenPanel.getComponentAt(relativePoint);
+        //System.out.println(""+panel);
+        if(panel != null && panel instanceof OptionPanel)
         {
-            ChildPanelResult childResult = new ChildPanelResult();
-            childResult.index = index;
-            childResult.optionPane = childPanel;
-            return childResult;
+            OptionPanel childPanel = (OptionPanel)panel;
+            if(childPanel != null)
+            {
+                ChildPanelResult childResult = new ChildPanelResult();
+                childResult.index = index;
+                childResult.optionPanel = childPanel;
+                return childResult;
+            }
         }
         return null;
     }
     private class ChildPanelResult
     {
         int index;
-        OptionPanel optionPane;
+        OptionPanel optionPanel;
+        JPanel optionsPanel;
     }
 }

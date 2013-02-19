@@ -9,10 +9,11 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,38 +33,29 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
     {
         //selection view port contains a column panel
         this.selectionsViewPort = new JPanel();
-        this.selectionsViewPort.setLayout(new GridLayout(0,1,2,2));
+        this.selectionsViewPort.setLayout(new GridBagLayout());
+        //this.selectionsViewPort.setLayout(new GridLayout(0,1,2,2));
         this.selectionsViewPort.setBackground(Color.GRAY);
 
         this.selections = new JScrollPane();
         this.selections.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        //this.selections.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.selections.getVerticalScrollBar().setVisible(true);
         //TESTING: add options
-        this.options = new ArrayList();
-        this.optionPanels = new ArrayList();
-        //create a new panel for each option
-        for(int i = 0; i < 3; i++)
-        {
-            Option option = new Option("button "+i, true, null);
-            OptionPanel optionPanel = new OptionPanel(option);
-            this.optionPanels.add(optionPanel);
-            optionPanel.setPreferredSize(new Dimension(270, 40));
-        }
-        //add each option panel to selection scroll pane
-        this.add(this.selections);
-        for(OptionPanel option : this.optionPanels)
-        {
-            this.selectionsViewPort.add(option);
-        }
+        this.changeOptionPanels(this.options);
+        
         this.selections.setBorder(null);
         this.selections.setViewportView(this.selectionsViewPort);
-        
         this.add(this.selections);
         this.setVisible(true);
         this.setOpaque(true);
         this.addComponentListener(this);
         this.selections.setLocation(0, 0);
-        this.selections.setPreferredSize(this.getPreferredSize());
+        Dimension preferredContainer = this.getPreferredSize();
+        //this.selectionsViewPort.setSize(new Dimension(32000, 300));
+        //this.selections.setPreferredSize(preferredContainer);
+        this.selectionsViewPort.revalidate();
+        //this.selectionsViewPort.setMinimumSize(preferredContainer);
     }
     @Override
     public void paint(Graphics g) {
@@ -73,7 +65,35 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         super.paint(g);
 
     }
-
+    void changeOptionPanels(List<Option> options)
+    {
+        this.selectionsViewPort.removeAll();
+        int i = 0;
+        /*swap in this list of options*/
+        for(Option option : options)
+        {
+            GridBagConstraints c = new GridBagConstraints();
+            c.weightx = 1.0;
+            c.weighty = 0.0;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.gridx = 0;
+            c.gridy = i;
+            c.insets = new Insets(2,2,2,2);
+            c.anchor = GridBagConstraints.PAGE_START;
+            this.selectionsViewPort.add(new OptionPanel(option), c);
+            i++;
+        }
+        GridBagConstraints lastC = new GridBagConstraints();
+        lastC.weightx = 1.0;
+        lastC.weighty = 1.0;
+        lastC.fill = GridBagConstraints.BOTH;
+        lastC.gridx = 0;
+        lastC.gridy = i;
+        JPanel bottomFillerPanel = new JPanel();
+        bottomFillerPanel.setOpaque(false);
+        this.selectionsViewPort.add(bottomFillerPanel, lastC);
+        this.selectionsViewPort.revalidate();
+    }
     public void componentResized(ComponentEvent e) {
         this.selections.setSize(this.getSize());
         this.revalidate();
