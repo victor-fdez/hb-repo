@@ -6,6 +6,7 @@ package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Dimension;
+import java.awt.Point;
 import javax.swing.JPanel;
 
 /**
@@ -28,8 +29,8 @@ abstract public class StagePanel extends JPanel
         this.setOpaque(true);
         this.setVisible(true);
     }
+    
     abstract OptionsPanel getOptionsPanel();
     abstract boolean dropOptionPanel(OptionPanel optionPanel);
-    //abstract void setupStage();
-    //abstract void recieveOption();
+    abstract void clicked(Point point);
 }

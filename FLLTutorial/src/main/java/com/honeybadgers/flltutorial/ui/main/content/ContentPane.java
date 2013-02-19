@@ -138,7 +138,9 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         //System.out.println("component -> "+component);
         //if
         if(component == this.stagePanel)
-        {/*don't do anything, althought this will send points to task diagram */}
+        {/*don't do anything, althought this will send points to stage panel*/
+            
+        }
         else if(component == this.optionsPanel)
         {
             this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());
@@ -169,12 +171,19 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         }
     }
     public void mouseReleased(MouseEvent e) {
-        if(this.selectedOptionPanel != null)
+        /*check if there is a selectoption to drop*/
+        if(this.selectedOptionPanel != null && this.draggingOptionPanel != null)
         {
+            Component component = this.contentPanel.getComponentAt(e.getPoint());
             //Rectangle rect = this.draggingOptionPanel.getVisibleRect();
             this.glassPanel.remove(this.draggingOptionPanel);
             this.selectedOptionPanel.setState(OptionPanel.OptionState.NORMAL);
             this.glassPanel.repaint();
+            if(component == this.stagePanel)
+            {/*don't do anything, althought this will send points to stage panel*/
+                System.out.println("dropping on stage panel");
+                this.stagePanel.dropOptionPanel(this.draggingOptionPanel);
+            }
             this.draggingOptionPanel = null;
             this.selectedOptionPanel = null;
         }

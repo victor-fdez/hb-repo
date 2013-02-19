@@ -12,7 +12,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -126,16 +125,83 @@ public class TaskDiagramPanel extends StagePanel{
     @Override
     boolean dropOptionPanel(OptionPanel optionPanel) {
         /*check if the give option panel can be dropped as one of the children*/
-        Rectangle rectangle = optionPanel.getBounds();
-        int x = rectangle.x + (rectangle.width/2);
-        int y = rectangle.y + (rectangle.height/2);
+        int x = (int)optionPanel.getBounds().getCenterX();
+        int y = (int)optionPanel.getBounds().getCenterY();
         Point point = new Point(x,y);
-        /*check if current depth contains the drop position*/
-        if(this.getComponentAt(point) == this.depthPanels[this.currentDepth])
+        ChildPanelResult childPanelResult = this.getChildPanel(point, 0);
+        if(childPanelResult != null)
         {
-            /*normalize point to */
+            OptionPanel childPanel = childPanelResult.optionPane;
+            /*check that option is actually child of parent option*/
+            //NOTE this:OptionPanel parentOptionPanel = (OptionPanel)(this.depthPanels[this.currentDepth - 1].getComponents())[0];
+            /*ASSERT: parentOptionPanel can't be null*/
+            
+            /*perform transfer into option panel*/
+            childPanel.transferOption(optionPanel.getOption());
+            childPanel.setState(OptionPanel.OptionState.NORMAL);
+            System.out.println(""+childPanel+" children: "+childPanel.getComponents());
+            childPanel.revalidate();
+            childPanel.repaint();
             return true;
         }
         return false;
+    }
+    @Override
+    void clicked(Point point) {
+        
+    }
+    private ChildPanelResult getChildPanel(Point point, int checkAllPanels)
+    {
+        /*get panel that was clicked*/
+        JPanel childrenPanel = null;
+        int index;
+        if(checkAllPanels == 1)
+        {
+            for(index = 0; index < this.depthPanels.length; index++)
+            {
+                /*search for the given panel*/
+                JPanel panel = this.depthPanels[index];
+                if(this.getComponentAt(point) == panel)
+                {
+                    childrenPanel = panel;
+                    break;
+                }
+            }
+        }
+        else         /*check if current depth contains the drop position*/
+        {
+            index = this.currentDepth;
+            JPanel panel = this.depthPanels[index];
+            if(this.getComponentAt(point) == panel)
+            {
+                childrenPanel = panel;
+            }
+        }
+        /*if no panel contained this point*/
+        if(childrenPanel == null) {
+            return null;
+        }
+        /*normalize point to */
+        int x = (int)childrenPanel.getBounds().getMinX();
+        int y = (int)childrenPanel.getBounds().getMinY();
+        Point originChildrenPanel = new Point(x, y);
+        Point relativePoint = point;
+        relativePoint.x = relativePoint.x - originChildrenPanel.x;
+        relativePoint.y = relativePoint.y - originChildrenPanel.y;
+        /*get which child contains this relative point*/
+        OptionPanel childPanel = (OptionPanel)childrenPanel.getComponentAt(relativePoint);
+        if(childPanel != null)
+        {
+            ChildPanelResult childResult = new ChildPanelResult();
+            childResult.index = index;
+            childResult.optionPane = childPanel;
+            return childResult;
+        }
+        return null;
+    }
+    private class ChildPanelResult
+    {
+        int index;
+        OptionPanel optionPane;
     }
 }

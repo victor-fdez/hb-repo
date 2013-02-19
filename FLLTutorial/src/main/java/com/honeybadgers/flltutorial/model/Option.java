@@ -4,6 +4,7 @@
  */
 package com.honeybadgers.flltutorial.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,12 +55,37 @@ public class Option {
     public List<Option> getOptions() {
         return options;
     }
-
+    
     public void setOptions(List<Option> options) {
         this.options = options;
     }
-    public int equals(Option anotherOption)
+
+    public int getChildId() {
+        return childId;
+    }
+
+    public Option getParent() {
+        return parent;
+    }
+    
+    public boolean equals(Option anotherOption)
     {
-        return 0;
+        /*TODO: this needs to be amplified*/
+        if(this.description.equals(anotherOption.getDescription()) && this.correct == anotherOption.isCorrect())
+        {
+            return true;
+        }
+       return false; 
+    }
+    public int getChildIndex(Option childOption)
+    {
+        for(int i = 0; i < this.options.size(); i++)
+        {
+            if(this.options.get(i).equals(childOption))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }

@@ -28,6 +28,8 @@ public final class OptionPanel extends JPanel implements Cloneable
     {
         super();
         this.state = OptionState.UNOCCUPIED;
+        this.description = new JLabel("");
+        this.description.setVisible(true);
         this.setOpaque(true);
     }
     public OptionPanel(Option option)
@@ -104,5 +106,8 @@ public final class OptionPanel extends JPanel implements Cloneable
             default:
                 break;
         }
+    }
+    public Option getOption() {
+        return option;
     }
 }
