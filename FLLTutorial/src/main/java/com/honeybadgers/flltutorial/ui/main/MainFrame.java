@@ -30,7 +30,7 @@ public class MainFrame extends JFrame
         navigationPanel = new NavigationPanel();
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
-        /* init split pane*/
+        /* init split pane */
         splitPane.setLeftComponent(this.navigationPanel);
         splitPane.setRightComponent(this.contentPane);
         

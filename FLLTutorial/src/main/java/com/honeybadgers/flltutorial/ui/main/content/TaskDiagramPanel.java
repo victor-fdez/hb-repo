@@ -13,6 +13,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -48,9 +49,19 @@ public class TaskDiagramPanel extends StagePanel{
         {
             ArrayList<Option> optionsChild = new ArrayList<Option>();
             options.add(new Option(subtaskArray[i], true, optionsChild));
-            for(int j = 0; j < 3; j++)
+            if(i > 0)
             {
-                optionsChild.add(new Option("sub "+subtaskArray[i], ((i%2 == 0) ? true : false), null));
+                for(int j = 0; j < 3; j++)
+                {
+                    optionsChild.add(new Option("sub "+subtaskArray[i], ((i%2 == 0) ? true : false), null));
+                }
+            }
+            else
+            {
+                for(int j = 0; j < 20; j++)
+                {
+                    optionsChild.add(new Option("sub "+subtaskArray[i], ((i%2 == 0) ? true : false), null));
+                }
             }
         }
         this.problemOption = new Option("problem description option - tops", true, options);
@@ -133,10 +144,6 @@ public class TaskDiagramPanel extends StagePanel{
         if(childPanelResult != null)
         {
             OptionPanel childPanel = childPanelResult.optionPanel;
-            /*check that option is actually child of parent option*/
-            //NOTE this:OptionPanel parentOptionPanel = (OptionPanel)(this.depthPanels[this.currentDepth - 1].getComponents())[0];
-            /*ASSERT: parentOptionPanel can't be null*/
-            
             /*perform transfer into option panel*/
             childPanel.transferOption(optionPanel.getOption());
             childPanel.setState(OptionPanel.OptionState.NORMAL);
@@ -159,23 +166,43 @@ public class TaskDiagramPanel extends StagePanel{
             /*if option panel is at currentDepth == depth of this panel
               then this panel should grow to the width of stage panel, and
               show children*/
-            OptionsSelectorPanel optionsSelectorPanel = (OptionsSelectorPanel)this.optionsPanel;
-            if(optionPanelDepth == this.currentDepth)
+            if(optionPanel.getOption() != null)
             {
-                
-                //optionsSelectorPanel.changeOptionPanels()
-                System.out.println("clicked at current depth");
-            }
-            /*else if option panel is at currentDepth > depth of this panel
-              then all children depth panels should be removed, and only the
-              children of this panel should be expanded*/
-            else if (optionPanelDepth < this.currentDepth)
-            {
-                System.out.println("clicked at lower depth");
-            }
-            else
-            {
-                System.err.println("this should not happen");
+                List<Option> optionsList = optionPanel.getOption().getOptions();
+                OptionsSelectorPanel optionsSelectorPanel = (OptionsSelectorPanel)this.optionsPanel;
+                if(optionPanelDepth == this.currentDepth)
+                {
+                    this.clearRowOfOptionPanels(this.currentDepth);
+                    this.addOptionPanel(this.currentDepth, optionPanel);
+                    if(optionsList != null)
+                    {
+                        this.currentDepth++;
+                        this.createRowOfEmptyOptionPanels(this.currentDepth, optionsList.size());
+                        optionsSelectorPanel.changeOptionPanels(optionsList);   
+                    }
+                    System.out.println("clicked at current depth");
+                }
+                /*else if option panel is at currentDepth > depth of this panel
+                  then all children depth panels should be removed, and only the
+                  children of this panel should be expanded*/
+                else if (optionPanelDepth < this.currentDepth)
+                {
+                    for(int i = this.currentDepth; i > optionPanelDepth; i--)
+                    {
+                        this.clearRowOfOptionPanels(i);
+                    }
+                    this.currentDepth = optionPanelDepth + 1;
+                    if(optionsList != null)
+                    {
+                        this.createRowOfEmptyOptionPanels(this.currentDepth, optionsList.size());
+                        optionsSelectorPanel.changeOptionPanels(optionsList);   
+                        System.out.println("clicked at lower depth");
+                    }
+                }
+                else
+                {
+                    System.err.println("this should not happen");
+                }
             }
         }
     }
@@ -225,13 +252,40 @@ public class TaskDiagramPanel extends StagePanel{
             OptionPanel childPanel = (OptionPanel)panel;
             if(childPanel != null)
             {
+
                 ChildPanelResult childResult = new ChildPanelResult();
                 childResult.index = index;
                 childResult.optionPanel = childPanel;
+                childResult.optionsPanel = childrenPanel;
                 return childResult;
             }
         }
         return null;
+    }
+    private void clearRowOfOptionPanels(int depthRow)
+    {
+        JPanel depthPanel = this.depthPanels[depthRow];
+        depthPanel.removeAll();
+        depthPanel.revalidate();
+    }
+    private void createRowOfEmptyOptionPanels(int depthRow, int numberOptionPanels)
+    {
+        /*assumes there are not panels at row*/
+        JPanel depthPanel = this.depthPanels[depthRow];
+        for(int i = 0; i < numberOptionPanels; i++)
+        {
+            OptionPanel optionPanel = new OptionPanel();
+            optionPanel.setState(OptionPanel.OptionState.UNOCCUPIED);
+            depthPanel.add(optionPanel);
+        }
+        depthPanel.revalidate();
+    }
+    
+    private void addOptionPanel(int depthRow, OptionPanel optionPanel)
+    {
+        JPanel depthPanel = this.depthPanels[depthRow];
+        depthPanel.add(optionPanel);
+        depthPanel.revalidate();
     }
     private class ChildPanelResult
     {

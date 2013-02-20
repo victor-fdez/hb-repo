@@ -63,7 +63,6 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.selections.setLocation(0, 0);
         this.selections.setPreferredSize(this.selections.getParent().getSize());
         super.paint(g);
-
     }
     void changeOptionPanels(List<Option> options)
     {
