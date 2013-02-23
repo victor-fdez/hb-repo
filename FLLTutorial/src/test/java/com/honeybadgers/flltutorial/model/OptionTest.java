@@ -78,7 +78,7 @@ public class OptionTest extends TestCase {
         Option child3rd2nd3rd = child3rd2nd.getChildAtIndex(2);
         assertEquals(" 2 1 2", child3rd2nd3rd.getId());
         assertEquals(" 2 1", child3rd2nd.getId());
-        assertEquals(" 0 2", option.getChildWithId(" 0 2"));
+        assertEquals(" 0 2", option.getChildWithId(" 0 2").getId());
     }
 
     public void testGetChildWithId()

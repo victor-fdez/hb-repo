@@ -17,6 +17,7 @@ public class Option {
     private List<Option> options;
     private String id;
     private Option parent;
+    //private int numberCorrect, numberIncorrect;
     public Option(String description, boolean correct, List<Option> options, Option parent, String id)
     {
         super();
@@ -109,6 +110,11 @@ public class Option {
             return null;
         }
         String childSubstringId = id.substring(this.id.length());
+        /*this object has that id*/
+        if(childSubstringId.equals(""))
+        {
+            return this;
+        }
         ArrayList<Integer> childIdentifier = Option.getIntegerIdentifier(childSubstringId);
         /*go through the string id and find the given option*/
         Option childOption = this;
