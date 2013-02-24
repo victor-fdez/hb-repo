@@ -15,8 +15,9 @@ public class Option {
     private String description;
     private boolean correct;
     private List<Option> options;
-    private String id;
+    private String id; /*string identifier with the following regex "(\ ([0-9]+))*" */
     private Option parent;
+    private int numberCorrect;
     //private int numberCorrect, numberIncorrect;
     public Option(String description, boolean correct, List<Option> options, Option parent, String id)
     {
@@ -36,7 +37,7 @@ public class Option {
     {
         this(description, correct, options, null, "");
     }
-
+    
     public String getDescription() {
         return description;
     }
@@ -146,8 +147,8 @@ public class Option {
     }
     public boolean equals(Option anotherOption)
     {
-        /*TODO: this needs to be amplified*/
-        if(super.equals(anotherOption))
+        /*if their id's match up, then their the same object*/
+        if(this.id.equals(anotherOption.getId()))
         {
             return true;
         }
