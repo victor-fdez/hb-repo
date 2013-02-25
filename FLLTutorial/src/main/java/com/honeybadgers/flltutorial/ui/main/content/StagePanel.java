@@ -85,7 +85,14 @@ abstract public class StagePanel extends JPanel
             }
             else
             {
-                optionPanel.setState(OptionPanel.OptionState.INCORRECT);
+                if(optionTracker.isChoosed(childOption))
+                {
+                    optionPanel.setState(OptionPanel.OptionState.INCORRECT);
+                }
+                else
+                {
+                    optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                }
             }
             optionPanels.add(optionPanel);
         }

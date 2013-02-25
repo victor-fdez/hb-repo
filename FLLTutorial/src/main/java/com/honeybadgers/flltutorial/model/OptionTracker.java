@@ -37,23 +37,31 @@ public class OptionTracker {
             int numberCorrect = 0;
             int numberIncorrect = 0;
             ArrayList<Option> options = (ArrayList<Option>)option.getOptions();
-            if(options.isEmpty())
+            if(options == null || options.isEmpty())
             {
                 this.finished = true;
-                return;
+                //might have to tell parent
             }
             else
             {
                 this.finished = false;
             }
             /*count the number of correct options*/
-            for(Option optionCorrect : options)
+            if(options != null)
             {
-                if(optionCorrect.isCorrect()) {
-                    numberCorrect++;
+                for(Option optionCorrect : options)
+                {
+                    if(optionCorrect.isCorrect()) {
+                        numberCorrect++;
+                    }
                 }
+                numberIncorrect = options.size() - numberCorrect;
             }
-            numberIncorrect = options.size() - numberCorrect;
+            else
+            {
+                numberIncorrect = 0;
+                numberCorrect = 0;
+            }
             //create the appropriate data structures
             this.correctHashes = new HashMap(numberCorrect*2);
             this.incorrectHashes = new HashMap(numberIncorrect*2);
@@ -82,7 +90,7 @@ public class OptionTracker {
                 return false;
             }
             /*check whether this options has no options*/
-            if(option.getOptions().isEmpty())
+            if(option.getOptions() == null || option.getOptions().isEmpty())
             {
                 this.finishedAnotherCorrectOption();
             }
@@ -135,6 +143,14 @@ public class OptionTracker {
             i++;
         }
         return options;
+    }
+    public boolean isEmptyCorrectChildren()
+    {
+        if(this.correctOptions.length == 0)
+        {
+            return true;
+        }
+        return false;
     }
     /**
      * Finds whether the parameter option has been chosen already. Returns true if the
