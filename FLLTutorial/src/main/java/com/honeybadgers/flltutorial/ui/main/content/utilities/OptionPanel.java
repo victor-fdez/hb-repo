@@ -6,7 +6,6 @@ package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
 import java.awt.Color;
-import java.awt.Paint;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

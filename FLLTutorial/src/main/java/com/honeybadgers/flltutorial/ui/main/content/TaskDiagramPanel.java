@@ -247,6 +247,7 @@ public class TaskDiagramPanel extends StagePanel{
                     }
                     optionsList = this.currentTrackerPointer.getAllCorrectChildren();
                     this.currentDepth = depthIndex + 1;
+                    //System.out.println("depth pane -> "+this.depthPanels[this.currentDepth]+" children ->"+this.depthPanels[this.currentDepth].getComponents().length);
                     if(optionsList != null)
                     {
                         //add panels according to the input options
@@ -256,6 +257,7 @@ public class TaskDiagramPanel extends StagePanel{
                         optionsSelectorPanel.changeOptionPanels(optionPanels);   
                         System.out.println("clicked at lower depth "+this.currentDepth);
                     }
+                    this.revalidate();
                 }
                 else
                 {
@@ -367,6 +369,7 @@ public class TaskDiagramPanel extends StagePanel{
             h++;
         }
         depthPanel.revalidate();
+        depthPanel.repaint();
     }
     
     private void addSingleOptionPanel(int depthRow, OptionPanel optionPanel)
