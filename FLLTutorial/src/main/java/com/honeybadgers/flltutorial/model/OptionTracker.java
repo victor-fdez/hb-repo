@@ -106,6 +106,24 @@ public class OptionTracker {
         return false;
     }
     /**
+     * 
+     * @return          an array of options currently correctly chosen
+     */
+    public Option[] getCorrectChildren(){
+        int i = 0;
+        Option[] options = new Option[this.correctOptions.length];
+        for(OptionTracker optionTracker : this.correctOptions)
+        {
+            if(optionTracker != null)
+            {
+               //option may or may not be null
+               options[i] = optionTracker.getOption();
+            }
+            i++;
+        }
+        return options;
+    }
+    /**
      * Finds whether the parameter option has been chosen already. Returns true if the
      * option is chosen, else it returns false.
      * 
@@ -133,7 +151,6 @@ public class OptionTracker {
     /**
      * Called by either a child when it is finished, or when it adds another options
      * and that options does not have any child options.
-     * 
      */
     protected void finishedAnotherCorrectOption()
     {
@@ -157,6 +174,10 @@ public class OptionTracker {
     public boolean isFinished()
     {
         return this.finished;
+    }
+
+    public Option getOption() {
+        return option;
     }
 
     public OptionTracker getParent() {

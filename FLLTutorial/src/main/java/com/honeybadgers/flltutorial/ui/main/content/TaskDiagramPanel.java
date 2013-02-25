@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.model.Option;
+import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -26,12 +27,13 @@ import javax.swing.JPanel;
 public class TaskDiagramPanel extends StagePanel{
     private String subtaskArray[] = {"subtask 1", "subtask 2", "subtask 3"};
     /*tutorial options*/
-    private Option problemOption;
+    private Option tutorialOption;
     /*selected options, there are the options the student chooses*/
-    private Option selectedOption;
+    private OptionTracker projectTracker;
     /*pointers into respective trees*/
-    private Option[] currentOption = new Option[2];
+    private OptionTracker currentTrackerPointer;
     /*array of panels to hold current options shown*/
+    
     private JPanel[] depthPanels = new JPanel[11];
     /*the current depth of the leaves shown*/
     private int currentDepth;
@@ -64,8 +66,8 @@ public class TaskDiagramPanel extends StagePanel{
                 }
             }
         }
-        this.problemOption = new Option("problem description option - tops", true, options);
-        this.selectedOption = new Option(this.problemOption.getDescription(), true, new ArrayList<Option>(options.size()));
+        this.tutorialOption = new Option("problem description option - tops", true, options);
+        //this = new Option(this.tutorialOption.getDescription(), true, new ArrayList<Option>(options.size()));
         /*load initial set of options*/
         this.initComponents();
         this.optionsPanel = new OptionsSelectorPanel(options);
@@ -118,11 +120,11 @@ public class TaskDiagramPanel extends StagePanel{
         /*if first time initialization*/
         //setup problem description option
         JPanel setupPanel = this.depthPanels[0];
-        OptionPanel setupOption = new OptionPanel(this.problemOption);
+        OptionPanel setupOption = new OptionPanel(this.tutorialOption);
         setupPanel.add(setupOption);
         //setup unoccupied option panels
         setupPanel = this.depthPanels[1];
-        for(int i = 0; i < this.problemOption.getOptions().size(); i++)
+        for(int i = 0; i < this.tutorialOption.getOptions().size(); i++)
         {
             OptionPanel optionPanel = new OptionPanel();
             optionPanel.setState(OptionPanel.OptionState.UNOCCUPIED);
@@ -163,13 +165,14 @@ public class TaskDiagramPanel extends StagePanel{
             OptionPanel optionPanel = childPanelResult.optionPanel;
             JPanel optionsPanels = childPanelResult.optionsPanel;
             int optionPanelDepth = childPanelResult.index;
-            /*if option panel is at currentDepth == depth of this panel
-              then this panel should grow to the width of stage panel, and
-              show children*/
+            
             if(optionPanel.getOption() != null)
             {
                 List<Option> optionsList = optionPanel.getOption().getOptions();
                 OptionsSelectorPanel optionsSelectorPanel = (OptionsSelectorPanel)this.optionsPanel;
+                /*if option panel is at currentDepth == depth of this panel
+                 then this panel should grow to the width of stage panel, and
+                 show children*/
                 if(optionPanelDepth == this.currentDepth)
                 {
                     this.clearRowOfOptionPanels(this.currentDepth);
