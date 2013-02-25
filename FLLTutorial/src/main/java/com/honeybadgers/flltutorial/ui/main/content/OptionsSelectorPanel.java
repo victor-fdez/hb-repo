@@ -4,7 +4,6 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
-import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,9 +23,9 @@ import javax.swing.JScrollPane;
  */
 public class OptionsSelectorPanel extends OptionsPanel implements ComponentListener{
 
-    OptionsSelectorPanel(List<Option> options)
+    OptionsSelectorPanel(List<OptionPanel> optionsPanels)
     {
-        super(options);
+        super(optionsPanels);
         this.initComponents();
     }
     private void initComponents()
@@ -41,7 +40,7 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.selections.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         //this.selections.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.selections.getVerticalScrollBar().setVisible(true);
-        //TESTING: add options
+        
         this.changeOptionPanels(this.options);
         
         this.selections.setBorder(null);
@@ -51,11 +50,8 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.setOpaque(true);
         this.addComponentListener(this);
         this.selections.setLocation(0, 0);
-        Dimension preferredContainer = this.getPreferredSize();
-        //this.selectionsViewPort.setSize(new Dimension(32000, 300));
-        //this.selections.setPreferredSize(preferredContainer);
+        
         this.selectionsViewPort.revalidate();
-        //this.selectionsViewPort.setMinimumSize(preferredContainer);
     }
     @Override
     public void paint(Graphics g) {
@@ -64,12 +60,12 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.selections.setPreferredSize(this.selections.getParent().getSize());
         super.paint(g);
     }
-    void changeOptionPanels(List<Option> options)
+    void changeOptionPanels(List<OptionPanel> options)
     {
         this.selectionsViewPort.removeAll();
         int i = 0;
         /*swap in this list of options*/
-        for(Option option : options)
+        for(OptionPanel optionPanel : options)
         {
             GridBagConstraints c = new GridBagConstraints();
             c.weightx = 1.0;
@@ -79,7 +75,7 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
             c.gridy = i;
             c.insets = new Insets(2,2,2,2);
             c.anchor = GridBagConstraints.PAGE_START;
-            this.selectionsViewPort.add(new OptionPanel(option), c);
+            this.selectionsViewPort.add(optionPanel, c);
             i++;
         }
         GridBagConstraints lastC = new GridBagConstraints();

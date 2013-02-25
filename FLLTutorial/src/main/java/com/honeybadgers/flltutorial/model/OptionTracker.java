@@ -28,7 +28,7 @@ public class OptionTracker {
      * 
      * @param option 
      */
-    OptionTracker(Option option)
+    public OptionTracker(Option option)
     {
         this.option = option;
         /*only add options if is correct, incorrect options don't have children*/
@@ -102,15 +102,28 @@ public class OptionTracker {
             this.incorrectOptions[this.incorrectSize] = new OptionTracker(option);
             //not needed but just in case
             this.incorrectOptions[this.incorrectSize++].setParent(this);
+            return true;
         }
-        return false;
+    }
+    /**
+     * 
+     * @param index
+     * @return          the correct option tracker at that index
+     */
+    public OptionTracker getCorrectChild(int index)
+    {
+        return this.correctOptions[index];
     }
     /**
      * 
      * @return          an array of options currently correctly chosen
      */
-    public Option[] getCorrectChildren(){
+    public Option[] getAllCorrectChildren(){
         int i = 0;
+        if(this.correctOptions.length == 0)
+        {
+            return null;
+        }
         Option[] options = new Option[this.correctOptions.length];
         for(OptionTracker optionTracker : this.correctOptions)
         {

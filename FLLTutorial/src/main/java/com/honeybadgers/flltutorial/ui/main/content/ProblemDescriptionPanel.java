@@ -23,7 +23,7 @@ public class ProblemDescriptionPanel extends StagePanel
         //TODO: get actual options
         this.setBackground(Color.GRAY);
         ArrayList<Option> options = new ArrayList<Option>();
-        this.optionsPanel = new OptionsSelectorPanel(options);
+        this.optionsPanel = new OptionsSelectorPanel(null);
     }
     @Override
     OptionsPanel getOptionsPanel() {
@@ -31,8 +31,8 @@ public class ProblemDescriptionPanel extends StagePanel
     }
 
     @Override
-    boolean dropOptionPanel(OptionPanel optionPanel) {
-        return false;
+    int dropOptionPanel(OptionPanel optionPanel) {
+        return 0;
     }
 
     @Override

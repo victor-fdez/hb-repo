@@ -26,9 +26,9 @@ abstract public class OptionsPanel extends JPanel{
     JScrollPane selections;
     JPanel clickedPanel;
     JPanel selectionsViewPort;
-    List<Option> options;
+    List<OptionPanel> options;
     ArrayList<OptionPanel> optionPanels;
-    OptionsPanel(List<Option> options)
+    OptionsPanel(List<OptionPanel> options)
     {
         super();
         this.setPreferredSize(preferedDimension);
