@@ -5,7 +5,9 @@
 package com.honeybadgers.flltutorial.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class mainly tracks the progress of a given project, that references a tutorial.
@@ -89,9 +91,11 @@ public class OptionTracker {
                 /*this means the option is already stored*/
                 return false;
             }
+            System.out.println("added new option");
             /*check whether this options has no options*/
             if(option.getOptions() == null || option.getOptions().isEmpty())
             {
+                System.out.println("finished child option tracker");
                 this.finishedAnotherCorrectOption();
             }
             /*track the position of this option*/
@@ -145,6 +149,16 @@ public class OptionTracker {
             i++;
         }
         return options;
+    }
+    public List<OptionTracker> getAllCorrectTrackers()
+    {
+        List<OptionTracker> optionTrackers = new ArrayList<OptionTracker>();
+        if(this.correctOptions.length == 0)
+        {
+            return optionTrackers;
+        }
+        optionTrackers = Arrays.asList(this.correctOptions);
+        return optionTrackers;
     }
     public boolean isEmptyCorrectChildren()
     {
