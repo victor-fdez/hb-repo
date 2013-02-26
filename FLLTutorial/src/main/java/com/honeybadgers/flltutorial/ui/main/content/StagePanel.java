@@ -10,7 +10,6 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.JPanel;
 
@@ -20,6 +19,8 @@ import javax.swing.JPanel;
  */
 abstract public class StagePanel extends JPanel
 {
+    /*tutorial options*/
+    protected Option tutorialOption;
     protected String stageName;
     private Dimension preferedDimension = new Dimension(600, 500);
     private Dimension minDimension = new Dimension(600, 400);
@@ -72,43 +73,81 @@ abstract public class StagePanel extends JPanel
     protected List<OptionPanel> generateOptionPanels(OptionTracker optionTracker, int type)
     {
         ArrayList<OptionPanel> optionPanels = new ArrayList<OptionPanel>();
-        ArrayList<Option> options = ((type == 1) ? (ArrayList<Option>)(optionTracker.getOption().getOptions()) : (new ArrayList<Option>(Arrays.asList(optionTracker.getAllCorrectChildren()))));
-        for(Option childOption : options)
+        if(type == 0)
         {
-            OptionPanel optionPanel;
-            if(childOption != null)
+            List<OptionTracker> optionTrackers  = optionTracker.getAllCorrectTrackers();
+            for(OptionTracker optionTrackerChild : optionTrackers)
             {
-                optionPanel = new OptionPanel(childOption);
-                if(childOption.isCorrect())
+                OptionPanel optionPanel;
+                if(optionTrackerChild != null)
                 {
-                    if(optionTracker.isChoosed(childOption))
+                    Option option = optionTrackerChild.getOption();
+                    optionPanel = new OptionPanel(option);
+                    if(optionTrackerChild.isFinished())
                     {
-                        optionPanel.setState(OptionPanel.OptionState.CORRECT);
+                        optionPanel.setState(OptionPanel.OptionState.FINISHED);
                     }
                     else
                     {
-                        optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                        if(optionTracker.isChoosed(option))
+                        {
+                            optionPanel.setState(OptionPanel.OptionState.CORRECT);
+                        }
+                        else
+                        {
+                            optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                        }
                     }
                 }
                 else
                 {
-                    if(optionTracker.isChoosed(childOption))
+                    optionPanel = new OptionPanel();
+                    optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                }
+                optionPanels.add(optionPanel);
+            }
+        }
+        else
+        {
+            ArrayList<Option> options = (ArrayList<Option>)(optionTracker.getOption().getOptions());
+            for(Option childOption : options)
+            {
+                OptionPanel optionPanel;
+                if(childOption != null)
+                {
+                    optionPanel = new OptionPanel(childOption);
+                    if(childOption.isCorrect())
                     {
-                        optionPanel.setState(OptionPanel.OptionState.INCORRECT);
+                        if(optionTracker.isChoosed(childOption))
+                        {
+                            optionPanel.setState(OptionPanel.OptionState.CORRECT);
+                        }
+                        else
+                        {
+                            optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                        }
                     }
                     else
                     {
-                        optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                        if(optionTracker.isChoosed(childOption))
+                        {
+                            optionPanel.setState(OptionPanel.OptionState.INCORRECT);
+                        }
+                        else
+                        {
+                            optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                        }
                     }
                 }
+                else
+                {
+                    optionPanel = new OptionPanel();
+                    optionPanel.setState(OptionPanel.OptionState.NORMAL);
+                }
+                optionPanels.add(optionPanel);
             }
-            else
-            {
-                optionPanel = new OptionPanel();
-                optionPanel.setState(OptionPanel.OptionState.NORMAL);
-            }
-            optionPanels.add(optionPanel);
         }
         return optionPanels;
+
     }
 }

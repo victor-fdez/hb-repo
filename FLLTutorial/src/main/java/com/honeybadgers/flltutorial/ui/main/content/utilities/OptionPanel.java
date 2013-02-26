@@ -18,7 +18,7 @@ public final class OptionPanel extends JPanel implements Cloneable
 {
     public static enum OptionState
     {
-        NORMAL, HIDDEN_OCCUPY, DRAGGED, DROPPED, UNOCCUPIED, CORRECT, INCORRECT
+        NORMAL, HIDDEN_OCCUPY, DRAGGED, DROPPED, UNOCCUPIED, CORRECT, INCORRECT, FINISHED
     }
     OptionState state;
     private Option option;
@@ -122,9 +122,23 @@ public final class OptionPanel extends JPanel implements Cloneable
                 this.setBackground(Color.RED);
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 break;
+           case FINISHED:
+                if(this.description != null && this.description.getParent() != this)
+                {
+                    this.description.setVisible(true);
+                    this.add(this.description);
+                }
+                this.setOpaque(true);
+                this.setBackground(Color.GREEN.darker());
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
             default:
                 break;
         }
+    }
+    public OptionState getState()
+    {
+        return this.state;
     }
     public Option getOption() {
         return option;

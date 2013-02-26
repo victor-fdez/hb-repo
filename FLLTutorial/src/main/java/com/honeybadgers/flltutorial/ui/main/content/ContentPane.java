@@ -154,6 +154,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             {
                 this.draggingOptionPanel = this.selectedOptionPanel.copy();
                 this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
+                this.draggingOptionPanel.setState(this.selectedOptionPanel.getState());
                 //System.out.println("selected panel "+this.selectedOptionPanel+" children "+this.selectedOptionPanel.getComponents());
                 //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
                 /*add dragging option panel to glass pane*/
@@ -183,12 +184,33 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             Component component = this.contentPanel.getComponentAt(e.getPoint());
             //Rectangle rect = this.draggingOptionPanel.getVisibleRect();
             this.glassPanel.remove(this.draggingOptionPanel);
-            this.selectedOptionPanel.setState(OptionPanel.OptionState.NORMAL);
             this.glassPanel.repaint();
             if(component == this.stagePanel)
             {/*don't do anything, althought this will send points to stage panel*/
-                System.out.println("dropping on stage panel");
-                this.stagePanel.dropOptionPanel(this.draggingOptionPanel);
+                int status = this.stagePanel.dropOptionPanel(this.draggingOptionPanel);
+                System.out.println("dropping on stage panel "+status);
+
+                switch(status)
+                {
+                    case 0:
+                        this.selectedOptionPanel.setState(OptionPanel.OptionState.CORRECT);
+                        break;
+                    case 1:
+                        this.selectedOptionPanel.setState(OptionPanel.OptionState.INCORRECT);
+                        break;
+                    case 2:
+                        this.selectedOptionPanel.setState(this.draggingOptionPanel.getState());
+                        break;
+                    case 3:
+                        this.selectedOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+                    default:
+                        System.err.println("Content Pane - this should not happen");
+                        break;
+                }
+            }
+            else
+            {
+                this.selectedOptionPanel.setState(this.draggingOptionPanel.getState());
             }
             this.draggingOptionPanel = null;
             this.selectedOptionPanel = null;
@@ -216,7 +238,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //if
         if(component == this.stagePanel)
-        {/*don't do anything, althought this will send points to task diagram */}
+        {/*don't do anything, althought this will send points to task diagram */
+        }
         else if(component == this.optionsPanel)
         {
             

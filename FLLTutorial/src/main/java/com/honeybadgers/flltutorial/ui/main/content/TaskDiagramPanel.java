@@ -26,8 +26,7 @@ import javax.swing.JPanel;
  * @author chingaman
  */
 public class TaskDiagramPanel extends StagePanel{
-    /*tutorial options*/
-    private Option tutorialOption;
+
     /*selected options, there are the options the student chooses*/
     private OptionTracker projectTracker;
     /*pointers into respective trees*/
@@ -96,18 +95,14 @@ public class TaskDiagramPanel extends StagePanel{
     }
     private void initComponents()
     {
-        /*create components*/
+        //create components
         JLabel titleLabel = new JLabel(this.stageName);
         titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         titleLabel.setBackground(Color.GREEN);
         titleLabel.setOpaque(true);
-        /*create necessary options panels*/
-        
-        
-        /*setup vertical gridlayout*/
+        //setup vertical gridlayout
         GridBagLayout gridBagLayout = new GridBagLayout();
         this.setLayout(gridBagLayout);
-        
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
@@ -170,16 +165,24 @@ public class TaskDiagramPanel extends StagePanel{
             Option dropOption = optionPanel.getOption();
             //check whether it was dropped correctly
             OptionTracker optionTracker = this.currentTrackerPointer;
-            boolean isCorrect = optionTracker.addOptionAt(optionIndex, dropOption);
-            if(isCorrect)
+            boolean added = optionTracker.addOptionAt(optionIndex, dropOption);
+            if(added)
             {
                 if(dropOption.isCorrect())
                 {
-                    //green color, for correct, in options selector panel
+                    OptionTracker childOptionTracker = optionTracker.getCorrectChild(optionIndex);
                     childPanel.transferOption(dropOption);
-                    childPanel.setState(OptionPanel.OptionState.CORRECT);
-                    childPanel.revalidate();
-                    childPanel.repaint();
+                    if(childOptionTracker.isFinished())
+                    {
+                        //update the child and all parents color
+                        childPanel.setState(OptionPanel.OptionState.FINISHED);
+                        this.updateParentsColors(childOptionTracker);
+                    }
+                    else
+                    {
+                        //green color, for correct, in options selector panel
+                        childPanel.setState(OptionPanel.OptionState.CORRECT);
+                    }
                     return 0;
                 }
                 else
@@ -193,7 +196,7 @@ public class TaskDiagramPanel extends StagePanel{
                 //dropOption has already been drop so no
             }
         }
-        return 0;
+        return 2;
     }
     /**
      * 
@@ -238,7 +241,6 @@ public class TaskDiagramPanel extends StagePanel{
                             //change panels in options selector
                             List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
                             optionsSelectorPanel.changeOptionPanels(optionPanels);   
-                            System.out.println("clicked at current depth "+this.currentDepth);
                         }
                         else
                         {
@@ -272,7 +274,6 @@ public class TaskDiagramPanel extends StagePanel{
                         //change panels in options selector
                         List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
                         optionsSelectorPanel.changeOptionPanels(optionPanels);   
-                        System.out.println("clicked at lower depth "+this.currentDepth);
                     }
                     else
                     {
@@ -281,7 +282,7 @@ public class TaskDiagramPanel extends StagePanel{
                 }
                 else
                 {
-                    System.err.println("this should not happen");
+                    System.err.println("Task Diagram - this should not happen");
                 }
             }
         }
@@ -342,6 +343,25 @@ public class TaskDiagramPanel extends StagePanel{
         }
         return null;
     }
+    private void updateParentsColors(OptionTracker optionTracker)
+    {
+        int index = this.currentDepth - 1;
+        optionTracker = optionTracker.getParent();
+        for(; index >= 0; index--)
+        {
+            OptionPanel optionPanel = (OptionPanel)this.depthPanels[index].getComponent(0);
+            if(optionTracker.isFinished())
+            {
+                optionPanel.setState(OptionPanel.OptionState.FINISHED);
+            }
+            else
+            {
+                //don't do anything more
+                break;
+            }
+            optionTracker = optionTracker.getParent();
+        }
+    }
     private void clearRowOfOptionPanels(int depthRow)
     {
         JPanel depthPanel = this.depthPanels[depthRow];
@@ -367,7 +387,6 @@ public class TaskDiagramPanel extends StagePanel{
         depthPanel.revalidate();
         depthPanel.repaint();
     }
-    
     private void addSingleOptionPanel(int depthRow, OptionPanel optionPanel)
     {
         HashMap depthPanelHash = this.depthPanelsHashes[depthRow];
