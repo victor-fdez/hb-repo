@@ -26,7 +26,6 @@ import javax.swing.JPanel;
  * @author chingaman
  */
 public class TaskDiagramPanel extends StagePanel{
-    private String subtaskArray[] = {"subtask 1", "subtask 2", "subtask 3"};
     /*tutorial options*/
     private Option tutorialOption;
     /*selected options, there are the options the student chooses*/
@@ -48,8 +47,11 @@ public class TaskDiagramPanel extends StagePanel{
         
         /*creating some fake options for testing purposes*/
         ArrayList<Option> options = this.tutorialGenerator(3, "");
-        this.tutorialOption = new Option("problem description option - tops", true, options);
-        
+        this.tutorialOption = new Option("problem description option - tops", true);
+        for(Option option : options)
+        {
+            this.tutorialOption.addChild(option);
+        }
         this.currentTrackerPointer = new OptionTracker(this.tutorialOption);
         for(int i = 0; i < this.depthPanelsHashes.length; i++)
         {
@@ -57,7 +59,7 @@ public class TaskDiagramPanel extends StagePanel{
             this.depthPanelsHashes[i].clear();
         }
         this.initComponents();
-        List<OptionPanel> optionPanels = this.generateOptionPanels(tutorialOption, this.currentTrackerPointer);
+        List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
     }
     /**
@@ -67,7 +69,7 @@ public class TaskDiagramPanel extends StagePanel{
     {
         if(depth == 0)
         {
-            return null;
+            return new ArrayList<Option>();
         }
         else
         {
@@ -76,13 +78,17 @@ public class TaskDiagramPanel extends StagePanel{
             for(int i = 0; i < 3; i++)
             {
                ArrayList<Option> subOptions = tutorialGenerator(depth-1, "");
-               option = new Option("t option "+i, true, subOptions);
+               option = new Option("t option "+i, true);
+               for(Option subOption : subOptions)
+               {
+                   option.addChild(subOption);
+               }
                options.add(option);
                
             }
             for(int i = 0; i < 3; i++)
             {
-                option = new Option("f option "+i, false, null);
+                option = new Option("f option "+i, false);
                 options.add(option);
             }
             return options;
@@ -133,17 +139,23 @@ public class TaskDiagramPanel extends StagePanel{
         //setup problem description option
         JPanel setupPanel = this.depthPanels[0];
         OptionPanel setupOption = new OptionPanel(this.tutorialOption);
+        setupOption.setState(OptionPanel.OptionState.CORRECT);
         setupPanel.add(setupOption);
         this.depthPanelsHashes[0].put(setupOption, 0);
         //setup unoccupied option panels
-        this.addOptionPanels(this.currentDepth, this.currentTrackerPointer.getAllCorrectChildren());
+        this.addOptionPanels(this.currentDepth, this.currentTrackerPointer);
         //this.createRowOfEmptyOptionPanels(1, this.tutorialOption.getOptions().size());
     }
     @Override
     OptionsPanel getOptionsPanel() {
         return this.optionsPanel;
     }
-
+    /**
+     * drop option panel at a specified location by the x, and y location of the bounds.
+     * 
+     * @param optionPanel
+     * @return 
+     */
     @Override
     int dropOptionPanel(OptionPanel optionPanel) {
         //check if the give option panel can be dropped as one of the children
@@ -165,8 +177,7 @@ public class TaskDiagramPanel extends StagePanel{
                 {
                     //green color, for correct, in options selector panel
                     childPanel.transferOption(dropOption);
-                    childPanel.setState(OptionPanel.OptionState.NORMAL);
-                    //System.out.println(""+childPanel+" children: "+childPanel.getComponents());
+                    childPanel.setState(OptionPanel.OptionState.CORRECT);
                     childPanel.revalidate();
                     childPanel.repaint();
                     return 0;
@@ -184,6 +195,11 @@ public class TaskDiagramPanel extends StagePanel{
         }
         return 0;
     }
+    /**
+     * 
+     * 
+     * @param point         the point that was clicked in the task diagram panel
+     */
     @Override
     void clicked(Point point) {
         //get the panel clicked
@@ -191,7 +207,7 @@ public class TaskDiagramPanel extends StagePanel{
         if(childPanelResult != null)
         {
             OptionPanel optionPanel = childPanelResult.optionPanel;
-            JPanel optionsPanels = childPanelResult.optionsPanel;
+            //JPanel optionsPanels = childPanelResult.optionsPanel;
             int optionIndex = childPanelResult.optionIndex;
             int depthIndex = childPanelResult.depthIndex;
             
@@ -215,16 +231,19 @@ public class TaskDiagramPanel extends StagePanel{
                         //set up the current tracker
                         this.currentDepth++;
                         this.currentTrackerPointer = this.currentTrackerPointer.getCorrectChild(optionIndex);
-                        optionsList = this.currentTrackerPointer.getAllCorrectChildren();
-                        if(optionsList != null)
+                        //add panels according to the input options
+                        if(!this.currentTrackerPointer.isEmptyCorrectChildren())
                         {
-                            //add panels according to the input options
-                            this.addOptionPanels(this.currentDepth, optionsList);
+                            this.addOptionPanels(this.currentDepth, this.currentTrackerPointer);
                             //change panels in options selector
-                            List<OptionPanel> optionPanels = this.generateOptionPanels(clickedOption, this.currentTrackerPointer);
+                            List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
                             optionsSelectorPanel.changeOptionPanels(optionPanels);   
+                            System.out.println("clicked at current depth "+this.currentDepth);
                         }
-                        System.out.println("clicked at current depth "+this.currentDepth);
+                        else
+                        {
+                            optionsSelectorPanel.changeOptionPanels(null);
+                        }
                     }
                     else
                     {
@@ -236,28 +255,29 @@ public class TaskDiagramPanel extends StagePanel{
                 //children of this panel should be expanded
                 else if (depthIndex < this.currentDepth)
                 {
+                    //clear all rows below the choosen depth
                     for(int i = this.currentDepth; i > depthIndex; i--)
                     {
-                        System.out.println("cleared depth "+i);
                         this.clearRowOfOptionPanels(i);
                         if(i - 1 != depthIndex)
                         {
                             this.currentTrackerPointer = this.currentTrackerPointer.getParent();
                         }
                     }
-                    optionsList = this.currentTrackerPointer.getAllCorrectChildren();
                     this.currentDepth = depthIndex + 1;
-                    //System.out.println("depth pane -> "+this.depthPanels[this.currentDepth]+" children ->"+this.depthPanels[this.currentDepth].getComponents().length);
-                    if(optionsList != null)
+                    if(!this.currentTrackerPointer.isEmptyCorrectChildren())
                     {
                         //add panels according to the input options
-                        this.addOptionPanels(this.currentDepth, optionsList);
+                        this.addOptionPanels(this.currentDepth, this.currentTrackerPointer);
                         //change panels in options selector
-                        List<OptionPanel> optionPanels = this.generateOptionPanels(clickedOption, this.currentTrackerPointer);
+                        List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
                         optionsSelectorPanel.changeOptionPanels(optionPanels);   
                         System.out.println("clicked at lower depth "+this.currentDepth);
                     }
-                    this.revalidate();
+                    else
+                    {
+                        optionsSelectorPanel.changeOptionPanels(null);
+                    }
                 }
                 else
                 {
@@ -330,43 +350,19 @@ public class TaskDiagramPanel extends StagePanel{
         depthPanel.removeAll();
         depthPanel.revalidate();
     }
-    private void createRowOfEmptyOptionPanels(int depthRow, int numberOptionPanels)
+    
+    private void addOptionPanels(int depthRow, OptionTracker optionTracker)
     {
-        /*assumes there are not panels at row*/
         HashMap depthPanelHash = this.depthPanelsHashes[depthRow];
         JPanel depthPanel = this.depthPanels[depthRow];
-        for(int i = 0; i < numberOptionPanels; i++)
+        List<OptionPanel> optionPanels = this.generateOptionPanels(optionTracker, 0);
+        int i = 0;
+        depthPanelHash.clear();
+        for(OptionPanel optionPanel : optionPanels)
         {
-            OptionPanel optionPanel = new OptionPanel();
-            optionPanel.setState(OptionPanel.OptionState.UNOCCUPIED);
             depthPanelHash.put(optionPanel, i);
             depthPanel.add(optionPanel);
-        }
-        depthPanel.revalidate();
-    }
-    
-    private void addOptionPanels(int depthRow, Option[] options)
-    {
-        HashMap depthPanelHash = this.depthPanelsHashes[depthRow];
-        JPanel depthPanel = this.depthPanels[depthRow];
-        int h = 0;
-        depthPanelHash.clear();
-        for(int i = 0; i < options.length; i++)
-        {
-            Option option = options[i];
-            OptionPanel optionPanel = new OptionPanel();
-            if(option == null)
-            {
-                optionPanel.setState(OptionPanel.OptionState.UNOCCUPIED);
-            }
-            else
-            {
-                optionPanel.transferOption(option);
-                optionPanel.setState(OptionPanel.OptionState.NORMAL);
-            }
-            depthPanelHash.put(optionPanel, h);
-            depthPanel.add(optionPanel);
-            h++;
+            i++;
         }
         depthPanel.revalidate();
         depthPanel.repaint();

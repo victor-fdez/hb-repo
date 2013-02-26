@@ -95,6 +95,7 @@ public class OptionTracker {
                 this.finishedAnotherCorrectOption();
             }
             /*track the position of this option*/
+            this.correctHashes.put(option.getId(), option);
             this.correctOptions[index] = new OptionTracker(option);
             this.correctOptions[index].setParent(this);
             this.correctSize++;
@@ -107,6 +108,7 @@ public class OptionTracker {
                 /*this means the option is already stored*/
                 return false;
             }
+            this.incorrectHashes.put(option.getId(), option);
             this.incorrectOptions[this.incorrectSize] = new OptionTracker(option);
             //not needed but just in case
             this.incorrectOptions[this.incorrectSize++].setParent(this);

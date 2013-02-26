@@ -4,7 +4,6 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
-import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.AWTEvent;
 import java.awt.Component;

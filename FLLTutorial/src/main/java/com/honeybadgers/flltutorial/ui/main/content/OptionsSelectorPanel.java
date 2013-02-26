@@ -63,6 +63,12 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
     {
         this.selectionsViewPort.removeAll();
         int i = 0;
+        if(options == null)
+        {
+            this.revalidate();
+            this.repaint();
+            return;
+        }
         /*swap in this list of options*/
         for(OptionPanel optionPanel : options)
         {

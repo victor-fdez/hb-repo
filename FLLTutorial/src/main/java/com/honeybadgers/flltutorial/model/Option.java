@@ -37,6 +37,10 @@ public class Option {
     {
         this(description, correct, options, null, "");
     }
+    public Option(String description, boolean correct)
+    {
+        this(description, correct, null, null, "");
+    }
     
     public String getDescription() {
         return description;
