@@ -54,7 +54,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     {
         super();
        
-        /* init content panel*/
+        //init content panel
         //this.contentPanel.setBackground(Color.red);
         this.initComponents();
 
@@ -65,6 +65,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private void initComponents()
     {
         this.stagePanel = new TaskDiagramPanel();
+        
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
@@ -103,7 +104,6 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     @Override
     public void paint(Graphics g)
     {        
-        /*checking performance*/
         //System.out.println("paint called on jlayered pane");
         super.paint(g);
     }
@@ -155,17 +155,13 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 this.draggingOptionPanel = this.selectedOptionPanel.copy();
                 this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
                 this.draggingOptionPanel.setState(this.selectedOptionPanel.getState());
-                //System.out.println("selected panel "+this.selectedOptionPanel+" children "+this.selectedOptionPanel.getComponents());
-                //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
-                /*add dragging option panel to glass pane*/
-                //System.out.println("not equal "+(this.draggingOptionPanel != this.selectedOptionPanel));
-                //System.out.println("pressed button "+this.draggingOptionPanel.option.getDescription());
-                /*revalidate button after adding it to the glass panel*/
+                //add dragging option panel to glass pane
+                //revalidate button after adding it to the glass panel
                 this.glassPanel.add(this.draggingOptionPanel);
                 this.draggingOptionPanel.revalidate();
-                /*set option panel as hidden*/
+                //set option panel as hidden
                 this.selectedOptionPanel.setState(OptionPanel.OptionState.HIDDEN_OCCUPY);
-                /*draw panel initially as is selected*/
+                //draw panel initially as is selected
                 int halfWidth = this.draggingOptionPanel.getWidth()/2;
                 int halfHeight = this.draggingOptionPanel.getHeight()/2;
                 this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
@@ -189,7 +185,6 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             {/*don't do anything, althought this will send points to stage panel*/
                 int status = this.stagePanel.dropOptionPanel(this.draggingOptionPanel);
                 System.out.println("dropping on stage panel "+status);
-
                 switch(status)
                 {
                     case 0:
