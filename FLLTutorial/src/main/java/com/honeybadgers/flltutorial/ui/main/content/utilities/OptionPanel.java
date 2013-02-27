@@ -5,10 +5,13 @@
 package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -22,13 +25,12 @@ public final class OptionPanel extends JPanel implements Cloneable
     }
     OptionState state;
     private Option option;
-    JLabel description;
+    JTextArea description;
     public OptionPanel()
     {
         super();
         this.state = OptionState.UNOCCUPIED;
-        this.description = new JLabel("");
-        this.description.setVisible(true);
+        this.initComponents();
         this.setOpaque(true);
     }
     public OptionPanel(Option option)
@@ -36,14 +38,28 @@ public final class OptionPanel extends JPanel implements Cloneable
         super();
         this.option = option;
         this.state = OptionState.NORMAL;
-        //add text area
-        this.description = new JLabel(option.getDescription());
-        this.description.setVisible(true);
-        //add label to store picture if option contains picture
-        //add all components
+        this.initComponents();
         this.setState(OptionState.NORMAL);
     }
-
+    void initComponents()
+    {
+        if(this.option == null)
+        {
+            this.description = new JTextArea("");
+        }
+        else{
+            this.description = new JTextArea(option.getDescription());
+        }
+        this.setLayout(new BorderLayout());
+        this.description.setBackground(new Color(0,0,0,0));
+        this.description.setBorder(new EmptyBorder(2,2,2,2));
+        this.description.setEditable(false);
+        this.description.setLineWrap(true);
+        this.description.setWrapStyleWord(true);
+        this.description.setVisible(true);
+        
+        //this.setBorder(new LineBorder(Color.BLACK, 1,));
+    }
     //TODO: create methods that will draw a button under different STATES
     public OptionPanel copy()
     {

@@ -76,8 +76,8 @@ public class TaskDiagramPanel extends StagePanel{
             Option option;
             for(int i = 0; i < 3; i++)
             {
-               ArrayList<Option> subOptions = tutorialGenerator(depth-1, "");
-               option = new Option("t option "+i, true);
+               ArrayList<Option> subOptions = tutorialGenerator(depth-1, description);
+               option = new Option("t option "+i+description, true);
                for(Option subOption : subOptions)
                {
                    option.addChild(subOption);

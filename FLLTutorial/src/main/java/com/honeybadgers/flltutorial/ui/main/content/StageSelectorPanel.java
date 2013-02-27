@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -44,7 +45,9 @@ public class StageSelectorPanel extends StagePanel{
     final void initComponents()
     {
         //create components
-        MultiLineLabel titleLabel = new MultiLineLabel(this.stageName);
+        JTextArea titleLabel = new JTextArea(this.stageName);
+        titleLabel.setLineWrap(true);
+        titleLabel.setWrapStyleWord(true);
         //titleLabel.addText("hello world");
         //titleLabel.set
         titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));

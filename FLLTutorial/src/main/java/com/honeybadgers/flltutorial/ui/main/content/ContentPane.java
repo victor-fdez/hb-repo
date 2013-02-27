@@ -64,8 +64,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     private void initComponents()
     {
+        //this.stagePanel = new StageSelectorPanel();
         this.stagePanel = new TaskDiagramPanel();
-        
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
@@ -73,6 +73,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.glassPanel.setOpaque(false);
         this.glassPanel.setVisible(true);
         this.glassPanel.setLayout(null);
+        
         
         this.setPreferredSize(preferedDimension);
         this.setMinimumSize(minDimension);
