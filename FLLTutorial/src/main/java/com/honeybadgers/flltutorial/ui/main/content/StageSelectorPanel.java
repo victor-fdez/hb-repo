@@ -6,7 +6,6 @@ package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
-import com.honeybadgers.flltutorial.ui.main.content.utilities.MultiLineLabel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -15,7 +14,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -28,6 +26,7 @@ public class StageSelectorPanel extends StagePanel{
 
     private OptionTracker currentTracker;
     private JPanel scrollPanel;
+    private int lastPosition;
     StageSelectorPanel()
     {
         super();
@@ -48,7 +47,6 @@ public class StageSelectorPanel extends StagePanel{
         JTextArea titleLabel = new JTextArea(this.stageName);
         titleLabel.setLineWrap(true);
         titleLabel.setWrapStyleWord(true);
-        //titleLabel.addText("hello world");
         //titleLabel.set
         titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         titleLabel.setBackground(Color.GREEN);
@@ -66,6 +64,7 @@ public class StageSelectorPanel extends StagePanel{
         this.add(titleLabel, c);
         
         this.scrollPanel = new JPanel();
+        this.scrollPanel.setLayout(new GridBagLayout());
         this.scrollPanel.setBackground(Color.red);
         /*add all of the depth panels to the stage panel*/
         JScrollPane scrollPane = new JScrollPane();    
@@ -91,11 +90,50 @@ public class StageSelectorPanel extends StagePanel{
 
     @Override
     int dropOptionPanel(OptionPanel optionPanel) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        JScrollPane scrollPane = (JScrollPane)this.getComponents()[1];
+        int x = (int)optionPanel.getBounds().getCenterX();
+        int y = (int)optionPanel.getBounds().getCenterY();
+        int sx = (int)scrollPane.getX();
+        int sy = (int)scrollPane.getY();
+        System.out.println("x : "+x+" y : "+y);
+        System.out.println("scroll sx: "+sx+" sy: "+sy);
+        Point dropPoint = new Point(x-sx, y-sy);
+        //check whether the option fell inside the answers panel
+        if(this.scrollPanel.contains(dropPoint))
+        {
+            //check with option tracker
+            Option option = optionPanel.getOption();
+            boolean newTracked = this.currentTracker.addOptionAt(this.lastPosition, option);
+            if(newTracked)
+            {
+                if(option.isCorrect())
+                {
+                    GridBagConstraints c = new GridBagConstraints();
+                    c.weightx = 1.0;
+                    c.weighty = 0.0;
+                    c.fill = GridBagConstraints.HORIZONTAL;
+                    c.gridx = 0;
+                    c.gridy = this.lastPosition;
+                    c.insets = new Insets(2,2,2,2);
+                    c.anchor = GridBagConstraints.PAGE_START;
+                    this.scrollPanel.add(optionPanel, c);
+                    this.scrollPanel.revalidate();
+                    this.lastPosition++;
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
+                
+            }
+            //fix
+        }
+        return 2;
     }
 
     @Override
     void clicked(Point point) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //do nothing, since options don't have options
     }
 }
