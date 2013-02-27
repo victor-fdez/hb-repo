@@ -6,9 +6,7 @@ package com.honeybadgers.flltutorial.ui.main;
 
 import com.honeybadgers.flltutorial.ui.main.content.ContentPane;
 import com.honeybadgers.flltutorial.ui.main.navigation.NavigationPanel;
-import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;

@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -43,12 +44,21 @@ public final class OptionPanel extends JPanel implements Cloneable
     }
     void initComponents()
     {
-        if(this.option == null)
+        try
         {
-            this.description = new JTextArea("");
+            if(this.option == null)
+            {
+                this.description = new JTextArea("");
+                //this.description.getDocument().insertString(0, "", null);
+            }
+            else{
+                this.description = new JTextArea(this.option.getDescription());
+                //this.description.getDocument().insertString(0, this.option.getDescription(), null);
+            }
         }
-        else{
-            this.description = new JTextArea(option.getDescription());
+        catch(Exception e)
+        {
+            System.err.println("Exception");
         }
         this.setLayout(new BorderLayout());
         this.description.setBackground(new Color(0,0,0,0));
@@ -77,7 +87,10 @@ public final class OptionPanel extends JPanel implements Cloneable
         this.option = option;
         if(this.description != null)
         {
-            this.description.setText(this.option.getDescription());
+            //try
+            //{this.description.getDocument().insertString(0, this.option.getDescription(), null);}
+            //catch(Exception e){System.err.println("OptionPanel - exception");}
+            this.description.setText(option.getDescription());
             if(this.description.getParent() != null)
             {
                 this.description.revalidate();
