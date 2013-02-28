@@ -2,10 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.honeybadgers.flltutorial.ui.main.content;
+package com.honeybadgers.flltutorial.ui.main.content.stages;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
+import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
+import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.Color;
@@ -94,12 +96,12 @@ public class StageSelectorPanel extends StagePanel{
         this.repaint();
     }
     @Override
-    OptionsPanel getOptionsPanel() {
+    public final OptionsPanel getOptionsPanel() {
         return this.optionsPanel;
     }
 
     @Override
-    int dropOptionPanel(OptionPanel optionPanel) {
+    public final int dropOptionPanel(OptionPanel optionPanel) {
         int x = (int)optionPanel.getBounds().getCenterX();
         int y = (int)optionPanel.getBounds().getCenterY();
         int sx = (int)this.scrollPane.getX();
@@ -135,7 +137,7 @@ public class StageSelectorPanel extends StagePanel{
     }
 
     @Override
-    void clicked(Point point) {
+    public final void clicked(Point point) {
         //do nothing, since options don't have options
     }
 }

@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.honeybadgers.flltutorial.ui.main.content;
+package com.honeybadgers.flltutorial.ui.main.content.stages;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
+import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -39,7 +40,7 @@ abstract public class StagePanel extends JPanel
      * 
      * @return the OptionsPanel that implements how options are given as choices.
      */
-    abstract OptionsPanel getOptionsPanel();
+    public abstract OptionsPanel getOptionsPanel();
     /**
      * This method is to be implemented by any subclass of StagePanel. This method
      * delivers an OptionsPanel that can be used to find the location where a dragged panel
@@ -54,14 +55,14 @@ abstract public class StagePanel extends JPanel
      *              1 when option drop was incorrect and needs to draw option red.
      *              2 when option drop has no effect and nothing needs to be done.
      */
-    abstract int dropOptionPanel(OptionPanel optionPanel);
+    public abstract int dropOptionPanel(OptionPanel optionPanel);
     /**
      * This method is to be implemented by any subclass of StagePanel. This method
      * delivers point clicks (press and release) on the given stage subclass panel
      * 
      * @param point  a Point object denoting the position clicked
      */
-    abstract void clicked(Point point);
+    public abstract void clicked(Point point);
     /**
      * This methods generates an List of OptionPanels. If the type is 1, the options panels
      * are generated based on the child options of the options being tracked by the options tracker.

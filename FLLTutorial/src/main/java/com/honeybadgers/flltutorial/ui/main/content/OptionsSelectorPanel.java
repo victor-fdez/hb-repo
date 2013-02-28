@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
  */
 public class OptionsSelectorPanel extends OptionsPanel implements ComponentListener{
 
-    OptionsSelectorPanel(List<OptionPanel> optionsPanels)
+    public OptionsSelectorPanel(List<OptionPanel> optionsPanels)
     {
         super(optionsPanels);
         this.initComponents();
@@ -59,7 +59,7 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.selections.setPreferredSize(this.selections.getParent().getSize());
         super.paint(g);
     }
-    void changeOptionPanels(List<OptionPanel> options)
+    public void changeOptionPanels(List<OptionPanel> options)
     {
         this.selectionsViewPort.removeAll();
         int i = 0;

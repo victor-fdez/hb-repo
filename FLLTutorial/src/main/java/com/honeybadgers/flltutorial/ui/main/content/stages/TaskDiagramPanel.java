@@ -2,10 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.honeybadgers.flltutorial.ui.main.content;
+package com.honeybadgers.flltutorial.ui.main.content.stages;
 //REMEMBER, lowest level is having bugs.
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
+import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
+import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -36,7 +38,7 @@ public class TaskDiagramPanel extends StagePanel{
     private JPanel[] depthPanels = new JPanel[11];
     /*the current depth of the leaves shown*/
     private int currentDepth;
-    TaskDiagramPanel()
+    public TaskDiagramPanel()
     {
         super();
         /*setup name*/
@@ -142,7 +144,7 @@ public class TaskDiagramPanel extends StagePanel{
         //this.createRowOfEmptyOptionPanels(1, this.tutorialOption.getOptions().size());
     }
     @Override
-    OptionsPanel getOptionsPanel() {
+    public OptionsPanel getOptionsPanel() {
         return this.optionsPanel;
     }
     /**
@@ -152,7 +154,7 @@ public class TaskDiagramPanel extends StagePanel{
      * @return 
      */
     @Override
-    int dropOptionPanel(OptionPanel optionPanel) {
+    public int dropOptionPanel(OptionPanel optionPanel) {
         //check if the give option panel can be dropped as one of the children
         int x = (int)optionPanel.getBounds().getCenterX();
         int y = (int)optionPanel.getBounds().getCenterY();
@@ -204,7 +206,7 @@ public class TaskDiagramPanel extends StagePanel{
      * @param point         the point that was clicked in the task diagram panel
      */
     @Override
-    void clicked(Point point) {
+    public void clicked(Point point) {
         //get the panel clicked
         ChildPanelResult childPanelResult = this.getChildPanel(point, 1);
         if(childPanelResult != null)
