@@ -7,21 +7,16 @@ package com.honeybadgers.flltutorial.ui.main.content;
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
-import javax.swing.Scrollable;
-import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -30,17 +25,18 @@ import javax.swing.SwingConstants;
 public class StageSelectorPanel extends StagePanel{
 
     private OptionTracker currentTracker;
-    private JPanel scrollPanel;
+    private PanelsScrollPane scrollPane;
+    private Option mainOption;
     private int lastPosition;
     StageSelectorPanel()
     {
         super();
-        Option option = new Option("some description", true, null);
-        option.addChild(new Option("some description", true, null));
-        option.addChild(new Option("some descriptionaaaaaaaaaaaaaa        some descriptionaaaaaaaaaaaaaa           some descriptionaaaaaaaaaaaaaa", true, null));
-        option.addChild(new Option("some description", true, null));
-        this.currentTracker = new OptionTracker(option);
-        this.stageName = "Stage Selector                                                              aaaaaaaaaaaaazazzzzz111111111111111111111111111111111111111";
+        this.mainOption = new Option("this is the generic problem, please follow this directions before processing to perform this problem", true, null);
+        mainOption.addChild(new Option("some description", false, null));
+        mainOption.addChild(new Option("larger description that gives a really boring, and uncomprenhensive detailed, and I forget to say more boring explanation", true, null));
+        mainOption.addChild(new Option("some description", true, null));
+        this.currentTracker = new OptionTracker(mainOption);
+        this.stageName = "Generic Stage Selector";
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTracker, 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
         this.initComponents();
@@ -48,50 +44,54 @@ public class StageSelectorPanel extends StagePanel{
     
     final void initComponents()
     {
-        //create components
+        //setup title of stage
         JTextArea titleLabel = new JTextArea(this.stageName);
         titleLabel.setLineWrap(true);
         titleLabel.setWrapStyleWord(true);
-        //titleLabel.set
-        titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        titleLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
+        //titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         titleLabel.setBackground(Color.GREEN);
-        titleLabel.setOpaque(true);
-        //setup vertical gridlayout
-        GridBagLayout gridBagLayout = new GridBagLayout();
-        this.setLayout(gridBagLayout);
+        
+        //add title to selector problem
+        this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
-        c.insets = new Insets(1, 1, 1, 1);
+        c.insets = new Insets(10, 4, 4, 4);
         c.ipady = 0;
+        c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(titleLabel, c);
         
-        this.scrollPanel = new FittedViewportPanel();
-        this.scrollPanel.setOpaque(true);
-        this.scrollPanel.setVisible(true);
-        this.scrollPanel.setLayout(new GridBagLayout());
-        this.scrollPanel.setBackground(Color.red);
-        /*add all of the depth panels to the stage panel*/
-        JScrollPane scrollPane = new JScrollPane();    
+        //add main option description option panel
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.insets = new Insets(10, 4, 4, 4);
+        c.ipady = 0;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.PAGE_START;
+        this.add(new OptionPanel(this.mainOption), c);
+        
+        //setup scroll pane
+        this.scrollPane = new PanelsScrollPane();
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
+        c.insets = new Insets(4, 4, 4, 4);
+        c.ipady = 0;
         c.weightx = 1.0;
         c.weighty = 1.0;
-        c.ipady = 10;
-        c.insets = new Insets(2,1,2,1);
         c.anchor = GridBagConstraints.PAGE_START;
-        //scrollPane
-        scrollPane.setViewportView(this.scrollPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setHorizontalScrollBar(null);
-        scrollPane.getSize();
-        this.add(scrollPane, c);
-        this.revalidate();
+        
+        this.add(this.scrollPane, c);
+        
         this.setBackground(Color.GRAY);
+        this.revalidate();
+        this.repaint();
     }
     @Override
     OptionsPanel getOptionsPanel() {
@@ -100,17 +100,17 @@ public class StageSelectorPanel extends StagePanel{
 
     @Override
     int dropOptionPanel(OptionPanel optionPanel) {
-        JScrollPane scrollPane = (JScrollPane)this.getComponents()[1];
         int x = (int)optionPanel.getBounds().getCenterX();
         int y = (int)optionPanel.getBounds().getCenterY();
-        int sx = (int)scrollPane.getX();
-        int sy = (int)scrollPane.getY();
+        int sx = (int)this.scrollPane.getX();
+        int sy = (int)this.scrollPane.getY();
         System.out.println("x : "+x+" y : "+y);
         System.out.println("scroll sx: "+sx+" sy: "+sy);
         Point dropPoint = new Point(x-sx, y-sy);
         //check whether the option fell inside the answers panel
-        if(this.scrollPanel.contains(dropPoint))
+        if(this.scrollPane.contains(dropPoint))
         {
+            System.out.println("CONTAINS POINT");
             //check with option tracker
             Option option = optionPanel.getOption();
             boolean newTracked = this.currentTracker.addOptionAt(this.lastPosition, option);
@@ -118,16 +118,8 @@ public class StageSelectorPanel extends StagePanel{
             {
                 if(option.isCorrect())
                 {
-                    GridBagConstraints c = new GridBagConstraints();
-                    c.weightx = 1.0;
-                    c.weighty = 0.0;
-                    c.fill = GridBagConstraints.HORIZONTAL;
-                    c.gridx = 0;
-                    c.gridy = this.lastPosition;
-                    c.insets = new Insets(2,2,2,2);
-                    c.anchor = GridBagConstraints.PAGE_START;
-                    this.scrollPanel.add(optionPanel, c);
-                    this.scrollPanel.revalidate();
+                    optionPanel.setState(OptionPanel.OptionState.CORRECT);
+                    this.scrollPane.appendPanel(optionPanel);
                     this.lastPosition++;
                     return 0;
                 }
@@ -145,48 +137,5 @@ public class StageSelectorPanel extends StagePanel{
     @Override
     void clicked(Point point) {
         //do nothing, since options don't have options
-    }
-    
-    protected class FittedViewportPanel extends JPanel implements Scrollable
-    {
-        public FittedViewportPanel()
-        {
-            super();
-        }
-        @Override
-        public Dimension getPreferredScrollableViewportSize() {
-            Dimension preferredSize = this.getPreferredSize();
-            if (getParent() instanceof JViewport) {
-                preferredSize.width += ((JScrollPane) getParent().getParent()).getVerticalScrollBar()
-                        .getPreferredSize().width;
-            }
-            return preferredSize;
-        }
-
-        @Override
-        public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-            return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width * 9 / 10, 1)
-                    : Math.max(visibleRect.height * 9 / 10, 1);
-        }
-
-        @Override
-        public boolean getScrollableTracksViewportHeight() {
-            if (getParent() instanceof JViewport) {
-                JViewport viewport = (JViewport) getParent();
-                return getPreferredSize().height < viewport.getHeight();
-            }
-            return false;
-        }
-
-        @Override
-        public boolean getScrollableTracksViewportWidth() {
-            return true;
-        }
-
-        @Override
-        public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-            return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width / 10, 1)
-                    : Math.max(visibleRect.height / 10, 1);
-        }
     }
 }
