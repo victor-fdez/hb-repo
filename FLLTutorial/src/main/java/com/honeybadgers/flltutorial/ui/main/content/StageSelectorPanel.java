@@ -19,7 +19,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JViewport;
 import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -145,19 +147,46 @@ public class StageSelectorPanel extends StagePanel{
         //do nothing, since options don't have options
     }
     
-    protected class FittedViewportPanel extends JPanel
+    protected class FittedViewportPanel extends JPanel implements Scrollable
     {
         public FittedViewportPanel()
         {
             super();
         }
+        @Override
+        public Dimension getPreferredScrollableViewportSize() {
+            Dimension preferredSize = this.getPreferredSize();
+            if (getParent() instanceof JViewport) {
+                preferredSize.width += ((JScrollPane) getParent().getParent()).getVerticalScrollBar()
+                        .getPreferredSize().width;
+            }
+            return preferredSize;
+        }
+
+        @Override
+        public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+            return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width * 9 / 10, 1)
+                    : Math.max(visibleRect.height * 9 / 10, 1);
+        }
+
+        @Override
+        public boolean getScrollableTracksViewportHeight() {
+            if (getParent() instanceof JViewport) {
+                JViewport viewport = (JViewport) getParent();
+                return getPreferredSize().height < viewport.getHeight();
+            }
+            return false;
+        }
+
+        @Override
         public boolean getScrollableTracksViewportWidth() {
             return true;
         }
 
-        public boolean getScrollableTracksViewportHeight() {
-            return false;
+        @Override
+        public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+            return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width / 10, 1)
+                    : Math.max(visibleRect.height / 10, 1);
         }
-        
     }
 }
