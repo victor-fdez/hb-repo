@@ -8,15 +8,18 @@ import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.Scrollable;
 
 /**
  *
@@ -32,7 +35,7 @@ public class StageSelectorPanel extends StagePanel{
         super();
         Option option = new Option("some description", true, null);
         option.addChild(new Option("some description", true, null));
-        option.addChild(new Option("some description", true, null));
+        option.addChild(new Option("some descriptionaaaaaaaaaaaaaa        some descriptionaaaaaaaaaaaaaa           some descriptionaaaaaaaaaaaaaa", true, null));
         option.addChild(new Option("some description", true, null));
         this.currentTracker = new OptionTracker(option);
         this.stageName = "Stage Selector                                                              aaaaaaaaaaaaazazzzzz111111111111111111111111111111111111111";
@@ -63,7 +66,9 @@ public class StageSelectorPanel extends StagePanel{
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(titleLabel, c);
         
-        this.scrollPanel = new JPanel();
+        this.scrollPanel = new FittedViewportPanel();
+        this.scrollPanel.setOpaque(true);
+        this.scrollPanel.setVisible(true);
         this.scrollPanel.setLayout(new GridBagLayout());
         this.scrollPanel.setBackground(Color.red);
         /*add all of the depth panels to the stage panel*/
@@ -79,8 +84,11 @@ public class StageSelectorPanel extends StagePanel{
         c.anchor = GridBagConstraints.PAGE_START;
         //scrollPane
         scrollPane.setViewportView(this.scrollPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBar(null);
         scrollPane.getSize();
         this.add(scrollPane, c);
+        this.revalidate();
         this.setBackground(Color.GRAY);
     }
     @Override
@@ -135,5 +143,21 @@ public class StageSelectorPanel extends StagePanel{
     @Override
     void clicked(Point point) {
         //do nothing, since options don't have options
+    }
+    
+    protected class FittedViewportPanel extends JPanel
+    {
+        public FittedViewportPanel()
+        {
+            super();
+        }
+        public boolean getScrollableTracksViewportWidth() {
+            return true;
+        }
+
+        public boolean getScrollableTracksViewportHeight() {
+            return false;
+        }
+        
     }
 }
