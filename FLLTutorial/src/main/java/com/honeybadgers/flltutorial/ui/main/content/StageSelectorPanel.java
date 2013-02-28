@@ -92,6 +92,8 @@ public class StageSelectorPanel extends StagePanel{
         this.setBackground(Color.GRAY);
         this.revalidate();
         this.repaint();
+        
+        
     }
     @Override
     OptionsPanel getOptionsPanel() {
