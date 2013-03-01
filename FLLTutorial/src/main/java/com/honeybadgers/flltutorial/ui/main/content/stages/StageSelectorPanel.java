@@ -38,13 +38,12 @@ public class StageSelectorPanel extends StagePanel{
         mainOption.addChild(new Option("larger description that gives a really boring, and uncomprenhensive detailed, and I forget to say more boring explanation", true, null));
         mainOption.addChild(new Option("some description", true, null));
         this.currentTracker = new OptionTracker(mainOption);
-        this.stageName = "Generic Stage Selector";
+        //this.stageName = "Generic Stage Selector";
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTracker, 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
-        this.initComponents();
     }
     
-    final void initComponents()
+    protected final void initComponents()
     {
         //setup title of stage
         JTextArea titleLabel = new JTextArea(this.stageName);

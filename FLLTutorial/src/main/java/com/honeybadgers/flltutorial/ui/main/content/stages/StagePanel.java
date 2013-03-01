@@ -23,6 +23,8 @@ abstract public class StagePanel extends JPanel
     /*tutorial options*/
     protected Option tutorialOption;
     protected String stageName;
+    protected Option problem;
+    protected OptionTracker solutionTracker;
     private Dimension preferedDimension = new Dimension(600, 500);
     private Dimension minDimension = new Dimension(600, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);

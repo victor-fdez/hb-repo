@@ -4,22 +4,16 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content.stages;
 
-import com.honeybadgers.flltutorial.model.Option;
-import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
-import java.awt.Color;
-import java.awt.Point;
-import java.util.ArrayList;
-
-
 /**
  *
  * @author chingaman
  */
 public class ProblemDescriptionPanel extends StageSelectorPanel
 {
-    ProblemDescriptionPanel()
+    public ProblemDescriptionPanel()
     {
         super();
         this.stageName = "Problem Description";
+        this.initComponents();
     }
 }

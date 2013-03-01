@@ -4,6 +4,9 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
+import com.honeybadgers.flltutorial.ui.main.content.stages.ConsiderationsAndConstraintsPanel;
+import com.honeybadgers.flltutorial.ui.main.content.stages.MorphChartPanel;
+import com.honeybadgers.flltutorial.ui.main.content.stages.ProblemDescriptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.TaskDiagramPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
@@ -66,7 +69,9 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     private void initComponents()
     {
-        this.stagePanel = new TaskDiagramPanel();
+        //this.stagePanel = new TaskDiagramPanel();
+        //this.stagePanel = new ProblemDescriptionPanel();
+        this.stagePanel = new MorphChartPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
