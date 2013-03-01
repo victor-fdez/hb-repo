@@ -10,6 +10,7 @@ import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -138,5 +139,10 @@ public class StageSelectorPanel extends StagePanel{
     @Override
     public final void clicked(Point point) {
         //do nothing, since options don't have options
+    }
+
+    @Override
+    public void scrolled(AWTEvent e) {
+        this.scrollPane.dispatchEvent(e);
     }
 }

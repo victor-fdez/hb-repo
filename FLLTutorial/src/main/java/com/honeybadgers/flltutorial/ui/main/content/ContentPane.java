@@ -238,9 +238,11 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     public void mouseMoved(MouseEvent e) {}
     public void mouseWheelMoved(MouseWheelEvent e) {
         Component component = this.contentPanel.getComponentAt(e.getPoint());
+        
         //if
         if(component == this.stagePanel)
         {/*don't do anything, althought this will send points to task diagram */
+                this.stagePanel.scrolled(e);
         }
         else if(component == this.optionsPanel)
         {

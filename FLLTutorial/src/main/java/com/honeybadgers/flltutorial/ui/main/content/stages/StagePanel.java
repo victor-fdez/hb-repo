@@ -8,6 +8,7 @@ import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -66,13 +67,17 @@ abstract public class StagePanel extends JPanel
      */
     public abstract void clicked(Point point);
     /**
+     * 
+     */
+    public abstract void scrolled(AWTEvent e);
+    /**
      * This methods generates an List of OptionPanels. If the type is 1, the options panels
      * are generated based on the child options of the options being tracked by the options tracker.
      * Else if the type is 0, then the option panels are generated based on the correct options 
      * @param option
      * @param optionTracker
      * @return 
-     */
+     */   
     protected List<OptionPanel> generateOptionPanels(OptionTracker optionTracker, int type)
     {
         ArrayList<OptionPanel> optionPanels = new ArrayList<OptionPanel>();

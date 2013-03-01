@@ -10,6 +10,7 @@ import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -79,6 +80,7 @@ public class MorphChartPanel extends StagePanel {
         this.scrollPane = new PanelsScrollPane();
         
             //add row panels to scroll pane
+            int i = 0;
             for(OptionPanel leftMostOptionPanel : this.generateOptionPanels(this.solutionTracker, 1))
             {
                 //create a JPanel with one elements at the front, and then create empty
@@ -115,10 +117,17 @@ public class MorphChartPanel extends StagePanel {
                     c.weighty = 1.0;
                     c.anchor = GridBagConstraints.PAGE_START;
                     
-                
                 rowPanel.add(childrenPanel, c);
                 
+                        //add panels to children panel                        
+                        for(OptionPanel childPanel : this.generateOptionPanels(this.solutionTracker.getCorrectChild(i),0))
+                        {
+                            childrenPanel.add(childPanel);
+                        }
+                
+                
                 this.scrollPane.appendPanel(rowPanel);
+                i++;
             }
     
         //add scroll pane 
@@ -194,6 +203,11 @@ public class MorphChartPanel extends StagePanel {
     @Override
     public void clicked(Point point) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void scrolled(AWTEvent e) {
+        this.scrollPane.dispatchEvent(e);
     }
     
 }

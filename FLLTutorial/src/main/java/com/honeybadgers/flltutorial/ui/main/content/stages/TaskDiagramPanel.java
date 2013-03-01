@@ -9,6 +9,7 @@ import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -396,6 +397,11 @@ public class TaskDiagramPanel extends StagePanel{
         depthPanelHash.put(optionPanel, 0);
         depthPanel.add(optionPanel);
         depthPanel.revalidate();
+    }
+
+    @Override
+    public void scrolled(AWTEvent e) {
+        //may later use if the tree is embedded in a scroll pane
     }
     private class ChildPanelResult
     {
