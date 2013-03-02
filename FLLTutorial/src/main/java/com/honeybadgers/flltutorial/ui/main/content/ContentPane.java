@@ -127,15 +127,20 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 + ((OptionsSelectorPanel)this.optionsPanel).selections;
     }
     /*component listener methods*/
+    @Override
     public void componentResized(ComponentEvent e) {
         this.contentPanel.setSize(this.getSize());
         this.glassPanel.setSize(this.getSize());
         this.contentPanel.revalidate();
     }
+    @Override
     public void componentMoved(ComponentEvent e) {}
+    @Override
     public void componentShown(ComponentEvent e) {}
+    @Override
     public void componentHidden(ComponentEvent e) {}
     /*mouse listener methods*/
+    @Override
     public void mouseClicked(MouseEvent e) {
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //System.out.println("component -> "+component);
@@ -145,6 +150,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
            this.stagePanel.clicked(e.getPoint()); 
         }
     }
+    @Override
     public void mousePressed(MouseEvent e)
     {    
         Component component = this.contentPanel.getComponentAt(e.getPoint());
@@ -180,6 +186,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             System.out.println("mouse pressed unknown component");
         }
     }
+    @Override
     public void mouseReleased(MouseEvent e) {
         /*check if there is a selectoption to drop*/
         if(this.selectedOptionPanel != null && this.draggingOptionPanel != null)
@@ -220,8 +227,11 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         System.out.println("mouse released");
     }
     /* mouse movement listener*/
+    @Override
     public void mouseEntered(MouseEvent e) {}
+    @Override
     public void mouseExited(MouseEvent e) {} 
+    @Override
     public void mouseDragged(MouseEvent e) 
     {
         if(this.selectedOptionPanel != null)
@@ -235,7 +245,9 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         }
         //System.out.println("mouse dragged");
     }
+    @Override
     public void mouseMoved(MouseEvent e) {}
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         
