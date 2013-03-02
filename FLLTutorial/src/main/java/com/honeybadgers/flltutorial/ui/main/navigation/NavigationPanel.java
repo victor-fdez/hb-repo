@@ -6,20 +6,24 @@ package com.honeybadgers.flltutorial.ui.main.navigation;
 
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
  * NavigationPanel shows a panel with the different stages of a tutorial. As the user
@@ -27,7 +31,7 @@ import javax.swing.text.html.StyleSheet;
  * 
  * @author chingaman
  */
-public class NavigationPanel extends JPanel implements ComponentListener
+public class NavigationPanel extends JPanel implements ComponentListener, MouseListener
 {
     private Dimension preferedDimension = new Dimension(150, 500);
     private Dimension minDimension = new Dimension(150, 400);
@@ -36,7 +40,8 @@ public class NavigationPanel extends JPanel implements ComponentListener
     private PanelsScrollPane scrollPane;
     private ArrayList<StagePanel> stages;
     private float aspectRatio = 1.0f;
-    //private HashMap stagesMap;
+    //mapping from text editor to stage panels
+    private HashMap stagesMap;
     
     public NavigationPanel(ArrayList<StagePanel> stages)
     {
@@ -63,24 +68,25 @@ public class NavigationPanel extends JPanel implements ComponentListener
             for(StagePanel stagePanel : this.stages)
             {
                 JPanel stagePanelNav = new JPanel(new GridLayout(1,1));
+                stagePanelNav.setLayout(new BorderLayout());
+                stagePanelNav.setBorder(new LineBorder(Color.BLACK));
+                
+                //setup text area inside navigation panels
+                JTextArea textArea = new JTextArea();
+                textArea.setText(stagePanel.getStageName());
+                textArea.setEditable(false);
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+                textArea.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+                textArea.setBorder(new EmptyBorder(4,4,4,4));
+                textArea.setBackground(Color.white);
+                textArea.addMouseListener(this);
+
                 
                 //creating title for stage
-                JEditorPane stageTitle = new JEditorPane();
-                //JTextPane stageTitle = new JTextPane();
-                stageTitle.setBorder(null);
-                stageTitle.setContentType("text/html");
-                stageTitle.setEditable(false);
-                HTMLEditorKit editorKit = (HTMLEditorKit)stageTitle.getEditorKit();
-                StyleSheet styleSheet = editorKit.getStyleSheet();
-                styleSheet.addRule("html{background: blue; padding: 3px}");
-                editorKit.setStyleSheet(styleSheet);
-                stageTitle.setEditorKit(editorKit);
-                stageTitle.setText("<html><body><h2>"+(stagePanel.getStageName())+"</h2></body></html>");
-                
-                stagePanelNav.add(stageTitle);
-                stagePanelNav.setOpaque(true);
-                stagePanelNav.setBackground(Color.RED);
-                //add each stage title panel to the navigation panel
+                stagePanelNav.add(textArea);
+                //stagePanelNav.addMouseListener(this);
+
                 this.scrollPane.appendPanel(stagePanelNav);
             }
         this.addComponentListener(this);
@@ -89,6 +95,7 @@ public class NavigationPanel extends JPanel implements ComponentListener
         this.setMaximumSize(maxDimension);
     }
     
+    @Override
     public void componentResized(ComponentEvent e) {
         //resize the video panel accordingly
         int parentWidth = this.getSize().width;
@@ -109,12 +116,51 @@ public class NavigationPanel extends JPanel implements ComponentListener
         }
     }
 
-    public void componentMoved(ComponentEvent e) {
+    @Override
+    public void componentMoved(ComponentEvent e) {}
+    @Override
+    public void componentShown(ComponentEvent e) {}
+    @Override
+    public void componentHidden(ComponentEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        //on click tell application to change stage panel if it is possible
+        
     }
-
-    public void componentShown(ComponentEvent e) {
+    @Override
+    public void mousePressed(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        System.out.println(e.getSource()+"");
+        if(SwingUtilities.isEventDispatchThread())
+        {
+            if(e.getSource() instanceof JTextArea)
+            {
+                JTextArea textArea = (JTextArea)e.getSource();
+                textArea.setBackground(Color.white.darker());
+            }
+            else
+            {
+                System.err.println("NavigationPanel.MouseEntered : source of event is not a JTextArea");
+            }
+        }
     }
-
-    public void componentHidden(ComponentEvent e) {
-    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+        System.out.println(e.getSource()+"");
+        if(SwingUtilities.isEventDispatchThread())
+        {
+            if(e.getSource() instanceof JTextArea)
+            {
+                JTextArea textArea = (JTextArea)e.getSource();
+                textArea.setBackground(Color.white);
+            }
+            else
+            {
+                System.err.println("NavigationPanel.MouseExited : source of event is not a JTextArea");
+            }
+        }
+    }  
 }

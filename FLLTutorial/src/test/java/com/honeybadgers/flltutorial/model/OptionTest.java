@@ -31,25 +31,14 @@ public class OptionTest extends TestCase {
      * Test of getParent method, of class Option.
      */
     public void testGetParent() {
-        System.out.println("getParent");
-        Option instance = null;
-        Option expResult = null;
-        Option result = instance.getParent();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
      * Test of addChild method, of class Option.
      */
     public void testAddChild() {
-        System.out.println("addChild");
-        Option option = null;
-        Option instance = null;
-        instance.addChild(option);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       
     }
 
     /**
@@ -111,28 +100,14 @@ public class OptionTest extends TestCase {
      * Test of equals method, of class Option.
      */
     public void testEquals() {
-        System.out.println("equals");
-        Option anotherOption = null;
-        Option instance = null;
-        boolean expResult = false;
-        boolean result = instance.equals(anotherOption);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       
     }
 
     /**
      * Test of getChildIndex method, of class Option.
      */
     public void testGetChildIndex() {
-        System.out.println("getChildIndex");
-        Option childOption = null;
-        Option instance = null;
-        int expResult = 0;
-        int result = instance.getChildIndex(childOption);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }
