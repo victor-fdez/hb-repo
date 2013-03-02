@@ -104,10 +104,41 @@ public class PanelsScrollPane extends JScrollPane{
     {
         
     }
-    public void getPanetAtPoint(Point point)
+    /**
+     * 
+     */
+    public void removeAllPanels()
     {
+        this.numberOfPanels = 0;
         
+        this.fittedViewportPanel.removeAll();
+        
+        //setup the glue again
+        this.glueConstraints.gridy = 0;
+        this.fittedViewportPanel.add(this.glue, this.glueConstraints);
+        //setup the glue
     }
+    /**
+     * 
+     * @param point
+     * @return 
+     */
+    public JPanel getPanelAtPoint(Point point)
+    {
+        point.translate(-this.getX(), -this.getY());
+        point.translate(-this.fittedViewportPanel.getX(), -this.fittedViewportPanel.getY());
+        System.out.println(point.toString());
+        JPanel panelAtPoint = (JPanel)this.fittedViewportPanel.getComponentAt(point);
+        if(panelAtPoint == this.glue)
+        {
+            return null;
+        }
+        return panelAtPoint;
+    }
+    /**
+     * 
+     * @param panels 
+     */
     public void addListPanels(List<JPanel> panels)
     {
         

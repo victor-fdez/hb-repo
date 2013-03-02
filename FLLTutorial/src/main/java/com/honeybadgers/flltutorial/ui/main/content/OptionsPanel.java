@@ -5,15 +5,14 @@
 package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AWTEvent;
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseWheelEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 /**
  *
  * @author chingaman
@@ -22,30 +21,47 @@ abstract public class OptionsPanel extends JPanel{
     private Dimension preferedDimension = new Dimension(250, 500);
     private Dimension minDimension = new Dimension(250, 400);
     private Dimension maxDimension = new Dimension(300, 32767);
-    JScrollPane selections;
+    protected PanelsScrollPane optionPanelsScrollPane;
+    protected JPanel extraFeaturesPanel;
     JPanel clickedPanel;
-    JPanel selectionsViewPort;
-    List<OptionPanel> options;
-    ArrayList<OptionPanel> optionPanels;
+    protected List<OptionPanel> optionPanels;
+    
     public OptionsPanel(List<OptionPanel> options)
     {
         super();
+        
         this.setPreferredSize(preferedDimension);
         this.setMinimumSize(minDimension);
         this.setMaximumSize(maxDimension);
-        this.options = options;
+        this.optionPanels = options;
+        
+        this.initComponents();
     }
+    
+    private void initComponents()
+    {
+        //create the panel where the scroll pane were option panels will be laid
+        this.optionPanelsScrollPane = new PanelsScrollPane();
+        
+            //for every option panel append it to the panels scroll pane
+            for(OptionPanel optionPanel : this.optionPanels)
+            {
+                this.optionPanelsScrollPane.appendPanel(optionPanel);
+            }
+       
+        //setup layout of this panel
+        this.setLayout(new BorderLayout());
+        this.add(this.optionPanelsScrollPane);
+    }
+    
     OptionPanel getButtonAt(Point point) 
     {
-        Component component;
-        /*translate the point relative to the current viewport offset*/
+        JPanel panelAtPoint;
         point.translate(-this.getX(), -this.getY());
-        point.translate(0, -this.selectionsViewPort.getY());
-        component = this.selectionsViewPort.getComponentAt(point);
-        /*check this is an OptionPanel else no button was clicked*/
-        if(component instanceof OptionPanel) 
+        panelAtPoint = this.optionPanelsScrollPane.getPanelAtPoint(point);
+        if(panelAtPoint instanceof OptionPanel) 
         {
-            OptionPanel optionPanel = (OptionPanel)component;
+            OptionPanel optionPanel = (OptionPanel)panelAtPoint;
             return optionPanel;
         }
         else 
@@ -64,7 +80,7 @@ abstract public class OptionsPanel extends JPanel{
         if(e instanceof MouseWheelEvent)
         {
             /*this dispatches the given mousewheelevent to the option selections panel*/
-            this.selections.dispatchEvent(e);
+            this.optionPanelsScrollPane.dispatchEvent(e);
         }
     }
  

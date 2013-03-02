@@ -243,11 +243,11 @@ public class TaskDiagramPanel extends StagePanel{
                             this.addOptionPanels(this.currentDepth, this.currentTrackerPointer);
                             //change panels in options selector
                             List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
-                            optionsSelectorPanel.changeOptionPanels(optionPanels);   
+                            optionsSelectorPanel.updateOptionPanels(optionPanels);   
                         }
                         else
                         {
-                            optionsSelectorPanel.changeOptionPanels(null);
+                            optionsSelectorPanel.updateOptionPanels(null);
                         }
                     }
                     else
@@ -276,11 +276,11 @@ public class TaskDiagramPanel extends StagePanel{
                         this.addOptionPanels(this.currentDepth, this.currentTrackerPointer);
                         //change panels in options selector
                         List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTrackerPointer, 1);
-                        optionsSelectorPanel.changeOptionPanels(optionPanels);   
+                        optionsSelectorPanel.updateOptionPanels(optionPanels);   
                     }
                     else
                     {
-                        optionsSelectorPanel.changeOptionPanels(null);
+                        optionsSelectorPanel.updateOptionPanels(null);
                     }
                 }
                 else

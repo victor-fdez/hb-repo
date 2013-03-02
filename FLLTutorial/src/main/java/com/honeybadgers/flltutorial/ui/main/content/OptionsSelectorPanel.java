@@ -7,14 +7,10 @@ package com.honeybadgers.flltutorial.ui.main.content;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -29,76 +25,36 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
     }
     private void initComponents()
     {
-        //selection view port contains a column panel
-        this.selectionsViewPort = new JPanel();
-        this.selectionsViewPort.setLayout(new GridBagLayout());
-        //this.selectionsViewPort.setLayout(new GridLayout(0,1,2,2));
-        this.selectionsViewPort.setBackground(Color.GRAY);
-
-        this.selections = new JScrollPane();
-        this.selections.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        //this.selections.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        this.selections.getVerticalScrollBar().setVisible(true);
-        
-        this.changeOptionPanels(this.options);
-        
-        this.selections.setBorder(null);
-        this.selections.setViewportView(this.selectionsViewPort);
-        this.add(this.selections);
-        this.setVisible(true);
-        this.setOpaque(true);
+        //add extra features in the extraFeaturesPanel if it is preferred
+        this.setBackground(Color.GRAY);
+        this.optionPanelsScrollPane.setBorder(new LineBorder(Color.BLACK));
         this.addComponentListener(this);
-        this.selections.setLocation(0, 0);
-        
-        this.selectionsViewPort.revalidate();
     }
     @Override
     public void paint(Graphics g) {
-        
-        this.selections.setLocation(0, 0);
-        this.selections.setPreferredSize(this.selections.getParent().getSize());
         super.paint(g);
     }
-    public void changeOptionPanels(List<OptionPanel> options)
+    public void updateOptionPanels(List<OptionPanel> optionPanels)
     {
-        this.selectionsViewPort.removeAll();
-        int i = 0;
-        if(options == null)
+        this.optionPanelsScrollPane.removeAllPanels();
+        this.optionPanels = optionPanels;
+        
+        //add all of the new option panels
+        for(OptionPanel optionPanel : this.optionPanels)
         {
-            this.revalidate();
-            this.repaint();
-            return;
+            this.optionPanelsScrollPane.appendPanel(optionPanel);
         }
-        /*swap in this list of options*/
-        for(OptionPanel optionPanel : options)
-        {
-            GridBagConstraints c = new GridBagConstraints();
-            c.weightx = 1.0;
-            c.weighty = 0.0;
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx = 0;
-            c.gridy = i;
-            c.insets = new Insets(2,2,2,2);
-            c.anchor = GridBagConstraints.PAGE_START;
-            this.selectionsViewPort.add(optionPanel, c);
-            i++;
-        }
-        GridBagConstraints lastC = new GridBagConstraints();
-        lastC.weightx = 1.0;
-        lastC.weighty = 1.0;
-        lastC.fill = GridBagConstraints.BOTH;
-        lastC.gridx = 0;
-        lastC.gridy = i;
-        JPanel bottomFillerPanel = new JPanel();
-        bottomFillerPanel.setOpaque(false);
-        this.selectionsViewPort.add(bottomFillerPanel, lastC);
-        this.selectionsViewPort.revalidate();
+        
     }
+    @Override
     public void componentResized(ComponentEvent e) {
-        this.selections.setSize(this.getSize());
-        this.revalidate();
+        //this.selections.setSize(this.getSize());
+        //this.revalidate();
     }
+    @Override
     public void componentMoved(ComponentEvent e) {}
+    @Override
     public void componentShown(ComponentEvent e) {}
+    @Override
     public void componentHidden(ComponentEvent e) {} 
 }
