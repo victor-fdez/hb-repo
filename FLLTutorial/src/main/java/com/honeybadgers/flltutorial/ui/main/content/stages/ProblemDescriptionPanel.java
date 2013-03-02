@@ -13,7 +13,7 @@ public class ProblemDescriptionPanel extends StageSelectorPanel
     public ProblemDescriptionPanel()
     {
         super();
-        this.stageName = "Problem Description";
+        this.stageName = "Problem Description and constrains";
         this.initComponents();
     }
 }

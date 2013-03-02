@@ -11,6 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,6 +31,8 @@ public class PanelsScrollPane extends JScrollPane{
     protected FittedViewportPanel fittedViewportPanel;
     protected JPanel glue;
     protected GridBagConstraints glueConstraints;
+    protected ArrayList<JPanel> panelsList;
+    
     public PanelsScrollPane()
     {
         super();
@@ -91,6 +94,15 @@ public class PanelsScrollPane extends JScrollPane{
         //revalidate layout of scroll pane
         this.revalidate();
         this.repaint();
+    }
+    /**
+     * Removes the panel located at index.
+     * 
+     * @param index 
+     */
+    public void removePanel(int index)
+    {
+        
     }
     public void getPanetAtPoint(Point point)
     {

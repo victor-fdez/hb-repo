@@ -29,8 +29,8 @@ import javax.swing.JPanel;
  */
 public class ContentPane extends JLayeredPane implements ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener
 {
-    private Dimension preferedDimension = new Dimension(900, 500);
-    private Dimension minDimension = new Dimension(900, 400);
+    private Dimension preferedDimension = new Dimension(750, 500);
+    private Dimension minDimension = new Dimension(750, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
     /*
      * this panel covers the whole layered pane, but it will be transparent and
@@ -70,8 +70,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private void initComponents()
     {
         //this.stagePanel = new TaskDiagramPanel();
-        //this.stagePanel = new ProblemDescriptionPanel();
-        this.stagePanel = new MorphChartPanel();
+        this.stagePanel = new ProblemDescriptionPanel();
+        //this.stagePanel = new MorphChartPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();

@@ -5,7 +5,13 @@
 package com.honeybadgers.flltutorial.ui.main;
 
 import com.honeybadgers.flltutorial.ui.main.content.ContentPane;
+import com.honeybadgers.flltutorial.ui.main.content.stages.ProblemDescriptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
+import com.honeybadgers.flltutorial.ui.main.content.stages.StageSelectorPanel;
+import com.honeybadgers.flltutorial.ui.main.content.stages.TaskDiagramPanel;
 import com.honeybadgers.flltutorial.ui.main.navigation.NavigationPanel;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -25,7 +31,10 @@ public class MainFrame extends JFrame
     {
         super();
         contentPane = new ContentPane();
-        navigationPanel = new NavigationPanel();
+        ArrayList<StagePanel> stagePanels = new ArrayList<StagePanel>();
+        stagePanels.add(new TaskDiagramPanel());
+        stagePanels.add(new ProblemDescriptionPanel());
+        navigationPanel = new NavigationPanel(stagePanels);
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
         /* init split pane */
