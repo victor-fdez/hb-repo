@@ -15,5 +15,4 @@ public class ConsiderationsAndConstraintsPanel extends StageSelectorPanel{
         this.stageName = "Considerations and Constraints";
         this.initComponents();
     }
-    
 }

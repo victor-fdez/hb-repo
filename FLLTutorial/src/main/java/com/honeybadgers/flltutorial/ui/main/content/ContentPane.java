@@ -72,8 +72,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private void initComponents()
     {
         //this.stagePanel = new TaskDiagramPanel();
-        this.stagePanel = new ProblemDescriptionPanel();
-        //this.stagePanel = new MorphChartPanel();
+        //this.stagePanel = new ProblemDescriptionPanel();
+        this.stagePanel = new MorphChartPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
