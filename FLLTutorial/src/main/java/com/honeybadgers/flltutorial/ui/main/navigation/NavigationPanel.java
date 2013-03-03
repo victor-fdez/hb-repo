@@ -61,7 +61,7 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
         
         this.add(Box.createVerticalStrut(5));
         //initiallized fitted scroll pane for stage panels
-        this.scrollPane = new PanelsScrollPane();
+        this.scrollPane = new PanelsScrollPane(true);
         this.add(this.scrollPane);
         
             //add all stage panels of application
@@ -133,7 +133,7 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
     public void mouseReleased(MouseEvent e) {}
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println(e.getSource()+"");
+        //System.out.println(e.getSource()+"");
         if(SwingUtilities.isEventDispatchThread())
         {
             if(e.getSource() instanceof JTextArea)
@@ -149,7 +149,7 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
     }
     @Override
     public void mouseExited(MouseEvent e) {
-        System.out.println(e.getSource()+"");
+        //System.out.println(e.getSource()+"");
         if(SwingUtilities.isEventDispatchThread())
         {
             if(e.getSource() instanceof JTextArea)

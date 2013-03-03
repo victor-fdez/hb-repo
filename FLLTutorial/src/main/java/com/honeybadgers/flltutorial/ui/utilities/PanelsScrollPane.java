@@ -32,17 +32,18 @@ public class PanelsScrollPane extends JScrollPane{
     protected JPanel glue;
     protected GridBagConstraints glueConstraints;
     protected ArrayList<JPanel> panelsList;
-    
-    public PanelsScrollPane()
+    protected boolean isVertical;
+    public PanelsScrollPane(boolean isVertical)
     {
         super();
         //initialize panel scroll pane
+        this.isVertical = isVertical;
         this.numberOfPanels = 0;
         this.initComponents();
     }
     private void initComponents()
     {
-        this.fittedViewportPanel = new FittedViewportPanel();
+        this.fittedViewportPanel = new FittedViewportPanel(this);
         this.fittedViewportPanel.setLayout(new GridBagLayout());
         this.fittedViewportPanel.setBackground(Color.GRAY);
         
@@ -51,10 +52,16 @@ public class PanelsScrollPane extends JScrollPane{
         this.glueConstraints.weightx = 1.0;
         this.glueConstraints.weighty = 1.0;
         this.glueConstraints.fill = GridBagConstraints.BOTH;
-        this.glueConstraints.gridx = 0;
-        this.glueConstraints.gridy = this.numberOfPanels;
+        if(this.isVertical){
+            this.glueConstraints.gridx = 0;
+            this.glueConstraints.gridy = this.numberOfPanels;
+            this.glueConstraints.anchor = GridBagConstraints.PAGE_START;
+        }else{
+            this.glueConstraints.gridx = this.numberOfPanels;
+            this.glueConstraints.gridy = 0;
+            this.glueConstraints.anchor = GridBagConstraints.LINE_START;
+        }
         this.glueConstraints.insets = new Insets(2,2,2,2);
-        this.glueConstraints.anchor = GridBagConstraints.PAGE_START;
         this.glue = new JPanel();
         this.glue.setBackground(Color.GRAY);
         this.fittedViewportPanel.add(this.glue, this.glueConstraints);
@@ -75,20 +82,31 @@ public class PanelsScrollPane extends JScrollPane{
         
         //create new constraints for new panel
         GridBagConstraints constraint = new GridBagConstraints();
-        constraint.weightx = 1.0;
-        constraint.weighty = 0.0;
-        constraint.fill = GridBagConstraints.HORIZONTAL;
-        constraint.gridx = 0;
-        constraint.gridy = this.numberOfPanels++;
-        constraint.gridheight = 1;
-        constraint.gridwidth = 1;
+        if(this.isVertical){
+            constraint.weightx = 1.0;
+            constraint.weighty = 0.0;
+            constraint.fill = GridBagConstraints.HORIZONTAL;
+            constraint.anchor = GridBagConstraints.PAGE_START;
+            constraint.gridx = 0;
+            constraint.gridy = this.numberOfPanels++;
+        }else{
+            constraint.weightx = 0.0;
+            constraint.weighty = 1.0;
+            constraint.fill = GridBagConstraints.VERTICAL;
+            constraint.anchor = GridBagConstraints.LINE_START;
+            constraint.gridx = this.numberOfPanels++;
+            constraint.gridy = 0;
+        }
         constraint.insets = new Insets(2,2,2,2);
-        constraint.anchor = GridBagConstraints.PAGE_START;
         appendedPanel.setOpaque(true);
         this.fittedViewportPanel.add(appendedPanel, constraint);
         
         //update glue constraints and add glue at the end of panel list
-        this.glueConstraints.gridy = this.numberOfPanels;
+        if(this.isVertical){
+            this.glueConstraints.gridy = this.numberOfPanels;
+        }else{
+            this.glueConstraints.gridx = this.numberOfPanels;
+        }
         this.fittedViewportPanel.add(this.glue, this.glueConstraints);
         
         //revalidate layout of scroll pane
@@ -105,7 +123,7 @@ public class PanelsScrollPane extends JScrollPane{
         
     }
     /**
-     * 
+     *  
      */
     public void removeAllPanels()
     {
@@ -114,7 +132,12 @@ public class PanelsScrollPane extends JScrollPane{
         this.fittedViewportPanel.removeAll();
         
         //setup the glue again
-        this.glueConstraints.gridy = 0;
+        if(this.isVertical)
+        {
+            this.glueConstraints.gridy = 0;
+        }else{
+            this.glueConstraints.gridx = 0;
+        }
         this.fittedViewportPanel.add(this.glue, this.glueConstraints);
         //setup the glue
     }
@@ -125,6 +148,7 @@ public class PanelsScrollPane extends JScrollPane{
      */
     public JPanel getPanelAtPoint(Point point)
     {
+        //Point translated
         point.translate(-this.getX(), -this.getY());
         point.translate(-this.fittedViewportPanel.getX(), -this.fittedViewportPanel.getY());
         System.out.println(point.toString());
@@ -143,24 +167,43 @@ public class PanelsScrollPane extends JScrollPane{
     {
         
     }
+
+    public boolean isVertical() {
+        return isVertical;
+    }  
     /**
      * Custom JPanel class update automatically it's size to the size of the viewport
      * in a given JScrollPane
      */
     protected class FittedViewportPanel extends JPanel implements Scrollable
     {
-        public FittedViewportPanel()
+        private PanelsScrollPane scrollPane;
+        public FittedViewportPanel(PanelsScrollPane scrollPane)
         {
             super();
+            this.scrollPane = scrollPane;
         }
         @Override
         public Dimension getPreferredScrollableViewportSize() {
-            Dimension preferredSize = this.getPreferredSize();
-            if (getParent() instanceof JViewport) {
-                preferredSize.width += ((JScrollPane) getParent().getParent()).getVerticalScrollBar()
-                        .getPreferredSize().width;
+            if(this.scrollPane.isVertical())
+            {
+                Dimension preferredSize = this.getPreferredSize();
+                if (getParent() instanceof JViewport) {
+                    preferredSize.width += ((JScrollPane) getParent().getParent()).getVerticalScrollBar()
+                            .getPreferredSize().width;
+                }
+                return preferredSize;
             }
-            return preferredSize;
+            else
+            {
+                Dimension prefferedSize = this.getPreferredSize();
+                if(getParent() instanceof JViewport)
+                {
+                    prefferedSize.height += ((JScrollPane) getParent().getParent()).getHorizontalScrollBar()
+                            .getPreferredSize().height;
+                }
+                return prefferedSize;
+            }
         }
 
         @Override
@@ -171,16 +214,35 @@ public class PanelsScrollPane extends JScrollPane{
 
         @Override
         public boolean getScrollableTracksViewportHeight() {
-            if (getParent() instanceof JViewport) {
-                JViewport viewport = (JViewport) getParent();
-                return getPreferredSize().height < viewport.getHeight();
+            if(this.scrollPane.isVertical())
+            {
+                if (getParent() instanceof JViewport) {
+                    JViewport viewport = (JViewport) getParent();
+                    return getPreferredSize().height < viewport.getHeight();
+                }
+                return true;
             }
-            return true;
+            else
+            {
+                return true;
+            }
         }
 
         @Override
         public boolean getScrollableTracksViewportWidth() {
-            return true;
+            if(this.scrollPane.isVertical())
+            {
+                return true;
+            }
+            else
+            {
+                if(getParent() instanceof JViewport)
+                {
+                    JViewport viewport = (JViewport) getParent();
+                    return getPreferredSize().width < viewport.getWidth();
+                }
+                return true;
+            }
         }
 
         @Override

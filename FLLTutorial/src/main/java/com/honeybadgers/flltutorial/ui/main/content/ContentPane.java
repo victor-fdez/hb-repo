@@ -147,11 +147,12 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     public void mouseClicked(MouseEvent e) {
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         
-        if(component == this.stagePanel)
+        //TODO: get rid of clicked method
+        /*if(component == this.stagePanel)
         {
             this.stagePanel.clicked(e.getPoint()); 
             return;
-        }
+        }*/
         this.redispatchEvent(e);
     }
     @Override
@@ -280,7 +281,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             e.translatePoint(((int)newPoint.getX()), ((int)newPoint.getY()));
             component.dispatchEvent(e);
             System.out.println(e+"");
-            System.out.println(""+component);
+            //System.out.println(""+component);
             //component.dispatchEvent(e);
          }
     }

@@ -80,7 +80,7 @@ public class StageSelectorPanel extends StagePanel{
         this.add(new OptionPanel(this.mainOption), c);
         
         //setup scroll pane
-        this.scrollPane = new PanelsScrollPane();
+        this.scrollPane = new PanelsScrollPane(true);
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;

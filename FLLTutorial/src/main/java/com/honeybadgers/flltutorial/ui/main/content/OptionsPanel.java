@@ -41,7 +41,7 @@ abstract public class OptionsPanel extends JPanel{
     private void initComponents()
     {
         //create the panel where the scroll pane were option panels will be laid
-        this.optionPanelsScrollPane = new PanelsScrollPane();
+        this.optionPanelsScrollPane = new PanelsScrollPane(true);
         
             //for every option panel append it to the panels scroll pane
             for(OptionPanel optionPanel : this.optionPanels)

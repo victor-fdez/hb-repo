@@ -7,7 +7,9 @@ package com.honeybadgers.flltutorial.ui.main.content.utilities;
 import com.honeybadgers.flltutorial.model.Option;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
@@ -163,11 +165,41 @@ public final class OptionPanel extends JPanel implements Cloneable
                 break;
         }
     }
+  
     public OptionState getState()
     {
         return this.state;
     }
+    
     public Option getOption() {
         return option;
+    }
+    /**
+     * Returns an Object that covers the whole panel and can be used to track, and
+     * receive events on the given option panel.
+     * 
+     * @return 
+     */
+    public Component getBeacon()
+    {
+        return this.description;
+    }
+    /**
+     * Returns the corresponding option panel from the input beacon.
+     * 
+     * @param object
+     * @return 
+     */
+    public static OptionPanel getOptionPanelFromBeacon(Component object)
+    {
+        if(object instanceof JTextArea)
+        {
+            JTextArea textArea = (JTextArea)object;
+            if(textArea.getParent() instanceof OptionPanel)
+            {
+                return (OptionPanel)textArea.getParent();
+            }
+        }
+        return null;
     }
 }
