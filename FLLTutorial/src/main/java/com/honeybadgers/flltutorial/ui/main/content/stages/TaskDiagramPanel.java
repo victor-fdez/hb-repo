@@ -88,7 +88,7 @@ public class TaskDiagramPanel extends StagePanel{
                options.add(option);
                
             }
-            for(int i = 0; i < 3; i++)
+            for(int i = 0; i < 20; i++)
             {
                 option = new Option("f option "+i, false);
                 options.add(option);

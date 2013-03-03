@@ -13,6 +13,7 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +24,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.GroupLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author chingaman
@@ -69,8 +71,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     private void initComponents()
     {
-        this.stagePanel = new TaskDiagramPanel();
-        //this.stagePanel = new ProblemDescriptionPanel();
+        //this.stagePanel = new TaskDiagramPanel();
+        this.stagePanel = new ProblemDescriptionPanel();
         //this.stagePanel = new MorphChartPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
@@ -144,12 +146,13 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     @Override
     public void mouseClicked(MouseEvent e) {
         Component component = this.contentPanel.getComponentAt(e.getPoint());
-        //System.out.println("component -> "+component);
-        //if
+        
         if(component == this.stagePanel)
         {
-           this.stagePanel.clicked(e.getPoint()); 
+            this.stagePanel.clicked(e.getPoint()); 
+            return;
         }
+        this.redispatchEvent(e);
     }
     @Override
     public void mousePressed(MouseEvent e)
@@ -157,11 +160,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //System.out.println("component -> "+component);
         //if
-        if(component == this.stagePanel)
-        {/*don't do anything, althought this will send points to stage panel*/
-            
-        }
-        else if(component == this.optionsPanel)
+        if(component == this.optionsPanel)
         {
             this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());
             if(this.selectedOptionPanel != null)
@@ -180,12 +179,11 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 int halfHeight = this.draggingOptionPanel.getHeight()/2;
                 this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
                 this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
+                return;
             }
         }
-        else //there is only two components this should no happen
-        {
-            System.out.println("mouse pressed unknown component");
-        }
+        this.redispatchEvent(e);
+
     }
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -224,14 +222,26 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             }
             this.draggingOptionPanel = null;
             this.selectedOptionPanel = null;
+            return;
         }
-        System.out.println("mouse released");
+        this.redispatchEvent(e);
+        //System.out.println("mouse released");
     }
     /* mouse movement listener*/
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+        this.redispatchEvent(e);
+    }
+    /*TODO:
+     * remember last component that was entered so that it may be exited
+     * 
+     * -scroll bar show highlight effect after they have been exited
+     * -other problems
+     */
     @Override
-    public void mouseExited(MouseEvent e) {} 
+    public void mouseExited(MouseEvent e) {
+        this.redispatchEvent(e);
+    } 
     @Override
     public void mouseDragged(MouseEvent e) 
     {
@@ -244,29 +254,34 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);            
             this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
         }
+        else
+        {
+            this.redispatchEvent(e);
+        }
         //System.out.println("mouse dragged");
     }
     @Override
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+        this.redispatchEvent(e);
+    }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        Component component = this.contentPanel.getComponentAt(e.getPoint());
-        
-        //if
-        if(component == this.stagePanel)
-        {/*don't do anything, althought this will send points to task diagram */
-                this.stagePanel.scrolled(e);
-        }
-        else if(component == this.optionsPanel)
-        {
-            
-                //e.translatePoint(-this.optionsPanel.getX(), -this.optionsPanel.getY());
-                //e.setSource(this.optionsPanel.selections);
-                this.optionsPanel.dispatchInterceptedEvent(e);
-        }
-        else //there is only two components this should no happen
-        {
-            System.out.println("mouse pressed unknown component");
-        }
+        //Component component = this.contentPanel.getComponentAt(e.getPoint());
+        this.redispatchEvent(e); 
+    }
+    private void redispatchEvent(MouseEvent e)
+    {
+         Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
+         if(component != null){
+            e.setSource(component);
+            Point point = e.getPoint();
+            Point newPoint = SwingUtilities.convertPoint(this.contentPanel, e.getPoint(), component);
+            e.translatePoint(-((int)point.getX()), -((int)point.getY()));
+            e.translatePoint(((int)newPoint.getX()), ((int)newPoint.getY()));
+            component.dispatchEvent(e);
+            System.out.println(e+"");
+            System.out.println(""+component);
+            //component.dispatchEvent(e);
+         }
     }
 }

@@ -36,7 +36,9 @@ public class StageSelectorPanel extends StagePanel{
         super();
         this.mainOption = new Option("this is the generic problem, please follow this directions before processing to perform this problem", true, null);
         mainOption.addChild(new Option("some description", false, null));
-        mainOption.addChild(new Option("larger description that gives a really boring, and uncomprenhensive detailed, and I forget to say more boring explanation", true, null));
+        for(int i = 0; i < 11; i++){
+            mainOption.addChild(new Option("larger description that gives a really boring, and uncomprenhensive detailed, and I forget to say more boring explanation", true, null));
+        }
         mainOption.addChild(new Option("some description", true, null));
         this.currentTracker = new OptionTracker(mainOption);
         //this.stageName = "Generic Stage Selector";
@@ -112,7 +114,6 @@ public class StageSelectorPanel extends StagePanel{
         //check whether the option fell inside the answers panel
         if(this.scrollPane.contains(dropPoint))
         {
-            System.out.println("CONTAINS POINT");
             //check with option tracker
             Option option = optionPanel.getOption();
             boolean newTracked = this.currentTracker.addOptionAt(this.lastPosition, option);
