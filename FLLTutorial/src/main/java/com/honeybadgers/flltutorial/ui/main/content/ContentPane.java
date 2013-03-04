@@ -280,7 +280,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             e.translatePoint(-((int)point.getX()), -((int)point.getY()));
             e.translatePoint(((int)newPoint.getX()), ((int)newPoint.getY()));
             component.dispatchEvent(e);
-            System.out.println(e+"");
+            //System.out.println(e+"");
             //System.out.println(""+component);
             //component.dispatchEvent(e);
          }

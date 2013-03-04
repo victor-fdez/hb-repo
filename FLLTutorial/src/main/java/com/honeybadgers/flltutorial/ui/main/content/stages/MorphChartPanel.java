@@ -50,6 +50,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     protected OptionPanel selectedPanel;
     /*used to look up the kind of panel that was clicked*/
     protected HashMap panelTypeHashes;
+    protected HashMap indexesHashes;
     public MorphChartPanel()
     {
         super();
@@ -60,6 +61,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker.getCorrectChild(0), 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
         this.panelTypeHashes = new HashMap();
+        this.indexesHashes = new HashMap();
         this.initComponents();
     }
     private void initComponents()
@@ -114,9 +116,11 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 {
                    this.panelTypeHashes.put(topBeacon, BeaconType.ParentPanel);
                 }
+                this.indexesHashes.put(leftMostOptionPanel, i);
                 //create a JPanel with one elements at the front, and then create empty
                 //option panels in a sub panel. All of the options panels in the subpanel
                 //will be equally sized
+
                 JPanel rowPanel = new JPanel();
                 rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
                 rowPanel.setBackground(Color.WHITE);
@@ -128,14 +132,9 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 rowPanel.add(leftMostOptionPanel);
                 
                     //setup the right children panel
-                    //JPanel childrenContainer = new JPanel(new GridLayout(1,1));
                     PanelsScrollPane childrenPanel = new PanelsScrollPane(false);//new JPanel(new GridLayout(0,1,2,2));
                 
-                //rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
-                //childrenContainer.add(childrenPanel);
                 rowPanel.add(childrenPanel);
-                //rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
-                //rowPanel.add(childrenPanel, c);
                 
                         //add panels to children panel                        
                         for(OptionPanel childPanel : this.generateOptionPanels(this.solutionTracker.getCorrectChild(i),0))
@@ -214,7 +213,6 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         //check whether panel falls in any of the child option panels, of the currently
         //selected panel.
         
-        //
         return 0;
     }
     /**
@@ -254,12 +252,22 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         {
             case SelectedParentPanel:
                 //this does nothing, because the parent panel is already selected
-                System.out.println("MorphChartPanel.mouseClicked : clicked selected parent panel");
+                //System.out.println("MorphChartPanel.mouseClicked : clicked selected parent panel");
                 break;
             case ParentPanel:
                 //this changes the options panel, and adds it's own children to it. Also All child
                 //panels are deleted from hash, and new ones are added. Parent becomes the selected parent panel.
-                System.out.println("MorphChartPanel.mouseClicked : clicked parent panel");
+                this.panelTypeHashes.remove(this.selectedPanel.getBeacon());
+                this.panelTypeHashes.put(this.selectedPanel.getBeacon(), BeaconType.ParentPanel);
+                
+                this.selectedPanel = OptionPanel.getOptionPanelFromBeacon(beacon);
+                this.panelTypeHashes.remove(beacon);
+                this.panelTypeHashes.put(beacon, BeaconType.SelectedParentPanel);
+                
+                int index = (int)this.indexesHashes.get(this.selectedPanel);
+                List<OptionPanel> optionPanels = this.generateOptionPanels(solutionTracker.getCorrectChild(index), 1);
+                ((OptionsSelectorPanel)this.optionsPanel).updateOptionPanels(optionPanels);
+                //System.out.println("MorphChartPanel.mouseClicked : clicked parent panel");
                 break;
             default:
                 break;
@@ -269,6 +277,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
+        
     }
 
     @Override
