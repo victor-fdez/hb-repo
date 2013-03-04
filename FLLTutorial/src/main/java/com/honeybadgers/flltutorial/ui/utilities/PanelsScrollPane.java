@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -175,7 +177,7 @@ public class PanelsScrollPane extends JScrollPane{
      * Custom JPanel class update automatically it's size to the size of the viewport
      * in a given JScrollPane
      */
-    protected class FittedViewportPanel extends JPanel implements Scrollable
+    protected class FittedViewportPanel extends JPanel implements Scrollable, ComponentListener
     {
         private PanelsScrollPane scrollPane;
         public FittedViewportPanel(PanelsScrollPane scrollPane)
@@ -249,6 +251,26 @@ public class PanelsScrollPane extends JScrollPane{
         public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
             return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width / 10, 1)
                     : Math.max(visibleRect.height / 10, 1);
+        }
+
+        @Override
+        public void componentResized(ComponentEvent e) {
+            this.revalidate();
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent e) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void componentShown(ComponentEvent e) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void componentHidden(ComponentEvent e) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 }

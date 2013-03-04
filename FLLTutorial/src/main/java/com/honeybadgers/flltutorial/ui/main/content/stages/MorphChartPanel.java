@@ -19,10 +19,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
@@ -34,6 +38,8 @@ import javax.swing.border.EmptyBorder;
  * @author chingaman
  */
 public class MorphChartPanel extends StagePanel implements MouseListener{
+
+    
     protected enum BeaconType
     {
         //ChildPanel,
@@ -69,7 +75,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         //add title to selector problem
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(10, 4, 4, 4);
@@ -80,7 +86,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         
         //add main option description option panel
         c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 1;
         c.insets = new Insets(10, 4, 4, 4);
@@ -101,7 +107,8 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 topBeacon.addMouseListener(this);
                 if(i == 0)
                 {
-                   this.panelTypeHashes.put(topBeacon, BeaconType.SelectedParentPanel);
+                    this.selectedPanel = leftMostOptionPanel;
+                    this.panelTypeHashes.put(topBeacon, BeaconType.SelectedParentPanel);
                 }
                 else
                 {
@@ -110,46 +117,34 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 //create a JPanel with one elements at the front, and then create empty
                 //option panels in a sub panel. All of the options panels in the subpanel
                 //will be equally sized
-                JPanel rowPanel = new JPanel(new GridBagLayout());
-                rowPanel.setMinimumSize(new Dimension(0, 50));
-                rowPanel.setBackground(Color.GRAY);
+                JPanel rowPanel = new JPanel();
+                rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
+                rowPanel.setBackground(Color.WHITE);
                 
-                    //setup the left most element
-                    c = new GridBagConstraints();
-                    c.fill = GridBagConstraints.VERTICAL;
-                    c.gridx = 0;
-                    c.gridy = 0;
-                    c.insets = new Insets(4, 2, 2, 4);
-                    c.ipadx = 0;
-                    c.ipady = 0;
-                    c.weightx = 0.1;
-                    c.weighty = 1.0;
-                    c.anchor = GridBagConstraints.PAGE_START;
-
-                rowPanel.add(leftMostOptionPanel, c);
+                rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
+                
+                leftMostOptionPanel.setPreferredSize(new Dimension(100,100));
+                leftMostOptionPanel.setMaximumSize(new Dimension(100,100));
+                rowPanel.add(leftMostOptionPanel);
                 
                     //setup the right children panel
-                    JPanel childrenPanel = new JPanel(new GridLayout(0,1,2,2));
-                    childrenPanel.setBackground(Color.red);
-                    c = new GridBagConstraints();
-                    c.fill = GridBagConstraints.BOTH;
-                    c.gridx = 1;
-                    c.gridy = 0;
-                    c.insets = new Insets(4, 4, 4, 4);
-                    c.ipady = 0;
-                    c.weightx = 0.9;
-                    c.weighty = 1.0;
-                    c.anchor = GridBagConstraints.PAGE_START;
-                    
-                rowPanel.add(childrenPanel, c);
+                    //JPanel childrenContainer = new JPanel(new GridLayout(1,1));
+                    PanelsScrollPane childrenPanel = new PanelsScrollPane(false);//new JPanel(new GridLayout(0,1,2,2));
+                
+                //rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
+                //childrenContainer.add(childrenPanel);
+                rowPanel.add(childrenPanel);
+                //rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
+                //rowPanel.add(childrenPanel, c);
                 
                         //add panels to children panel                        
                         for(OptionPanel childPanel : this.generateOptionPanels(this.solutionTracker.getCorrectChild(i),0))
                         {
-                            childrenPanel.add(childPanel);  
+                            childrenPanel.appendPanel(childPanel);
                         }
                 
                 this.scrollPane.appendPanel(rowPanel);
+                rowPanel.revalidate();
                 i++;
             }
     
@@ -167,6 +162,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         
         this.setBackground(Color.GRAY);
         this.revalidate();
+        this.scrollPane.revalidate();
         this.repaint();
     }
     private void morphChartGenerator()
@@ -174,12 +170,12 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         Option morphChartOption = new Option("Click a row, then chose whichever options you think will enable you to do the given functionality", true);
         OptionTracker morphChartTracker;
         //create an array of rows for the chart
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < 8; i++)
         {
             Option rowOption = new Option("functionality "+i, true);
-            for(int j = 0; j < 5; j++)
+            for(int j = 0; j < (((i % 4) == 0) ? 8 : 3); j++)
             {
-                Option childOption = new Option("you should clearly choose this options becuase all the others just don't make sense", true);
+                Option childOption = new Option("you should clearly choose this options becuase all the others just don't make sense", ((j % 3) != 0));
                 rowOption.addChild(childOption);
             }
             morphChartOption.addChild(rowOption);
@@ -215,7 +211,11 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
      */
     @Override
     public int dropOptionPanel(OptionPanel optionPanel) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //check whether panel falls in any of the child option panels, of the currently
+        //selected panel.
+        
+        //
+        return 0;
     }
     /**
      * When the user picks a specific row the possible answers for that row will be displayed

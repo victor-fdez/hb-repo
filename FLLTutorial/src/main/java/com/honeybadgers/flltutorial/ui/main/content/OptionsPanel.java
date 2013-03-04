@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 abstract public class OptionsPanel extends JPanel{
     private Dimension preferedDimension = new Dimension(250, 500);
     private Dimension minDimension = new Dimension(250, 400);
-    private Dimension maxDimension = new Dimension(300, 32767);
+    private Dimension maxDimension = new Dimension(250, 32767);
     protected PanelsScrollPane optionPanelsScrollPane;
     protected JPanel extraFeaturesPanel;
     JPanel clickedPanel;

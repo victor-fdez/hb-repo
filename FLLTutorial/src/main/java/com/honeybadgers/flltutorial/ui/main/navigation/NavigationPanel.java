@@ -133,7 +133,7 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
     public void mouseReleased(MouseEvent e) {}
     @Override
     public void mouseEntered(MouseEvent e) {
-        //System.out.println(e.getSource()+"");
+        
         if(SwingUtilities.isEventDispatchThread())
         {
             if(e.getSource() instanceof JTextArea)
