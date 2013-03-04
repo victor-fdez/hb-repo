@@ -16,19 +16,18 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -51,6 +50,8 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     /*used to look up the kind of panel that was clicked*/
     protected HashMap panelTypeHashes;
     protected HashMap indexesHashes;
+    protected HashMap indexesChildrenHashes;
+    protected List<List<OptionPanel>> listsOptionPanels;
     public MorphChartPanel()
     {
         super();
@@ -62,6 +63,8 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
         this.panelTypeHashes = new HashMap();
         this.indexesHashes = new HashMap();
+        this.indexesChildrenHashes = new HashMap();
+        this.listsOptionPanels = new ArrayList<List<OptionPanel>>();
         this.initComponents();
     }
     private void initComponents()
@@ -123,12 +126,12 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
 
                 JPanel rowPanel = new JPanel();
                 rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
-                rowPanel.setBackground(Color.WHITE);
                 
                 rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
                 
-                leftMostOptionPanel.setPreferredSize(new Dimension(100,100));
-                leftMostOptionPanel.setMaximumSize(new Dimension(100,100));
+                    leftMostOptionPanel.setPreferredSize(new Dimension(100,100));
+                    leftMostOptionPanel.setMaximumSize(new Dimension(100,100));
+                    
                 rowPanel.add(leftMostOptionPanel);
                 
                     //setup the right children panel
@@ -136,8 +139,19 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 
                 rowPanel.add(childrenPanel);
                 
-                        //add panels to children panel                        
-                        for(OptionPanel childPanel : this.generateOptionPanels(this.solutionTracker.getCorrectChild(i),0))
+                        //add panels to children panel
+                        List<OptionPanel> optionPanelsChilds = this.generateOptionPanels(this.solutionTracker.getCorrectChild(i),0);
+                        this.listsOptionPanels.add(optionPanelsChilds);
+                        if(i == 0)
+                        {
+                            int j = 0;
+                            for(OptionPanel childPanel : optionPanelsChilds)
+                            {
+                                this.indexesChildrenHashes.put(childPanel.getBeacon(), j);
+                                j++;
+                            }
+                        }
+                        for(OptionPanel childPanel : optionPanelsChilds)
                         {
                             childrenPanel.appendPanel(childPanel);
                         }
@@ -212,8 +226,55 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     public int dropOptionPanel(OptionPanel optionPanel) {
         //check whether panel falls in any of the child option panels, of the currently
         //selected panel.
+        int x = (int)optionPanel.getBounds().getCenterX();
+        int y = (int)optionPanel.getBounds().getCenterY();
         
-        return 0;
+        Component beacon = SwingUtilities.getDeepestComponentAt(this, x, y);
+        if(beacon == null)
+        {
+            return 2;
+        }
+        
+        //if it returns null it means the children are not childs of the the selection option
+        Object index = this.indexesChildrenHashes.get(beacon);
+        if(index == null)
+        {
+            return 2;
+        }
+        
+        
+        int childIndex = (int)index;
+        int selectedIndex = (int)this.indexesHashes.get(this.selectedPanel);
+
+        OptionPanel dropOptionPanel = OptionPanel.getOptionPanelFromBeacon(beacon);
+        Option dropOption = optionPanel.getOption();
+        OptionTracker parentOptionTracker = solutionTracker.getCorrectChild(selectedIndex);
+        boolean addedCorrectly = parentOptionTracker.addOptionAt(childIndex, dropOption);
+        if(addedCorrectly)
+        {
+            System.out.println("MorphChartPanel.mouseClicked : dropped correctly");
+            if(dropOption.isCorrect())
+            {
+                OptionTracker childOptionTracker = parentOptionTracker.getCorrectChild(childIndex);
+                dropOptionPanel.transferOption(dropOption);
+                if(childOptionTracker.isFinished())
+                {
+                    dropOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+                    //update parent colors here
+                }
+                else
+                {
+                    dropOptionPanel.setState(OptionPanel.OptionState.CORRECT);
+                }
+                this.revalidate();
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        return 2;
     }
     /**
      * When the user picks a specific row the possible answers for that row will be displayed
@@ -268,6 +329,15 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 List<OptionPanel> optionPanels = this.generateOptionPanels(solutionTracker.getCorrectChild(index), 1);
                 ((OptionsSelectorPanel)this.optionsPanel).updateOptionPanels(optionPanels);
                 //System.out.println("MorphChartPanel.mouseClicked : clicked parent panel");
+                
+                //load new child indexes for fast checking
+                int j = 0;
+                this.indexesChildrenHashes.clear();
+                for(OptionPanel optionPanel : this.listsOptionPanels.get(index))
+                {
+                    this.indexesChildrenHashes.put(optionPanel.getBeacon(), j);
+                    j++;
+                }
                 break;
             default:
                 break;
@@ -277,7 +347,6 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
     }
 
     @Override
@@ -291,7 +360,5 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    
-    
-    
+
 }
