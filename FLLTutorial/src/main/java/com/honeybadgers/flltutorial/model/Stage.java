@@ -26,5 +26,29 @@ public class Stage {
         this.videoPath = videoPath;
         this.timeOnStage = timeOnStage;
     }
+    
+    /**
+     * Getter for the list of options
+     * @return 
+     */
+    public List<Option> getOptions(){
+        return this.options;
+    }
+    
+    /**
+     * Getter for the video path
+     * @return 
+     */
+    public String getVideoPath(){
+        return this.videoPath;
+    }
+    
+    /**
+     * Getter for the time spent on the stage.
+     * @return 
+     */
+    public long getTimeOnStage(){
+        return this.timeOnStage;
+    }
 
 }

@@ -52,14 +52,19 @@ public class XMLBase {
             for(int i=0;i<stages.getLength();i++){
                 Element stageElement = (Element)stages.item(i);
                 String stageID = stageElement.getAttribute("id");
-                if(stageID.equals("problem_statement")){
-                    problemStatement = loadStage(stageElement);
-                }else if(stageID.equals("limitations")){
-                    limitations = loadStage(stageElement);
-                }else if(stageID.equals("task_diagram")){
-                    taskDiagram = loadStage(stageElement);
-                }else if(stageID.equals("morph_chart")){
-                    morphChart = loadStage(stageElement);
+                switch (stageID) {
+                    case "problem_statement":
+                        problemStatement = loadStage(stageElement);
+                        break;
+                    case "limitations":
+                        limitations = loadStage(stageElement);
+                        break;
+                    case "task_diagram":
+                        taskDiagram = loadStage(stageElement);
+                        break;
+                    case "morph_chart":
+                        morphChart = loadStage(stageElement);
+                        break;
                 }
             }
         }catch(ParserConfigurationException | SAXException | IOException pce){
@@ -67,7 +72,6 @@ public class XMLBase {
         }
         
         return new Tutorial(mission, problemStatement, limitations, taskDiagram, morphChart);
-        
     }
     
     /**
@@ -122,6 +126,20 @@ public class XMLBase {
     public static void main(String[] args){
         XMLBase.loadTutorial(new File("resources/sampleTutorial/tut1-Dan.xml"));
         
+    }
+    
+    void printStage(Stage s){
+       System.out.println(s.getVideoPath());
+       for(Option op : s.getOptions()){
+           printOption(op);
+       }
+    }
+    
+    void printOption(Option o){
+        System.out.println(o.getDescription());
+        for(Option op : o.getOptions()){
+            printOption(op);
+        }
     }
     
 }
