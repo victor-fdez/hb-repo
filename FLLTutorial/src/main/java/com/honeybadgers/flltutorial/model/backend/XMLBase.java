@@ -16,8 +16,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -27,7 +25,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;*/
 /**
  *
- * @author Dan
+ * @author Dan Doozan
  */
 public class XMLBase {
     
@@ -37,39 +35,39 @@ public class XMLBase {
      * @return  Tutorial that was loaded from the file
      */
     public static Tutorial loadTutorial(File xmlFile){
-        Stage problemStatement;
-        Stage taskDiagram;
-        Stage morphChart;
-        Stage limitations;
+        String mission=null;
+        Stage problemStatement=null;
+        Stage limitations=null;
+        Stage taskDiagram=null;
+        Stage morphChart=null;
+        
 
         try{
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder(); //throws ParserConfigurationException
             Document doc=db.parse(xmlFile); //throws SAXException, IOException
             
-            String mission = doc.getElementsByTagName("mission").item(0).getTextContent();
+            mission = doc.getElementsByTagName("mission").item(0).getTextContent();
         
             NodeList stages=doc.getElementsByTagName("stage");
             for(int i=0;i<stages.getLength();i++){
                 Element stageElement = (Element)stages.item(i);
                 String stageID = stageElement.getAttribute("id");
-                if(stageID.equals("problem_statement"))
+                if(stageID.equals("problem_statement")){
                     problemStatement = loadStage(stageElement);
-                else if(stageID.equals("limitations"))
+                }else if(stageID.equals("limitations")){
                     limitations = loadStage(stageElement);
-                else if(stageID.equals("task_diagram"))
+                }else if(stageID.equals("task_diagram")){
                     taskDiagram = loadStage(stageElement);
-                else if(stageID.equals("morph_chart"))
+                }else if(stageID.equals("morph_chart")){
                     morphChart = loadStage(stageElement);
+                }
             }
-            
-        }catch(ParserConfigurationException pce){
-            //handle exception here
-        }catch(SAXException saxe){
-            //handle exception here
-        }catch(IOException ioe){
+        }catch(ParserConfigurationException | SAXException | IOException pce){
             //handle exception here
         }
-        return null;
+        
+        return new Tutorial(mission, problemStatement, limitations, taskDiagram, morphChart);
+        
     }
     
     /**
@@ -79,28 +77,6 @@ public class XMLBase {
     public static void saveTutorial(Tutorial tutorial){
         //todo
     }
-    
-    /**
-     * Load the Problem Statement stage from the given XML element.
-     * @param probStatementElement  The root element of the Problem Statement tree
-     * @return  The problem statement stage
-     */
-    /*
-    private static Stage loadProblemStatement(Element probStatementElement) {
-        String desc = probStatementElement.getElementsByTagName("desc").item(0).getTextContent();
-        List<Option> options = null;
-        NodeList optionElements = probStatementElement.getElementsByTagName("option");
-        if(optionElements.getLength()>0){
-            options = new ArrayList<Option>();
-            for(int i=0;i<optionElements.getLength();i++){
-                options.add(loadOption((Element)optionElements.item(i)));
-            }
-        }
-        String videoPath = probStatementElement.getAttribute("video");
-        long timeOnStage = 0; //this is time that a student spend on this stage, in milliseconds
-        return new Stage(desc, options, videoPath, timeOnStage);
-    }
-    */
     
     /**
      * Load a stage from the XML document
@@ -122,28 +98,10 @@ public class XMLBase {
     }
     
     /**
-     * Load the Task Diagram stage from the given XML element.
-     * @param taskDiagramElement  The root element of the Task Diagram tree
-     * @return  The Task Diagram stage
+     * Recursive function to load an option and all sub-options from a given root option element
+     * @param optionElement  The option element to load from
+     * @return  The loaded Option
      */
-    /*
-    private static Stage loadTaskDiagram(Element taskDiagramElement) {
-        List<Option> options = null;
-        NodeList optionElements = taskDiagramElement.getElementsByTagName("option");
-        if(optionElements.getLength()>0){
-            options = new ArrayList<Option>();
-            for(int i=0;i<optionElements.getLength();i++){
-                options.add(loadOption((Element)optionElements.item(i)));
-            }
-        }
-        String videoPath = taskDiagramElement.getAttribute("video");
-        long timeOnStage = 0; //this is time that a student spend on this stage, in milliseconds
-        return new Stage(options, videoPath, timeOnStage);
-        
-    }*/
-    
-    
-    /**test this*/
     private static Option loadOption(Element optionElement){
         String desc = optionElement.getElementsByTagName("desc").item(0).getTextContent();
         boolean correct = optionElement.getAttribute("correct").equalsIgnoreCase("true");
@@ -162,7 +120,7 @@ public class XMLBase {
     }
     
     public static void main(String[] args){
-        XMLBase.loadTutorial(new File("tut1-Dan.xml"));
+        XMLBase.loadTutorial(new File("resources/sampleTutorial/tut1-Dan.xml"));
         
     }
     

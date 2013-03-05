@@ -1,0 +1,387 @@
+﻿<xml version="1.0" title="Tutorial1" author="JoRay Van Vliet" encoding="utf-8">
+	<mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost.</mission>
+	
+	<!--STAGE 1: Problem Statement-->
+	<stage id="problem_statement" sid="0" time="0" video="">
+		<!--General options-->
+		<option oid="0.0" type="right" position="-1" selected="-1">
+			<desc>Move to guidepost</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="0.1" type="right" position="-1" selected="-1">
+			<desc>Read color on guidepost</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="0.2" type="right" position="-1" selected="-1">
+			<desc>Move to ball location</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="0.3" type="right" position="-1" selected="-1">
+			<desc>Transport ball to goal</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		
+		<!-- More specific ones: Not sure if we want to be this specific, but since I made them I saved them
+		<option oid="-1" type="right|wrong" position="-1" selected="-1">
+			<desc>Move forward</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="-1" type="right|wrong" position="-1" selected="-1">
+			<desc>Move backward</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="-1" type="right|wrong" position="-1" selected="-1">
+			<desc>Turn left</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="-1" type="right|wrong" position="-1" selected="-1">
+			<desc>Turn right</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="2" type="right|wrong" position="-1" selected="-1">
+			<desc>Detect guidepost</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="3" type="right|wrong" position="-1" selected="-1">
+			<desc>Read green color</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="4" type="right|wrong" position="-1" selected="-1">
+			<desc>Read red color</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="5" type="right|wrong" position="-1" selected="-1">
+			<desc>Read yellow color</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="10" type="right|wrong" position="-1" selected="-1">
+			<desc>Detect ball</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="8" type="right|wrong" position="-1" selected="-1">
+			<desc>Pick up ball</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="10" type="right|wrong" position="-1" selected="-1">
+			<desc>Hold ball</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="9" type="right|wrong" position="-1" selected="-1">
+			<desc>Kick ball</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="10" type="right|wrong" position="-1" selected="-1">
+			<desc>Trap ball in a container</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		<option oid="10" type="right|wrong" position="-1" selected="-1">
+			<desc>Detect goal</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+		-->
+	</stage>
+	
+	<!--STAGE 2: Limitations and Constraints-->
+	<stage id="limitations_constraints" sid="1" time="0" video="">
+		<option oid="1.0" type="right|wrong" position="-1" selected="-1">
+			<desc>Number of Motors</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.0.0" type="wrong" position="-1" selected="-1">
+				<desc>0</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.0.1" type="wrong" position="-1" selected="-1">
+				<desc>1</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.0.2" type="wrong" position="-1" selected="-1">
+				<desc>2</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.0.3" type="right" position="-1" selected="-1">
+				<desc>3</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.0.4" type="wrong" position="-1" selected="-1">
+				<desc>4</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.1" type="right|wrong" position="-1" selected="-1">
+			<desc>Number of Sensors</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.1.0" type="wrong" position="-1" selected="-1">
+				<desc>0</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.1.1" type="right" position="-1" selected="-1">
+				<desc>1</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.1.2" type="wrong" position="-1" selected="-1">
+				<desc>2</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.1.3" type="wrong" position="-1" selected="-1">
+				<desc>3</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.1.4" type="wrong" position="-1" selected="-1">
+				<desc>4</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.2" type="right|wrong" position="-1" selected="-1">
+			<desc>Robot Height</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.2.0" type="wrong" position="-1" selected="-1">
+				<desc>Must be under 6"</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.2.1" type="wrong" position="-1" selected="-1">
+				<desc>Must be under 12"</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.2.2" type="wrong" position="-1" selected="-1">
+				<desc>Must be under 18"</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.2.3" type="right" position="-1" selected="-1">
+				<desc>No specific height limitation</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.3" type="right|wrong" position="-1" selected="-1">
+			<desc>Robot Width</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.3.0" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 6 inches</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.3.1" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 12 inches</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.3.2" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 18 inches</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.3.3" type="right" position="-1" selected="-1">
+				<desc>No specific width limitation</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.4" type="right|wrong" position="-1" selected="-1">
+			<desc>Robot Weight</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.4.0" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 1 pound</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.4.1" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 3 pounds</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.4.2" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 5 pounds</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.4.3" type="wrong" position="-1" selected="-1">
+				<desc>&lt; 10 pounds</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.4.4" type="right" position="-1" selected="-1">
+				<desc>No specific weight limitation</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.5" type="right|wrong" position="-1" selected="-1">
+			<desc>Weather and Lighting</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.5.0" type="right" position="-1" selected="-1">
+				<desc>Well lit</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.5.1" type="wrong" position="-1" selected="-1">
+				<desc>Dark</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.5.2" type="right" position="-1" selected="-1">
+				<desc>Foggy</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.6" type="right|wrong" position="-1" selected="-1">
+			<desc>Surface Conditions</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.6.0" type="right" position="-1" selected="-1">
+				<desc>Dry</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.6.1" type="wrong" position="-1" selected="-1">
+				<desc>Wet</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.6.2" type="right" position="-1" selected="-1">
+				<desc>Firm</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.6.3" type="wrong" position="-1" selected="-1">
+				<desc>Soft</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.6.4" type="wrong" position="-1" selected="-1">
+				<desc>Slanted</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.6.5" type="wrong" position="-1" selected="-1">
+				<desc>Uneven</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="1.7" type="right|wrong" position="-1" selected="-1">
+			<desc>Movement Requirements</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="1.7.0" type="wrong" position="-1" selected="-1">
+				<desc>Step Up</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.7.1" type="wrong" position="-1" selected="-1">
+				<desc>Step Down</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.7.2" type="wrong" position="-1" selected="-1">
+				<desc>Ramp</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="1.7.3" type="right" position="-1" selected="-1">
+				<desc>None of the above</desc>
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+	</stage>
+	
+	<!--STAGE 3: Task Diagram-->
+	<!-- check this for right|wrong -->
+	<stage id="task_diagram" sid="2" time="0" video="">
+		<option oid="2.0" type="right" position="-1" selected="-1">
+			<desc>Color-Based Transport</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="2.0.0" type="right" position="-1" selected="-1">
+				<desc>Movement</desc>
+				<morality>Why this option is right/wrong</morality>
+				<option oid="2.0.0.0" type="right" position="-1" selected="-1">
+					<desc>Turn Left/Right</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+				<option oid="2.0.0.1" type="right" position="-1" selected="-1">
+					<desc>Move Forward</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+				<option oid="2.0.0.2" type="wrong" position="-1" selected="-1">
+					<desc>Move Backward</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+				<option oid="2.0.0.3" type="wrong" position="-1" selected="-1">
+					<desc>Move Sideways</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+			</option>
+			<option oid="2.0.1" type="right" position="-1" selected="-1">
+				<desc>Sensing</desc>
+				<morality>Why this option is right/wrong</morality>
+				<option oid="2.0.1.0" type="right" position="-1" selected="-1">
+					<desc>Color Sensing</desc>
+					<morality>Why this option is right/wrong</morality>
+					<option oid="2.0.1.0.0" type="right" position="-1" selected="-1">
+						<desc>Sense Red</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+					<option oid="2.0.1.0.1" type="right" position="-1" selected="-1">
+						<desc>Sense Blue</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+					<option oid="2.0.1.0.2" type="wrong" position="-1" selected="-1">
+						<desc>Sense Yellow</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+					<option oid="2.0.1.0.3" type="wrong" position="-1" selected="-1">
+						<desc>Sense Green</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+					<option oid="2.0.1.0.4" type="wrong" position="-1" selected="-1">
+						<desc>Sense Black</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+					<option oid="2.0.1.0.5" type="wrong" position="-1" selected="-1">
+						<desc>Sense White</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+				</option>
+				<option oid="2.0.1.1" type="wrong" position="-1" selected="-1">
+					<desc>Light Sensing</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+				<option oid="2.0.1.2" type="wrong" position="-1" selected="-1">
+					<desc>Radar Sensing</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+				<option oid="2.0.1.3" type="right" position="-1" selected="-1">
+					<desc>Object Sensing</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+			</option>
+			<option oid="2.0.2" type="right" position="-1" selected="-1">
+				<desc>Transport Ball</desc>
+				<morality>Why this option is right/wrong</morality>
+				<option oid="2.0.2.0" type="right" position="-1" selected="-1">
+					<desc>Pick Up Ball</desc>
+					<morality>Why this option is right/wrong</morality>
+					<option oid="2.0.2.0.0" type="right" position="-1" selected="-1">
+						<desc>Move Arm</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+					<option oid="2.0.2.0.1" type="right" position="-1" selected="-1">
+						<desc>Grab Ball</desc>
+						<morality>Why this option is right/wrong</morality>
+					</option>
+				</option>
+				<option oid="2.0.2.1" type="right" position="-1" selected="-1">
+					<desc>Trap Ball</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+				<option oid="2.0.2.2" type="right" position="-1" selected="-1">
+					<desc>Kick Ball</desc>
+					<morality>Why this option is right/wrong</morality>
+				</option>
+			</option>
+		</option>
+	</stage>
+	
+	<!--STAGE 4: Morph Chart-->
+	<stage id="morph_chart" sid="3" time="0" video="">
+		<option oid="3.0" type="right" position="-1" selected="-1">
+			<desc>Move</desc>
+			<morality>Why this option is right/wrong</morality>
+			<option oid="3.0.0" type="right" position="-1" selected="-1">
+				<desc>4 Wheels</desc>
+				<img src="media/fourWheels.png" />
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="3.0.1" type="right" position="-1" selected="-1">
+				<desc>3 Wheels</desc>
+				<img src="media/threeWheels.png" />
+				<morality>Why this option is right/wrong</morality>
+			</option>
+			<option oid="3.0.2" type="right" position="-1" selected="-1">
+				<desc>Tank Treads</desc>
+				<img src="media/tankTreads.png" />
+				<morality>Why this option is right/wrong</morality>
+			</option>
+		</option>
+		<option oid="3.1" type="right" position="-1" selected="-1">
+			<desc>Pick Up Ball</desc>
+			<morality>Why this option is right/wrong</morality>
+		</option>
+	</stage>
+</xml>
