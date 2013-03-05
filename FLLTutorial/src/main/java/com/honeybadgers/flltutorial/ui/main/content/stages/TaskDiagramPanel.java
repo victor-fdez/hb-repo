@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -167,123 +167,78 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         return this.optionsPanel;
     }
     /**
-     * drop option panel at a specified location by the x, and y location of the bounds.
+     * Drop option panel at a specified location by the x, and y location of the bounds.
+     * TODO: clean up this method to clean up more code in task diagram
      * 
      * @param optionPanel
      * @return 
      */
     @Override
     public int dropOptionPanel(OptionPanel optionPanel) {
+        OptionPanel childPanel;
+        Option dropOption;
+        OptionTracker optionTracker;
+        int cIndex;
+        
         //check if the give option panel can be dropped as one of the children
         int x = (int)optionPanel.getBounds().getCenterX();
         int y = (int)optionPanel.getBounds().getCenterY();
-        Point point = new Point(x,y);
-        ChildPanelResult childPanelResult = this.getChildPanel(point, 0);
-        if(childPanelResult != null)
+        
+        //get the beacon for all components in task diagram
+        Component beacon = SwingUtilities.getDeepestComponentAt(this, x, y);
+        
+        //get the index of component if it is a child
+        Object childIndex = this.childPanelBeaconsHashes.get(beacon);
+       
+        //this is not a child beacon
+        if(childIndex == null)
         {
-            OptionPanel childPanel = childPanelResult.optionPanel;
-            int optionIndex = childPanelResult.optionIndex;
-            Option dropOption = optionPanel.getOption();
-            //check whether it was dropped correctly
-            OptionTracker optionTracker = this.currentTrackerPointer;
-            boolean added = optionTracker.addOptionAt(optionIndex, dropOption);
-            if(added)
+            return 2;
+        }
+        
+        //else it is a child beacon
+        childPanel = OptionPanel.getOptionPanelFromBeacon(beacon);
+        cIndex = (int)childIndex;
+        dropOption = optionPanel.getOption();
+        optionTracker = this.currentTrackerPointer;
+        
+        //check if it can be added and is correct, then set correspondingly
+        boolean added = optionTracker.addOptionAt(cIndex, dropOption);
+        if(added)
+        {
+            if(dropOption.isCorrect())
             {
-                if(dropOption.isCorrect())
+                OptionTracker childOptionTracker = optionTracker.getCorrectChild(cIndex);
+                childPanel.transferOption(dropOption);
+                if(childOptionTracker.isFinished())
                 {
-                    OptionTracker childOptionTracker = optionTracker.getCorrectChild(optionIndex);
-                    childPanel.transferOption(dropOption);
-                    if(childOptionTracker.isFinished())
-                    {
-                        //update the child and all parents color
-                        childPanel.setState(OptionPanel.OptionState.FINISHED);
-                        this.updateParentsColors(childOptionTracker);
-                    }
-                    else
-                    {
-                        //green color, for correct, in options selector panel
-                        childPanel.setState(OptionPanel.OptionState.CORRECT);
-                    }
-                    return 0;
+                    //update the child and all parents color
+                    childPanel.setState(OptionPanel.OptionState.FINISHED);
+                    this.updateParentsColors(childOptionTracker);
                 }
                 else
                 {
-                    //color red, for incorrect, in options selector panel
-                    return 1;
+                    //green color, for correct, in options selector panel
+                    childPanel.setState(OptionPanel.OptionState.CORRECT);
                 }
+                return 0;
             }
             else
             {
-                //dropOption has already been drop so no
+                //color red, for incorrect, in options selector panel
+                return 1;
             }
         }
         return 2;
     }
+    
     /**
-     * 
-     * 
-     * @param point         the point that was clicked in the task diagram panel
+     * DEPRECATED
      */
     @Override
     public void clicked(Point point) {
     }
     
-    private ChildPanelResult getChildPanel(Point point, int checkAllPanels)
-    {
-        /*get panel that was clicked*/
-        JPanel childrenPanel = null;
-        int index;
-        if(checkAllPanels == 1)
-        {
-            for(index = this.depthPanels.length-1; index >= 0; index--)
-            {
-                /*search for the given panel*/
-                JPanel panel = this.depthPanels[index];
-                if(this.getComponentAt(point) == panel)
-                {
-                    childrenPanel = panel;
-                    break;
-                }
-            }
-        }
-        else         /*check if current depth contains the drop position*/
-        {
-            index = this.currentDepth;
-            JPanel panel = this.depthPanels[index];
-            if(this.getComponentAt(point) == panel)
-            {
-                childrenPanel = panel;
-            }
-        }
-        /*if no panel contained this point*/
-        if(childrenPanel == null) {
-            return null;
-        }
-        /*normalize point to */
-        int x = (int)childrenPanel.getBounds().getMinX();
-        int y = (int)childrenPanel.getBounds().getMinY();
-        Point originChildrenPanel = new Point(x, y);
-        Point relativePoint = point;
-        relativePoint.x = relativePoint.x - originChildrenPanel.x;
-        relativePoint.y = relativePoint.y - originChildrenPanel.y;
-        /*get which child contains this relative point*/
-        JComponent panel = (JComponent)childrenPanel.getComponentAt(relativePoint);
-        //System.out.println(""+panel);
-        if(panel != null && panel instanceof OptionPanel)
-        {
-            OptionPanel childPanel = (OptionPanel)panel;
-            if(childPanel != null)
-            {
-                ChildPanelResult childResult = new ChildPanelResult();
-                childResult.depthIndex = index;
-                childResult.optionIndex = ((Integer)this.depthPanelsHashes[index].get(childPanel)).intValue();
-                childResult.optionPanel = childPanel;
-                childResult.optionsPanel = childrenPanel;
-                return childResult;
-            }
-        }
-        return null;
-    }
     private void updateParentsColors(OptionTracker optionTracker)
     {
         int index = this.currentDepth - 1;
@@ -350,16 +305,25 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         depthPanel.add(optionPanel);
         depthPanel.revalidate();
     }
-
+    
+    private class ChildPanelResult
+    {
+        int depthIndex;
+        int optionIndex;
+        OptionPanel optionPanel;
+        JPanel optionsPanel;
+    }
+    
     @Override
     public void scrolled(AWTEvent e) {
-        //may later use if the tree is embedded in a scroll pane
     }
+    
     /**
-     * TODO: to make this work we need to add mouse listener to all the clickable
-     * components.
+     * Whenever an active beacon is clicked this method will be called, and everything
+     * in the Task Diagram panel will be updated. Also the options panels will be 
+     * respectively updated.
      * 
-     * @param e 
+     * @param e         is an event
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -481,12 +445,5 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
 
     @Override
     public void mouseExited(MouseEvent e) {
-    }
-    private class ChildPanelResult
-    {
-        int depthIndex;
-        int optionIndex;
-        OptionPanel optionPanel;
-        JPanel optionsPanel;
     }
 }
