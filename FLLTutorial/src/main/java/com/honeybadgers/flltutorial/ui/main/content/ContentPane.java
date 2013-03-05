@@ -57,14 +57,14 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      * act as an intermediary. All stage panels, and options panels must inherit
      * from the abstract classes StagePanel, and OptionsPanel.
      */
-    public ContentPane()
+    public ContentPane(StagePanel stage)
     {
         super();
        
         //init content panel
         //this.contentPanel.setBackground(Color.red);
+        this.stagePanel = stage;
         this.initComponents();
-
     }
     /**
      * Private method initializes the layout of the default content panel.
@@ -73,7 +73,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     {
         //this.stagePanel = new TaskDiagramPanel();
         //this.stagePanel = new ProblemDescriptionPanel();
-        this.stagePanel = new MorphChartPanel();
+        //this.stagePanel = new MorphChartPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
         this.glassPanel = new JPanel();
@@ -82,11 +82,42 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.glassPanel.setVisible(true);
         this.glassPanel.setLayout(null);
         
-        
         this.setPreferredSize(preferedDimension);
         this.setMinimumSize(minDimension);
         this.setMaximumSize(maxDimension);
 
+        this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
+        this.add(this.glassPanel, JLayeredPane.DRAG_LAYER);
+        
+        this.addStagePanelContent();
+        
+    }
+    public void updateStagePanel(StagePanel newStagePanel)
+    {
+        this.stagePanel = newStagePanel;
+        this.optionsPanel = newStagePanel.getOptionsPanel();
+        this.removeStagePanelContent();
+        this.addStagePanelContent();
+    }
+    private void removeStagePanelContent(){
+        //stop all listeners while removing panels
+        this.removeComponentListener(this);
+        
+        this.glassPanel.removeMouseListener(this);
+        this.glassPanel.removeMouseListener(this);
+        this.glassPanel.removeMouseMotionListener(this);
+        
+        //remove all panels from content panel
+        this.contentPanel.removeAll();
+        
+        //clear up the previous layout
+        this.contentPanel.setLayout(null);
+        
+        
+    }
+    private void addStagePanelContent(){
+        
+        //setup the layouts for this content panel
         GroupLayout contentLayout = new GroupLayout(this.contentPanel);
         this.contentPanel.setLayout(contentLayout);
         
@@ -100,15 +131,16 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             contentLayout.createParallelGroup()
                 .addComponent(this.stagePanel)
                 .addComponent(this.optionsPanel)
-        );  
+            ); 
         
-        this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
-        this.add(this.glassPanel, JLayeredPane.DRAG_LAYER);
-        /* event listeners defined here*/
+        this.revalidate();
+
+        //add all listeners
         this.glassPanel.addMouseListener(this);
         this.glassPanel.addMouseMotionListener(this);
         this.glassPanel.addMouseWheelListener(this);
         this.addComponentListener(this);
+        
     }
     @Override
     public void paint(Graphics g)
@@ -161,6 +193,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //System.out.println("component -> "+component);
         //if
+        System.out.println(""+e.getSource());
         if(component == this.optionsPanel)
         {
             this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());

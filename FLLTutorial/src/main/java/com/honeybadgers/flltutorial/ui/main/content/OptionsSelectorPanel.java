@@ -39,12 +39,17 @@ public class OptionsSelectorPanel extends OptionsPanel implements ComponentListe
         this.optionPanelsScrollPane.removeAllPanels();
         this.optionPanels = optionPanels;
         
+        if(this.optionPanels == null)
+        {
+            return;
+        }
         //add all of the new option panels
         for(OptionPanel optionPanel : this.optionPanels)
         {
             this.optionPanelsScrollPane.appendPanel(optionPanel);
         }
         
+        this.revalidate();
     }
     @Override
     public void componentResized(ComponentEvent e) {

@@ -15,4 +15,7 @@ Any value defined here will override the pom.xml file value but is only applicab
 -->
         <netbeans.hint.jdkPlatform>Default_JavaFX_Platform</netbeans.hint.jdkPlatform>
     </properties>
+    <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+        <word>clickable</word>
+    </spellchecker-wordlist>
 </project-shared-configuration>

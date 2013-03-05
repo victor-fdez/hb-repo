@@ -4,6 +4,7 @@
  */
 package com.honeybadgers.flltutorial.ui.main.navigation;
 
+import com.honeybadgers.flltutorial.ui.main.content.PanelReceiver;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.BorderLayout;
@@ -42,11 +43,13 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
     private float aspectRatio = 1.0f;
     //mapping from text editor to stage panels
     private HashMap stagesMap;
+    private PanelReceiver reciever;
     
-    public NavigationPanel(ArrayList<StagePanel> stages)
+    public NavigationPanel(ArrayList<StagePanel> stages, PanelReceiver reciever)
     {
         super();
         this.stages = stages;
+        this.reciever = reciever;
         this.initComponents(); 
     }
 
@@ -58,6 +61,7 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
         this.videoPanel = new JPanel();
         this.videoPanel.setBackground(Color.BLACK);
         this.add(this.videoPanel);
+        this.stagesMap = new HashMap();
         
         this.add(Box.createVerticalStrut(5));
         //initiallized fitted scroll pane for stage panels
@@ -81,7 +85,8 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
                 textArea.setBorder(new EmptyBorder(4,4,4,4));
                 textArea.setBackground(Color.white);
                 textArea.addMouseListener(this);
-
+                
+                this.stagesMap.put(textArea, stagePanel);
                 
                 //creating title for stage
                 stagePanelNav.add(textArea);
@@ -125,7 +130,13 @@ public class NavigationPanel extends JPanel implements ComponentListener, MouseL
     @Override
     public void mouseClicked(MouseEvent e) {
         //on click tell application to change stage panel if it is possible
+        if(e.getSource() == null)
+        {
+            return;
+        }
         
+        StagePanel stagePanel = (StagePanel)this.stagesMap.get(e.getSource());
+        this.reciever.receivePanel(stagePanel, null);
     }
     @Override
     public void mousePressed(MouseEvent e) {}
