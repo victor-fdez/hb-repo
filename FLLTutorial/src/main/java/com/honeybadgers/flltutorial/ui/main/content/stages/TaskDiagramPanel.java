@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package com.honeybadgers.flltutorial.ui.main.content.stages;
-//REMEMBER, lowest level is having bugs.
+
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
