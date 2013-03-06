@@ -4,11 +4,7 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
-import com.honeybadgers.flltutorial.ui.main.content.stages.ConsiderationsAndConstraintsPanel;
-import com.honeybadgers.flltutorial.ui.main.content.stages.MorphChartPanel;
-import com.honeybadgers.flltutorial.ui.main.content.stages.ProblemDescriptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
-import com.honeybadgers.flltutorial.ui.main.content.stages.TaskDiagramPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import java.awt.Component;
 import java.awt.Dimension;

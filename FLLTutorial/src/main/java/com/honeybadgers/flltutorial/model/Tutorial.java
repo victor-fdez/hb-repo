@@ -18,7 +18,7 @@ public class Tutorial extends TutorialBase
     private List<Option> limitationsAndConstraints;
     Tutorial()
     {
-        
+        super(null,null);
     }
     public int equals(Tutorial anotherTutorial)
     {

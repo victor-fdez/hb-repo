@@ -4,6 +4,8 @@
  */
 package com.honeybadgers.flltutorial.ui.begin;
 
+import com.honeybadgers.flltutorial.model.TutorialBase;
+
 /**
  *
  * @author chingaman
@@ -13,7 +15,7 @@ public class TutorialPanel extends javax.swing.JPanel {
     /**
      * Creates new form tutorialPanel
      */
-    public TutorialPanel() {
+    public TutorialPanel(TutorialBase tutorialBase) {
         initComponents();
     }
 

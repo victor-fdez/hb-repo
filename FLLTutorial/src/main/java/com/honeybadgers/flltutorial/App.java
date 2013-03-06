@@ -1,7 +1,7 @@
 package com.honeybadgers.flltutorial;
 
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
-import com.honeybadgers.flltutorial.ui.BeginTopComponent;
+import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
@@ -17,7 +17,7 @@ public class App
         System.out.println("Is this the EDT thread: "+SwingUtilities.isEventDispatchThread());
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                  BeginTopComponent topComp = new BeginTopComponent(); 
+                  FLLTutorialUI topComp = new FLLTutorialUI(); 
                   topComp.setVisible(true);
                   System.out.println("Is this the EDT thread: "+SwingUtilities.isEventDispatchThread());
             }
