@@ -4,6 +4,11 @@
  */
 package com.honeybadgers.flltutorial.ui;
 
+import com.honeybadgers.flltutorial.ui.begin.Beginnings;
+import com.honeybadgers.flltutorial.ui.begin.TutorialPanel;
+import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
+import java.awt.GridLayout;
+
 /**
  *
  * @author chingaman
@@ -14,7 +19,29 @@ public class BeginTopComponent extends javax.swing.JFrame {
      * Creates new form BeginTopComponent
      */
     public BeginTopComponent() {
+        /*
         initComponents();
+        */
+        
+        this.getContentPane().setLayout(new GridLayout(1,1));
+        
+        TutorialPanel tutorialPanel1 = new TutorialPanel();
+        TutorialPanel tutorialPanel2 = new TutorialPanel();
+        TutorialPanel tutorialPanel3 = new TutorialPanel();
+        
+        PanelsScrollPane scrollPane = new PanelsScrollPane(true);
+        
+        
+        scrollPane.appendPanel(tutorialPanel3);
+        scrollPane.appendPanel(tutorialPanel2);
+        scrollPane.appendPanel(tutorialPanel1);
+
+        Beginnings beginnings = new Beginnings();
+        
+        beginnings.getListPanel().add(scrollPane);
+        
+        this.getContentPane().add(beginnings);
+        this.pack();
     }
 
     /**
@@ -141,6 +168,7 @@ public class BeginTopComponent extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new BeginTopComponent().setVisible(true);
+                
             }
         });
     }

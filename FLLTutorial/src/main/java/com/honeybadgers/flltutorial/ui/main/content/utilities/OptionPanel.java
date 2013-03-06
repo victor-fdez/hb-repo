@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
@@ -27,6 +28,7 @@ public final class OptionPanel extends JPanel implements Cloneable
     OptionState state;
     private Option option;
     JTextArea description;
+    //JLabel description;
     public OptionPanel()
     {
         super();
@@ -60,12 +62,14 @@ public final class OptionPanel extends JPanel implements Cloneable
         {
             System.err.println("Exception");
         }
+        //this.description = new JLabel();
         this.setLayout(new BorderLayout());
         this.description.setBackground(new Color(0,0,0,0));
         this.description.setBorder(new EmptyBorder(2,2,2,2));
         this.description.setEditable(false);
         this.description.setLineWrap(true);
         this.description.setWrapStyleWord(true);
+   
         this.description.setVisible(true);
         
         //this.setBorder(new LineBorder(Color.BLACK, 1,));

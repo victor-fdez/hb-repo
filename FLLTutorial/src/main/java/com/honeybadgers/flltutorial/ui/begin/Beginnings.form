@@ -16,9 +16,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="listPanel" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="185" max="32767" attributes="0"/>
@@ -28,7 +29,6 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="beginButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLayeredPane1" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -43,7 +43,7 @@
                   <Component id="userChooser" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLayeredPane1" pref="220" max="32767" attributes="0"/>
+              <Component id="listPanel" pref="220" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="beginButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -78,36 +78,17 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="beginButtonActionPerformed"/>
       </Events>
     </Component>
-    <Container class="javax.swing.JLayeredPane" name="jLayeredPane1">
+    <Container class="javax.swing.JPanel" name="listPanel">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="cc" green="cc" red="cc" type="rgb"/>
+        </Property>
+      </Properties>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>
-      <SubComponents>
-        <Container class="javax.swing.JPanel" name="selectorPanel">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="99" green="99" red="99" type="rgb"/>
-            </Property>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="0" y="0" width="390" height="-1" layer="0" position="-1"/>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="390" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="220" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-      </SubComponents>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+        <Property name="columns" type="int" value="1"/>
+        <Property name="rows" type="int" value="1"/>
+      </Layout>
     </Container>
   </SubComponents>
 </Form>

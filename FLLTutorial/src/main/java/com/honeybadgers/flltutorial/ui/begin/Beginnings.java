@@ -4,6 +4,8 @@
  */
 package com.honeybadgers.flltutorial.ui.begin;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author chingaman
@@ -29,8 +31,7 @@ public class Beginnings extends javax.swing.JPanel {
         titleLabel = new javax.swing.JLabel();
         userChooser = new javax.swing.JComboBox();
         beginButton = new javax.swing.JButton();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
-        selectorPanel = new javax.swing.JPanel();
+        listPanel = new javax.swing.JPanel();
 
         titleLabel.setText("long title");
 
@@ -48,21 +49,8 @@ public class Beginnings extends javax.swing.JPanel {
             }
         });
 
-        selectorPanel.setBackground(new java.awt.Color(153, 153, 153));
-
-        org.jdesktop.layout.GroupLayout selectorPanelLayout = new org.jdesktop.layout.GroupLayout(selectorPanel);
-        selectorPanel.setLayout(selectorPanelLayout);
-        selectorPanelLayout.setHorizontalGroup(
-            selectorPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 390, Short.MAX_VALUE)
-        );
-        selectorPanelLayout.setVerticalGroup(
-            selectorPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 220, Short.MAX_VALUE)
-        );
-
-        selectorPanel.setBounds(0, 0, 390, 220);
-        jLayeredPane1.add(selectorPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        listPanel.setBackground(new java.awt.Color(204, 204, 204));
+        listPanel.setLayout(new java.awt.GridLayout(1, 1));
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -71,14 +59,14 @@ public class Beginnings extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(titleLabel)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 185, Short.MAX_VALUE)
                         .add(userChooser, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
-                        .add(beginButton))
-                    .add(jLayeredPane1))
+                        .add(beginButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -89,7 +77,7 @@ public class Beginnings extends javax.swing.JPanel {
                     .add(titleLabel)
                     .add(userChooser, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(beginButton)
                 .addContainerGap())
@@ -106,9 +94,12 @@ public class Beginnings extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beginButton;
-    private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JPanel selectorPanel;
+    private javax.swing.JPanel listPanel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JComboBox userChooser;
     // End of variables declaration//GEN-END:variables
+
+    public JPanel getListPanel() {
+        return listPanel;
+    }
 }
