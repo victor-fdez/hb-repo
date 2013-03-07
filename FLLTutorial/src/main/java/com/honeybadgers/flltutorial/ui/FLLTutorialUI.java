@@ -4,7 +4,6 @@
  */
 package com.honeybadgers.flltutorial.ui;
 
-import com.honeybadgers.flltutorial.model.Tutorial;
 import com.honeybadgers.flltutorial.model.TutorialBase;
 import com.honeybadgers.flltutorial.ui.begin.Beginnings;
 import com.honeybadgers.flltutorial.ui.begin.TutorialPanel;

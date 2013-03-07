@@ -91,7 +91,6 @@ public class OptionTracker {
                 /*this means the option is already stored*/
                 return false;
             }
-            System.out.println("added new option");
             /*check whether this options has no options*/
             if(option.getOptions() == null || option.getOptions().isEmpty())
             {
