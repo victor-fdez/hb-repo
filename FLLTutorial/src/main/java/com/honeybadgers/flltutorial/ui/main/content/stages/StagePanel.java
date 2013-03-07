@@ -60,13 +60,6 @@ abstract public class StagePanel extends JPanel
      */
     public abstract int dropOptionPanel(OptionPanel optionPanel);
     /**
-     * This method is to be implemented by any subclass of StagePanel. This method
-     * delivers point clicks (press and release) on the given stage subclass panel
-     * 
-     * @param point  a Point object denoting the position clicked
-     */
-    public abstract void clicked(Point point);
-    /**
      * 
      */
     public abstract void scrolled(AWTEvent e);
