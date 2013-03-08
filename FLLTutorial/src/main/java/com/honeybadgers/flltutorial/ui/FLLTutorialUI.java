@@ -19,8 +19,10 @@ import com.honeybadgers.flltutorial.ui.main.navigation.NavigationPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -38,11 +40,13 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
 
     private PanelsScrollPane tutorialsScrollPane;
     private Beginnings beginnings;
+    private FLLTutorialUI tutorialUI;
     /**
      * Creates new form BeginTopComponent
      */
     public FLLTutorialUI() {
-        
+        super();
+        this.tutorialUI = this;
         this.beginnings(null);
     }
     
@@ -88,6 +92,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 contentPane.add(beginnings);
         
                 pack();
+                setInCenterOfScreen();
                 setVisible(true);
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
@@ -102,7 +107,6 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
-    private FLLTutorialUI tutorialUI;
     public void startTutorial(List<Stage> stages)
     {
         this.stagesList = stages;
@@ -130,7 +134,8 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
 
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 getContentPane().add(splitPane);
-                pack();    
+                pack();   
+                setInCenterOfScreen();
                 setVisible(true);
             }
         });
@@ -141,6 +146,12 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
          
          //ignore the point
          this.contentPane.updateStagePanel((StagePanel)panelSent);
+    }
+    
+    public void setInCenterOfScreen()
+    {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     public static void startUI()
