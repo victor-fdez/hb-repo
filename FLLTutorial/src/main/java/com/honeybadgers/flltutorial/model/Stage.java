@@ -32,7 +32,7 @@ public class Stage {
      * @return 
      */
     public List<Option> getOptions(){
-        return this.options;
+        return options;
     }
     
     /**
@@ -40,7 +40,7 @@ public class Stage {
      * @return 
      */
     public String getVideoPath(){
-        return this.videoPath;
+        return videoPath;
     }
     
     /**
@@ -48,7 +48,7 @@ public class Stage {
      * @return 
      */
     public long getTimeOnStage(){
-        return this.timeOnStage;
+        return timeOnStage;
     }
 
 }

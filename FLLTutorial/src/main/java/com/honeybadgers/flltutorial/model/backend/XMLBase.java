@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -56,7 +57,7 @@ public class XMLBase {
                     case "problem_statement":
                         problemStatement = loadStage(stageElement);
                         break;
-                    case "limitations":
+                    case "limitations_constraints":
                         limitations = loadStage(stageElement);
                         break;
                     case "task_diagram":
@@ -70,6 +71,7 @@ public class XMLBase {
         }catch(ParserConfigurationException | SAXException | IOException pce){
             //handle exception here
         }
+        //printStage(morphChart);
         
         return new Tutorial(mission, problemStatement, limitations, taskDiagram, morphChart);
     }
@@ -88,16 +90,19 @@ public class XMLBase {
      * @return  The loaded stage
      */
     private static Stage loadStage(Element stageElement) {
-        List<Option> options = null;
-        NodeList optionElements = stageElement.getElementsByTagName("option");
-        if(optionElements.getLength()>0){
-            options = new ArrayList<Option>();
-            for(int i=0;i<optionElements.getLength();i++){
-                options.add(loadOption((Element)optionElements.item(i)));
+        List<Option> options = new ArrayList<>();
+        NodeList children = stageElement.getChildNodes();
+        for(int i=0; i<children.getLength(); i++){
+            if(children.item(i).getNodeType() == Node.ELEMENT_NODE){
+                Element childElement = (Element)children.item(i);
+                if(childElement.getTagName().equals("option")){
+                    options.add(loadOption(childElement));
+                }
             }
         }
+        
         String videoPath = stageElement.getAttribute("video");
-        long timeOnStage = 0; //this is time that a student spend on this stage, in milliseconds
+        long timeOnStage = 0; //this is time that a student spent on this stage, in milliseconds
         return new Stage(options, videoPath, timeOnStage);
     }
     
@@ -109,36 +114,44 @@ public class XMLBase {
     private static Option loadOption(Element optionElement){
         String desc = optionElement.getElementsByTagName("desc").item(0).getTextContent();
         boolean correct = optionElement.getAttribute("correct").equalsIgnoreCase("true");
-        List<Option> subOptions = null;
-        NodeList subOptionElements = optionElement.getElementsByTagName("option");
-        if(subOptionElements.getLength()>0){
-            subOptions = new ArrayList<Option>();
-            for(int i=0;i<subOptionElements.getLength();i++){
-                subOptions.add(loadOption((Element)subOptionElements.item(i)));
+        List<Option> subOptions = new ArrayList<>();
+        
+        NodeList children = optionElement.getChildNodes();
+        for(int i=0; i<children.getLength(); i++){
+            if(children.item(i).getNodeType() == Node.ELEMENT_NODE){
+                Element childElement = (Element)children.item(i);
+                if(childElement.getTagName().equals("option")){
+                    subOptions.add(loadOption(childElement));
+                }
             }
         }
-        Option parent = null; //set this to something
+        
+        Option parent = null; //todo: set this to something
         String id = optionElement.getAttribute("oid");
         
         return new Option(desc, correct, subOptions, parent, id);
     }
     
     public static void main(String[] args){
-        XMLBase.loadTutorial(new File("resources/sampleTutorial/tut1-Dan.xml"));
-        
+        Tutorial t = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-Dan.xml"));
     }
     
-    void printStage(Stage s){
-       System.out.println(s.getVideoPath());
-       for(Option op : s.getOptions()){
-           printOption(op);
-       }
+    public static void printStage(Stage stage){
+        System.out.println(stage.getVideoPath());
+        for(Option op : stage.getOptions()){
+            printOption(op,0);
+        }
     }
     
-    void printOption(Option o){
-        System.out.println(o.getDescription());
-        for(Option op : o.getOptions()){
-            printOption(op);
+    public static void printOption(Option option, int level){
+        for(int i=0;i<level;i++){
+            System.out.print("\t");
+        }
+        System.out.println(option.getDescription());
+        if(option.getOptions()!=null){
+            for(Option op : option.getOptions()){
+                printOption(op, level+1);
+            }
         }
     }
     
