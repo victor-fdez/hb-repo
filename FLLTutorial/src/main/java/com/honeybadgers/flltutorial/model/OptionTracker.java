@@ -73,7 +73,6 @@ public class OptionTracker {
             //fill array lists with specific number of null
             this.correctOptionsList = new ArrayList<>(numberCorrect);
             this.incorrectOptionsList = new ArrayList<>(numberIncorrect);
-            System.out.println("number of correct "+numberCorrect+" number of incorrect "+numberIncorrect);
             for(int i = 0; i < numberCorrect; i++)
             {
                 this.correctOptionsList.add(null);

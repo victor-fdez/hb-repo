@@ -77,15 +77,15 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
     /**
      * TESTING
      */
-    private ArrayList<Option> tutorialGenerator(int depth, String description)
+    public ArrayList<Option> tutorialGenerator(int depth, String description)
     {
         if(depth == 0)
         {
-            return new ArrayList<Option>();
+            return new ArrayList<>();
         }
         else
         {
-            ArrayList<Option> options = new ArrayList<Option>();
+            ArrayList<Option> options = new ArrayList<>();
             Option option;
             for(int i = 0; i < 3; i++)
             {

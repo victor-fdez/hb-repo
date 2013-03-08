@@ -17,6 +17,7 @@ public class Beginnings extends javax.swing.JPanel {
      */
     public Beginnings() {
         initComponents();
+        this.titleLabel.setText("All Tutorials");
     }
 
     /**

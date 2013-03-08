@@ -5,6 +5,8 @@
 package com.honeybadgers.flltutorial.ui.begin;
 
 import com.honeybadgers.flltutorial.model.TutorialBase;
+import java.awt.Component;
+import javax.swing.JPanel;
 
 /**
  *
@@ -15,8 +17,13 @@ public class TutorialPanel extends javax.swing.JPanel {
     /**
      * Creates new form tutorialPanel
      */
+    private TutorialBase tutorialBase;
     public TutorialPanel(TutorialBase tutorialBase) {
         initComponents();
+        this.tutorialBase = tutorialBase;
+        this.titleLabel.setText(tutorialBase.getTitle());
+        this.authorLabel.setText(tutorialBase.getAuthor());
+        this.descriptionTextArea.setText(tutorialBase.getDescription());
     }
 
     /**
@@ -32,7 +39,7 @@ public class TutorialPanel extends javax.swing.JPanel {
         tutorialContentPanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         authorLabel = new javax.swing.JLabel();
-        jTextArea1 = new javax.swing.JTextArea();
+        descriptionTextArea = new javax.swing.JTextArea();
         beaconPanel = new javax.swing.JPanel();
 
         layeredPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -49,10 +56,10 @@ public class TutorialPanel extends javax.swing.JPanel {
 
         authorLabel.setText("by author");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("description");
+        descriptionTextArea.setEditable(false);
+        descriptionTextArea.setColumns(20);
+        descriptionTextArea.setRows(5);
+        descriptionTextArea.setText("description");
 
         org.jdesktop.layout.GroupLayout tutorialContentPanelLayout = new org.jdesktop.layout.GroupLayout(tutorialContentPanel);
         tutorialContentPanel.setLayout(tutorialContentPanelLayout);
@@ -71,7 +78,7 @@ public class TutorialPanel extends javax.swing.JPanel {
             .add(tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(org.jdesktop.layout.GroupLayout.TRAILING, tutorialContentPanelLayout.createSequentialGroup()
                     .addContainerGap()
-                    .add(jTextArea1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                    .add(descriptionTextArea, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         tutorialContentPanelLayout.setVerticalGroup(
@@ -85,7 +92,7 @@ public class TutorialPanel extends javax.swing.JPanel {
             .add(tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(tutorialContentPanelLayout.createSequentialGroup()
                     .add(35, 35, 35)
-                    .add(jTextArea1)
+                    .add(descriptionTextArea)
                     .add(35, 35, 35)))
         );
 
@@ -128,10 +135,24 @@ public class TutorialPanel extends javax.swing.JPanel {
         this.beaconPanel.revalidate();
     }//GEN-LAST:event_tutorialPanelResized
 
+    public Component getBeacon()
+    {
+        return (Component)this.beaconPanel;
+    }
+    
+    public static TutorialBase getTutorialBaseFromBeacon(Component beacon)
+    {
+        if(beacon instanceof JPanel)
+        {
+            TutorialPanel tutorialPanel = (TutorialPanel)beacon.getParent().getParent();
+            return tutorialPanel.tutorialBase;
+        }
+        return null;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel;
     private javax.swing.JPanel beaconPanel;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea descriptionTextArea;
     private javax.swing.JLayeredPane layeredPane;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel tutorialContentPanel;

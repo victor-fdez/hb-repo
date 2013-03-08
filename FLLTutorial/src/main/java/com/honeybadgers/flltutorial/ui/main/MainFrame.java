@@ -10,12 +10,10 @@ import com.honeybadgers.flltutorial.ui.main.content.stages.ConsiderationsAndCons
 import com.honeybadgers.flltutorial.ui.main.content.stages.MorphChartPanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.ProblemDescriptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
-import com.honeybadgers.flltutorial.ui.main.content.stages.StageSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.TaskDiagramPanel;
 import com.honeybadgers.flltutorial.ui.main.navigation.NavigationPanel;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
