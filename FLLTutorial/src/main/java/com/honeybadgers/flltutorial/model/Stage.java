@@ -11,7 +11,7 @@ import java.util.List;
  * @author Dan
  */
 public class Stage {
-    private List<Option> options;
+    private Option rootOption;
     private String videoPath;
     private long timeOnStage;
     
@@ -21,8 +21,8 @@ public class Stage {
      * @param videoPath  Path to video for this stage
      * @param timeOnStage  The time that a student spends on this stage
      */
-    public Stage(List<Option> options, String videoPath, long timeOnStage){
-        this.options = options;
+    public Stage(Option rootOption, String videoPath, long timeOnStage){
+        this.rootOption = rootOption;
         this.videoPath = videoPath;
         this.timeOnStage = timeOnStage;
     }
@@ -31,8 +31,8 @@ public class Stage {
      * Getter for the list of options
      * @return 
      */
-    public List<Option> getOptions(){
-        return options;
+    public Option getRootOption(){
+        return rootOption;
     }
     
     /**

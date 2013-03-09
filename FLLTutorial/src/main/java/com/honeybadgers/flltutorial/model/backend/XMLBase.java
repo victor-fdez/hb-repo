@@ -7,6 +7,7 @@ package com.honeybadgers.flltutorial.model.backend;
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.Stage;
 import com.honeybadgers.flltutorial.model.Tutorial;
+import com.honeybadgers.flltutorial.model.TutorialBase;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +30,16 @@ import org.dom4j.io.SAXReader;*/
  * @author Dan Doozan
  */
 public class XMLBase {
+    
+    /**
+     * Load a Tutorial Base (ie. basic tutorial information, not the full tutorial) from an XML file.
+     * @param xmlFile   File to load Tutorial Base from.
+     * @return  The Tutorial Base loaded from the file.
+     */
+    public static TutorialBase loadTutorialBase(File xmlFile){
+        //todo: fill this in
+        return null;
+    }
     
     /**
      * Loads a tutorial from the given XML file
@@ -71,7 +82,7 @@ public class XMLBase {
         }catch(ParserConfigurationException | SAXException | IOException pce){
             //handle exception here
         }
-        //printStage(morphChart);
+        printOption(taskDiagram.getRootOption(),0);
         
         return new Tutorial(mission, problemStatement, limitations, taskDiagram, morphChart);
     }
@@ -90,20 +101,10 @@ public class XMLBase {
      * @return  The loaded stage
      */
     private static Stage loadStage(Element stageElement) {
-        List<Option> options = new ArrayList<>();
-        NodeList children = stageElement.getChildNodes();
-        for(int i=0; i<children.getLength(); i++){
-            if(children.item(i).getNodeType() == Node.ELEMENT_NODE){
-                Element childElement = (Element)children.item(i);
-                if(childElement.getTagName().equals("option")){
-                    options.add(loadOption(childElement));
-                }
-            }
-        }
-        
+        Option rootOption = loadOption((Element)stageElement.getElementsByTagName("option").item(0));
         String videoPath = stageElement.getAttribute("video");
         long timeOnStage = 0; //this is time that a student spent on this stage, in milliseconds
-        return new Stage(options, videoPath, timeOnStage);
+        return new Stage(rootOption, videoPath, timeOnStage);
     }
     
     /**
@@ -112,8 +113,15 @@ public class XMLBase {
      * @return  The loaded Option
      */
     private static Option loadOption(Element optionElement){
-        String desc = optionElement.getElementsByTagName("desc").item(0).getTextContent();
-        boolean correct = optionElement.getAttribute("correct").equalsIgnoreCase("true");
+        String desc = "";
+        NodeList descNodes = optionElement.getElementsByTagName("desc");
+        if(descNodes.getLength()>0)
+            desc=descNodes.item(0).getTextContent();
+        
+        boolean correct = true;
+        if(optionElement.hasAttribute("correct"))
+            correct = optionElement.getAttribute("correct").equalsIgnoreCase("true");
+        
         List<Option> subOptions = new ArrayList<>();
         
         NodeList children = optionElement.getChildNodes();
@@ -134,13 +142,6 @@ public class XMLBase {
     
     public static void main(String[] args){
         Tutorial t = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-Dan.xml"));
-    }
-    
-    public static void printStage(Stage stage){
-        System.out.println(stage.getVideoPath());
-        for(Option op : stage.getOptions()){
-            printOption(op,0);
-        }
     }
     
     public static void printOption(Option option, int level){

@@ -18,6 +18,7 @@ public class Tutorial extends TutorialBase
     private List<Option> limitationsAndConstraints;*/
     
     private String mission;
+    List<Stage> stages;
     private Stage problemStatement;
     private Stage limitations;
     private Stage taskDiagram;
