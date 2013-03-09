@@ -17,21 +17,30 @@ public class Tutorial extends TutorialBase
     private List<Option> morphologicalChart;
     private List<Option> limitationsAndConstraints;*/
     
+    private String name;
     private String mission;
     List<Stage> stages;
-    private Stage problemStatement;
-    private Stage limitations;
-    private Stage taskDiagram;
-    private Stage morphChart;
     
-    public Tutorial(String mission, Stage problemStatement, Stage limitations, Stage taskDiagram, Stage morphChart)
+    public Tutorial(String name, String mission, List<Stage> stages)
     {
+        this.name = name;
         this.mission = mission;
-        this.problemStatement = problemStatement;
-        this.limitations = limitations;
-        this.taskDiagram = taskDiagram;
-        this.morphChart = morphChart;
+        this.stages = stages;
     }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public String getMission(){
+        return mission;
+    }
+    
+    public List<Stage> getStages(){
+        return stages;
+    }
+    
+    
     public int equals(Tutorial anotherTutorial)
     {
        return 0; 

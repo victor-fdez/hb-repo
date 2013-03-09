@@ -13,13 +13,18 @@ import java.util.List;
  */
 public class Option {
     private String description;
+    private String reason;
+    private String imagePath;
     private boolean correct;
     private List<Option> options;
     private String id; /*string identifier with the following regex "(\ ([0-9]+))*" */
     private Option parent;
     private int numberCorrect;
+    private int selected;
+    private int position;
+    
     //private int numberCorrect, numberIncorrect;
-    public Option(String description, boolean correct, List<Option> options, Option parent, String id)
+    public Option(String description, boolean correct, List<Option> options, Option parent, String id, String reason, int position, int selected, String imagePath)
     {
         super();
         this.description = description;
@@ -27,19 +32,23 @@ public class Option {
         this.options = options;
         this.parent = parent;
         this.id = id;
+        this.reason = reason;
+        this.position = position;
+        this.selected = selected;
+        this.imagePath = imagePath;
     }
     public Option(String description, boolean correct, List<Option> options, Option parent)
     {
-        this(description, correct, options, parent, "");
+        this(description, correct, options, parent, "", "", -1, -1, "");
         /*root identifier has nothing, there can only be one identifer*/
     }
     public Option(String description, boolean correct, List<Option> options)
     {
-        this(description, correct, options, null, "");
+        this(description, correct, options, null, "", "", -1, -1, "");
     }
     public Option(String description, boolean correct)
     {
-        this(description, correct, null, null, "");
+        this(description, correct, null, null, "", "", -1, -1, "");
     }
     
     public String getDescription() {
@@ -50,6 +59,22 @@ public class Option {
         this.description = description;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+    
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+    
     public boolean isCorrect() {
         return correct;
     }
@@ -81,6 +106,16 @@ public class Option {
     public void setParent(Option parent) {
         this.parent = parent;
     }
+    
+    public int getSelected(){
+        return selected;
+    }
+    
+    public int getPosition(){
+        return position;
+    }
+    
+    
     /**
      * Add the given Option as a child of this Option.
      * 
