@@ -111,7 +111,7 @@ public class XMLBase {
         //default values
         String oid = "";
         boolean correct = true;
-        int position = 0;
+        int position = -2;
         int selected = -1;
         String desc = "";
         String reason = "";

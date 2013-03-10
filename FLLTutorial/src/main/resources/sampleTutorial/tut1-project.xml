@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tutorial name="Tutorial1" author="JoRay Van Vliet" date="03/07/2013 14:30">
+    <mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost.</mission>
+    
+    <project>
+        <date>03/08/2013 13:25</date>
+        <team name="Honeybadgers">
+            <member>Dan Doozan</member>
+            <member>Buzz</member>
+        </team>
+    </project>
+    
+    <!--STAGE 1: Problem Statement-->
+    <stage name="Problem Statement" time="0" video="">
+        <option oid="0">
+            <desc>Based on your robot's mission, identify the basic tasks that your robot should perform.</desc>
+            <!--General options-->
+            <option oid="0.0" correct="true" position="-1" selected="-1">
+                <desc>Move to guidepost</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="0.1" correct="true" position="-1" selected="-1">
+                <desc>Read color on guidepost</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="0.2" correct="true" position="-1" selected="-1">
+                <desc>Move to ball location</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="0.3" correct="true" position="-1" selected="-1">
+                <desc>Transport ball to goal</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+
+            <!-- More specific ones: Not sure if we want to be this specific, but since I made them I saved them
+            <option oid="-1" correct="right|wrong" position="-1" selected="-1">
+                <desc>Move forward</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="-1" correct="right|wrong" position="-1" selected="-1">
+                <desc>Move backward</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="-1" correct="right|wrong" position="-1" selected="-1">
+                <desc>Turn left</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="-1" correct="right|wrong" position="-1" selected="-1">
+                <desc>Turn right</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="2" correct="right|wrong" position="-1" selected="-1">
+                <desc>Detect guidepost</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="3" correct="right|wrong" position="-1" selected="-1">
+                <desc>Read green color</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="4" correct="right|wrong" position="-1" selected="-1">
+                <desc>Read red color</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="5" correct="right|wrong" position="-1" selected="-1">
+                <desc>Read yellow color</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="10" correct="right|wrong" position="-1" selected="-1">
+                <desc>Detect ball</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="8" correct="right|wrong" position="-1" selected="-1">
+                <desc>Pick up ball</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="10" correct="right|wrong" position="-1" selected="-1">
+                <desc>Hold ball</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="9" correct="right|wrong" position="-1" selected="-1">
+                <desc>Kick ball</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="10" correct="right|wrong" position="-1" selected="-1">
+                <desc>Trap ball in a container</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            <option oid="10" correct="right|wrong" position="-1" selected="-1">
+                <desc>Detect goal</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+            -->
+        </option>
+    </stage>
+
+    <!--STAGE 2: Limitations and Constraints-->
+    <stage name="Limitations and Constraints" time="0" video="">
+        <option oid="1">
+            <desc>Select the limitations and constraints that apply to this project.</desc>
+            <option oid="1.0">
+                <desc>Number of Motors</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.0.0" correct="false" position="-1" selected="-1">
+                    <desc>0</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.0.1" correct="false" position="-1" selected="-1">
+                    <desc>1</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.0.2" correct="false" position="-1" selected="-1">
+                    <desc>2</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.0.3" correct="true" position="-1" selected="-1">
+                    <desc>3</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.0.4" correct="false" position="-1" selected="-1">
+                    <desc>4</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.1">
+                <desc>Number of Sensors</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.1.0" correct="false" position="-1" selected="-1">
+                    <desc>0</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.1.1" correct="true" position="-1" selected="-1">
+                    <desc>1</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.1.2" correct="false" position="-1" selected="-1">
+                    <desc>2</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.1.3" correct="false" position="-1" selected="-1">
+                    <desc>3</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.1.4" correct="false" position="-1" selected="-1">
+                    <desc>4</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.2">
+                <desc>Robot Height</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.2.0" correct="false" position="-1" selected="-1">
+                    <desc>Must be under 6"</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.2.1" correct="false" position="-1" selected="-1">
+                    <desc>Must be under 12"</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.2.2" correct="false" position="-1" selected="-1">
+                    <desc>Must be under 18"</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.2.3" correct="true" position="-1" selected="-1">
+                    <desc>No specific height limitation</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.3">
+                <desc>Robot Width</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.3.0" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 6 inches</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.3.1" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 12 inches</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.3.2" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 18 inches</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.3.3" correct="true" position="-1" selected="-1">
+                    <desc>No specific width limitation</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.4">
+                <desc>Robot Weight</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.4.0" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 1 pound</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.4.1" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 3 pounds</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.4.2" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 5 pounds</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.4.3" correct="false" position="-1" selected="-1">
+                    <desc>&lt; 10 pounds</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.4.4" correct="true" position="-1" selected="-1">
+                    <desc>No specific weight limitation</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.5">
+                <desc>Weather and Lighting</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.5.0" correct="true" position="-1" selected="-1">
+                    <desc>Well lit</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.5.1" correct="false" position="-1" selected="-1">
+                    <desc>Dark</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.5.2" correct="true" position="-1" selected="-1">
+                    <desc>Foggy</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.6">
+                <desc>Surface Conditions</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.6.0" correct="true" position="-1" selected="-1">
+                    <desc>Dry</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.6.1" correct="false" position="-1" selected="-1">
+                    <desc>Wet</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.6.2" correct="true" position="-1" selected="-1">
+                    <desc>Firm</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.6.3" correct="false" position="-1" selected="-1">
+                    <desc>Soft</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.6.4" correct="false" position="-1" selected="-1">
+                    <desc>Slanted</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.6.5" correct="false" position="-1" selected="-1">
+                    <desc>Uneven</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="1.7">
+                <desc>Movement Requirements</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="1.7.0" correct="false" position="-1" selected="-1">
+                    <desc>Step Up</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.7.1" correct="false" position="-1" selected="-1">
+                    <desc>Step Down</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.7.2" correct="false" position="-1" selected="-1">
+                    <desc>Ramp</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="1.7.3" correct="true" position="-1" selected="-1">
+                    <desc>None of the above</desc>
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+        </option>
+    </stage>
+
+    <!--STAGE 3: Task Diagram-->
+    <!-- check this for right|wrong -->
+    <stage name="Task Diagram" time="0" video="">
+        <option oid="2">
+            <desc>Create a task diagram</desc>
+            <option oid="2.0" correct="true" position="0" selected="-1">
+                <desc>Robot Mission</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="2.0.0" correct="true" position="1" selected="-1">
+                    <desc>Movement</desc>
+                    <reason>Why this option is right/wrong</reason>
+                    <option oid="2.0.0.0" correct="true" position="1" selected="-1">
+                        <desc>Turn Left/Right</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                    <option oid="2.0.0.1" correct="true" position="0" selected="-1">
+                        <desc>Move Forward</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                    <option oid="2.0.0.2" correct="false" position="-1" selected="-1">
+                        <desc>Move Backward</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                    <option oid="2.0.0.3" correct="false" position="-3" selected="-1">
+                        <desc>Move Sideways</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                </option>
+                <option oid="2.0.1" correct="true" position="0" selected="-1">
+                    <desc>Sensing</desc>
+                    <reason>Why this option is right/wrong</reason>
+                    <option oid="2.0.1.0" correct="true" position="-1" selected="-1">
+                        <desc>Color Sensing</desc>
+                        <reason>Why this option is right/wrong</reason>
+                        <option oid="2.0.1.0.0" correct="true" position="-1" selected="-1">
+                            <desc>Sense Red</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                        <option oid="2.0.1.0.1" correct="true" position="-1" selected="-1">
+                            <desc>Sense Blue</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                        <option oid="2.0.1.0.2" correct="false" position="-1" selected="-1">
+                            <desc>Sense Yellow</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                        <option oid="2.0.1.0.3" correct="false" position="-1" selected="-1">
+                            <desc>Sense Green</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                        <option oid="2.0.1.0.4" correct="false" position="-1" selected="-1">
+                            <desc>Sense Black</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                        <option oid="2.0.1.0.5" correct="false" position="-1" selected="-1">
+                            <desc>Sense White</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                    </option>
+                    <option oid="2.0.1.1" correct="false" position="-1" selected="-1">
+                        <desc>Light Sensing</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                    <option oid="2.0.1.2" correct="false" position="-1" selected="-1">
+                        <desc>Radar Sensing</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                    <option oid="2.0.1.3" correct="true" position="-1" selected="-1">
+                        <desc>Object Sensing</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                </option>
+                <option oid="2.0.2" correct="true" position="-1" selected="-1">
+                    <desc>Transport Ball</desc>
+                    <reason>Why this option is right/wrong</reason>
+                    <option oid="2.0.2.0" correct="true" position="-1" selected="-1">
+                        <desc>Pick Up Ball</desc>
+                        <reason>Why this option is right/wrong</reason>
+                        <option oid="2.0.2.0.0" correct="true" position="-1" selected="-1">
+                            <desc>Move Arm</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                        <option oid="2.0.2.0.1" correct="true" position="-1" selected="-1">
+                            <desc>Grab Ball</desc>
+                            <reason>Why this option is right/wrong</reason>
+                        </option>
+                    </option>
+                    <option oid="2.0.2.1" correct="true" position="-1" selected="-1">
+                        <desc>Trap Ball</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                    <option oid="2.0.2.2" correct="true" position="-1" selected="-1">
+                        <desc>Kick Ball</desc>
+                        <reason>Why this option is right/wrong</reason>
+                    </option>
+                </option>
+            </option>
+        </option>
+    </stage>
+
+    <!--STAGE 4: Morph Chart-->
+    <stage name="Morphological Chart" time="0" video="">
+        <option oid="3">
+            <desc>Create a morphological chart.</desc>
+            <option oid="3.0" correct="true">
+                <desc>Move</desc>
+                <reason>Why this option is right/wrong</reason>
+                <option oid="3.0.0" correct="true" position="0" selected="-1">
+                    <desc>4 Wheels</desc>
+                    <img src="media/fourWheels.png" />
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="3.0.1" correct="true" position="2" selected="-1">
+                    <desc>3 Wheels</desc>
+                    <img src="media/threeWheels.png" />
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+                <option oid="3.0.2" correct="true" position="1" selected="-1">
+                    <desc>Tank Treads</desc>
+                    <img src="media/tankTreads.png" />
+                    <reason>Why this option is right/wrong</reason>
+                </option>
+            </option>
+            <option oid="3.1" correct="true">
+                <desc>Pick Up Ball</desc>
+                <reason>Why this option is right/wrong</reason>
+            </option>
+        </option>
+    </stage>
+</tutorial>

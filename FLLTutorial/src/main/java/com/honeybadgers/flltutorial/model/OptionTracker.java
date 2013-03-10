@@ -276,6 +276,12 @@ public class OptionTracker {
         //print info of this tracker
         System.out.println(tabs+this.option.getId()+" -> "+this.option.getDescription());
         tabs += "\t";
+        if(!this.option.isCorrect())
+        {
+            System.out.println(tabs+"{");
+            System.out.println(tabs+"}");
+            return;
+        }
         System.out.println(tabs+"{");
         System.out.println(tabs+"+correct choosen");
         for(OptionTracker correctOption : this.correctOptionsList)
@@ -321,19 +327,15 @@ public class OptionTracker {
             //recursive into children
             if(optionPosition >= 0)
             {
-                //set option tracker, and recurse into that option tracker
-                if(optionPosition == 0)
-                {
-                    parentOptionTracker.addOptionAt(virtualOptionPosition, option);
-                    recursiveOptionTrackerTree(parentOptionTracker.getCorrectChild(virtualOptionPosition));
-                }
-                else
-                {
-                    parentOptionTracker.addOptionAt(optionPosition, option);
-                    recursiveOptionTrackerTree(parentOptionTracker.getCorrectChild(optionPosition));
-                }
+                parentOptionTracker.addOptionAt(optionPosition, option);
+                recursiveOptionTrackerTree(parentOptionTracker.getCorrectChild(optionPosition));
             }
             else if(optionPosition == -2)
+            {
+                parentOptionTracker.addOptionAt(virtualOptionPosition, option);
+                recursiveOptionTrackerTree(parentOptionTracker.getCorrectChild(virtualOptionPosition));
+            }
+            else if(optionPosition == -3)
             {
                 //just set add the option, if there are only incorrect options this will fail
                 parentOptionTracker.addOptionAt(0, option);
@@ -353,7 +355,7 @@ public class OptionTracker {
     public static void main(String[] args)
     {
         System.out.println("Opening Tutorial");
-        Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-Dan.xml"));
+        Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-project.xml"));
         List<Stage> stages = tutorial.getStages();
         for(Stage stage : stages)
         {
