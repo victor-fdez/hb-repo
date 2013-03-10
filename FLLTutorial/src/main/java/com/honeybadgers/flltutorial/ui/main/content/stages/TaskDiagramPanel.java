@@ -77,15 +77,15 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
     /**
      * TESTING
      */
-    private ArrayList<Option> tutorialGenerator(int depth, String description)
+    public ArrayList<Option> tutorialGenerator(int depth, String description)
     {
         if(depth == 0)
         {
-            return new ArrayList<Option>();
+            return new ArrayList<>();
         }
         else
         {
-            ArrayList<Option> options = new ArrayList<Option>();
+            ArrayList<Option> options = new ArrayList<>();
             Option option;
             for(int i = 0; i < 3; i++)
             {
@@ -232,13 +232,6 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         return 2;
     }
     
-    /**
-     * DEPRECATED
-     */
-    @Override
-    public void clicked(Point point) {
-    }
-    
     private void updateParentsColors(OptionTracker optionTracker)
     {
         int index = this.currentDepth - 1;
@@ -304,14 +297,6 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         depthPanelHash.put(optionPanel, 0);
         depthPanel.add(optionPanel);
         depthPanel.revalidate();
-    }
-    
-    private class ChildPanelResult
-    {
-        int depthIndex;
-        int optionIndex;
-        OptionPanel optionPanel;
-        JPanel optionsPanel;
     }
     
     @Override

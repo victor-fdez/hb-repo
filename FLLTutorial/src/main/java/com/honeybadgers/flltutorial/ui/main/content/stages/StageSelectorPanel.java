@@ -138,11 +138,6 @@ public class StageSelectorPanel extends StagePanel{
     }
 
     @Override
-    public final void clicked(Point point) {
-        //do nothing, since options don't have options
-    }
-
-    @Override
     public void scrolled(AWTEvent e) {
         this.scrollPane.dispatchEvent(e);
     }

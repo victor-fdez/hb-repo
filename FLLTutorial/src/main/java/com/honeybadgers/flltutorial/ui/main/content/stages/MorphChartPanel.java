@@ -276,19 +276,6 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         }
         return 2;
     }
-    /**
-     * DEPRECATED
-     * When the user picks a specific row the possible answers for that row will be displayed
-     * and then he or she will be able to fill that row with the answers.
-     * 
-     * @param point 
-     */
-
-    @Override
-    public void clicked(Point point) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     @Override
     public void scrolled(AWTEvent e) {
         this.scrollPane.dispatchEvent(e);
