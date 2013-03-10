@@ -23,6 +23,7 @@ public class Tutorial extends TutorialBase
     
     public Tutorial(String name, String mission, List<Stage> stages)
     {
+        super(null, null, null);
         this.name = name;
         this.mission = mission;
         this.stages = stages;
