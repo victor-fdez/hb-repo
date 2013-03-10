@@ -4,6 +4,8 @@
  */
 package com.honeybadgers.flltutorial.model;
 
+import com.honeybadgers.flltutorial.model.backend.XMLBase;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,7 @@ public class OptionTracker {
     private OptionTracker parent;
     /*replacing variables*/
     private int numberOfCorrect, numberOfIncorrect;
-    private ArrayList correctOptionsList, incorrectOptionsList;
+    private ArrayList<OptionTracker> correctOptionsList, incorrectOptionsList;
     /*checking quickly weather a correct or wrong options is contained already*/
     private HashMap correctHashes;
     private HashMap incorrectHashes;
@@ -163,6 +165,7 @@ public class OptionTracker {
     public Option[] getAllCorrectChildren(){
         return (Option[])this.correctOptionsList.toArray();
     }
+    
     public List<OptionTracker> getAllCorrectTrackers()
     {
         return (List<OptionTracker>)this.correctOptionsList.clone();
@@ -256,6 +259,109 @@ public class OptionTracker {
     public void setParent(OptionTracker parent) {
         this.parent = parent;
     }
-    
-    
+    /**
+     * Print a recursive depiction of the current tracker tree.
+     */
+    public void printTree()
+    {
+        this.printTreeRecursive(0);
+    }
+    private void printTreeRecursive(int level)
+    {
+        String tabs = "";
+        for(int i = 0; i < level; i++)
+        {
+            tabs += "\t\t";
+        }
+        //print info of this tracker
+        System.out.println(tabs+this.option.getId()+" -> "+this.option.getDescription());
+        tabs += "\t";
+        System.out.println(tabs+"{");
+        System.out.println(tabs+"+correct choosen");
+        for(OptionTracker correctOption : this.correctOptionsList)
+        {
+            if(correctOption == null)
+            {
+                continue;
+            }
+            correctOption.printTreeRecursive(level+1);
+        }
+        System.out.println(tabs+"-incorrect choosen");
+        for(OptionTracker incorrectOption : this.incorrectOptionsList)
+        {
+            if(incorrectOption == null)
+            {
+                continue;
+            }
+            incorrectOption.printTreeRecursive(level+1);
+        }       
+        System.out.println(tabs+"}");
+    }
+    /**
+     * Generates an Option Tracker tree based on an Option tree.
+     * 
+     * @param rootOption        the top most element of a tree
+     * @return 
+     */
+    public static OptionTracker generateOptionTrackerTree(Option rootOption)
+    {
+        OptionTracker rootTracker = new OptionTracker(rootOption);
+        recursiveOptionTrackerTree(rootTracker);
+        return rootTracker;
+    }
+    public static void recursiveOptionTrackerTree(OptionTracker parentOptionTracker)
+    {
+        //assume that if this has been called, then the options tracker has zero or more
+        //correct or incorrect children
+        Option parentOption = parentOptionTracker.getOption();
+        int virtualOptionPosition = 0;
+        for(Option option : parentOption.getOptions())
+        {
+            int optionPosition = option.getPosition();
+            //recursive into children
+            if(optionPosition >= 0)
+            {
+                //set option tracker, and recurse into that option tracker
+                if(optionPosition == 0)
+                {
+                    parentOptionTracker.addOptionAt(virtualOptionPosition, option);
+                    recursiveOptionTrackerTree(parentOptionTracker.getCorrectChild(virtualOptionPosition));
+                }
+                else
+                {
+                    parentOptionTracker.addOptionAt(optionPosition, option);
+                    recursiveOptionTrackerTree(parentOptionTracker.getCorrectChild(optionPosition));
+                }
+            }
+            else if(optionPosition == -2)
+            {
+                //just set add the option, if there are only incorrect options this will fail
+                parentOptionTracker.addOptionAt(0, option);
+            }
+            else if(optionPosition == -1)
+            {
+                //do nothing, because the options has not been selected
+            }
+            else
+            {
+                //might add other kinds of options later, but this should not be used at all
+                //at the moment
+            }
+            virtualOptionPosition++;
+        }
+    }
+    public static void main(String[] args)
+    {
+        System.out.println("Opening Tutorial");
+        Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-Dan.xml"));
+        List<Stage> stages = tutorial.getStages();
+        for(Stage stage : stages)
+        {
+            Option rootOption = stage.getRootOption();
+            System.out.println("Generating Option Tracker");
+            OptionTracker rootTracker = OptionTracker.generateOptionTrackerTree(rootOption);
+            System.out.println("Printing Option Tracker");
+            rootTracker.printTree();
+        }
+    }
 }

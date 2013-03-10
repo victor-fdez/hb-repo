@@ -380,7 +380,7 @@
     <stage name="Morphological Chart" time="0" video="">
         <option oid="3">
             <desc>Create a morphological chart.</desc>
-            <option oid="3.0" correct="true" position="-1" selected="-1">
+            <option oid="3.0" correct="true">
                 <desc>Move</desc>
                 <reason>Why this option is right/wrong</reason>
                 <option oid="3.0.0" correct="true" position="-1" selected="-1">
@@ -399,7 +399,7 @@
                     <reason>Why this option is right/wrong</reason>
                 </option>
             </option>
-            <option oid="3.1" correct="true" position="-1" selected="-1">
+            <option oid="3.1" correct="true">
                 <desc>Pick Up Ball</desc>
                 <reason>Why this option is right/wrong</reason>
             </option>

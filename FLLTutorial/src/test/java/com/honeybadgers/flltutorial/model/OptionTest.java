@@ -51,8 +51,8 @@ public class OptionTest extends TestCase {
         option.addChild(new Option("some description", true, null));
         Option child1st = option.getChildAtIndex(0);
         Option child3rd = option.getChildAtIndex(2);
-        assertEquals(" 0", child1st.getId());
-        assertEquals(" 2", child3rd.getId());
+        assertEquals(".0", child1st.getId());
+        assertEquals(".2", child3rd.getId());
         option.addChild(new Option("some description", true, null));
         child1st.addChild(new Option("some decription", true, null));
         child1st.addChild(new Option("some decription", true, null));
@@ -60,14 +60,14 @@ public class OptionTest extends TestCase {
         child3rd.addChild(new Option("some decription", true, null));
         child3rd.addChild(new Option("some decription", true, null));
         Option child3rd2nd = child3rd.getChildAtIndex(1);
-        assertEquals(" 2 1", child3rd2nd.getId());
+        assertEquals(".2.1", child3rd2nd.getId());
         child3rd2nd.addChild(new Option("some decription", true, null));
         child3rd2nd.addChild(new Option("some decription", true, null));
         child3rd2nd.addChild(new Option("some decription", true, null));
         Option child3rd2nd3rd = child3rd2nd.getChildAtIndex(2);
-        assertEquals(" 2 1 2", child3rd2nd3rd.getId());
-        assertEquals(" 2 1", child3rd2nd.getId());
-        assertEquals(" 0 2", option.getChildWithId(" 0 2").getId());
+        assertEquals(".2.1.2", child3rd2nd3rd.getId());
+        assertEquals(".2.1", child3rd2nd.getId());
+        assertEquals(".0.2", option.getChildWithId(".0.2").getId());
     }
 
     public void testGetChildWithId()

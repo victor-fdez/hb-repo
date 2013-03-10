@@ -114,8 +114,6 @@ public class Option {
     public int getPosition(){
         return position;
     }
-    
-    
     /**
      * Add the given Option as a child of this Option.
      * 
@@ -128,7 +126,7 @@ public class Option {
         {
             this.options = new ArrayList<Option>();
         }
-        option.setId(this.id + " " + this.options.size());
+        option.setId(this.id + "." + this.options.size());
         option.setParent(this);
         /*TODO: maybe later this would count the number of correct and incorrect options*/
         this.options.add(option);
@@ -176,7 +174,19 @@ public class Option {
     static private ArrayList<Integer> getIntegerIdentifier(String id)
     {
         ArrayList<Integer> integerIdentifier;   
-        String  stringIdentifier[] = id.substring(1).split(" ");
+        String  stringIdentifier[];
+        if(!id.isEmpty() && id.charAt(0) == '.')
+        {
+            stringIdentifier = id.substring(1).split(".");
+        }
+        else if(!id.isEmpty())
+        {
+            stringIdentifier = id.split(".");
+        }
+        else    //happens when id is empty
+        {
+            stringIdentifier = new String[0];
+        }
         integerIdentifier = new ArrayList<Integer>(stringIdentifier.length);
         for(String currentId : stringIdentifier)
         {

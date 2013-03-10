@@ -75,7 +75,7 @@ public class XMLBase {
                 Element stageElement = (Element) stageNodeList.item(i);
                 Stage stage = loadStage(stageElement);
                 stages.add(stage);
-                printStage(stage);
+                //printStage(stage);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             //handle exception here
@@ -111,7 +111,7 @@ public class XMLBase {
         //default values
         String oid = "";
         boolean correct = true;
-        int position = -1;
+        int position = 0;
         int selected = -1;
         String desc = "";
         String reason = "";
