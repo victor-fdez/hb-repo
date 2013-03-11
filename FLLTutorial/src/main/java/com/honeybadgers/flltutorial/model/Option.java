@@ -110,6 +110,10 @@ public class Option {
     public int getSelected(){
         return selected;
     }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
     
     public int getPosition(){
         return position;

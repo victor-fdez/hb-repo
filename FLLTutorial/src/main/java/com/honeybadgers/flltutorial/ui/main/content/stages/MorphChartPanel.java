@@ -52,12 +52,13 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     protected HashMap indexesHashes;
     protected HashMap indexesChildrenHashes;
     protected List<List<OptionPanel>> listsOptionPanels;
-    public MorphChartPanel()
+    public MorphChartPanel(Option rootOption)
     {
         super();
         this.stageName = "Morph Chart";
-        this.morphChartGenerator();
-        
+        //this.morphChartGenerator();
+        this.problem = rootOption;
+        this.solutionTracker = OptionTracker.generateOptionTrackerTree(rootOption);
         //show the options of the first child
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker.getCorrectChild(0), 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);

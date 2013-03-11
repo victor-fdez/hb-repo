@@ -118,6 +118,7 @@ public class OptionTracker {
             }
             
             //track the new option, and setup so it won't be tracked again
+            answerOption.setPosition(index);
             this.correctHashes.put(answerOption.getId(), answerOption);
             answerOptionTracker = new OptionTracker(answerOption);
             this.correctOptionsList.set(index, answerOptionTracker);
@@ -134,6 +135,7 @@ public class OptionTracker {
             }
             
             //track new incorrect option
+            answerOption.setPosition(-3);
             this.incorrectHashes.put(answerOption.getId(), answerOption);
             answerOptionTracker = new OptionTracker(answerOption);
             this.incorrectOptionsList.set(this.numberOfIncorrect, answerOptionTracker);
@@ -352,6 +354,7 @@ public class OptionTracker {
             virtualOptionPosition++;
         }
     }
+    /*
     public static void main(String[] args)
     {
         System.out.println("Opening Tutorial");
@@ -366,4 +369,5 @@ public class OptionTracker {
             rootTracker.printTree();
         }
     }
+    */
 }

@@ -5,7 +5,9 @@
 package com.honeybadgers.flltutorial.ui;
 
 import com.honeybadgers.flltutorial.model.Stage;
+import com.honeybadgers.flltutorial.model.Tutorial;
 import com.honeybadgers.flltutorial.model.TutorialBase;
+import com.honeybadgers.flltutorial.model.backend.XMLBase;
 import com.honeybadgers.flltutorial.ui.begin.Beginnings;
 import com.honeybadgers.flltutorial.ui.begin.TutorialPanel;
 import com.honeybadgers.flltutorial.ui.main.content.ContentPane;
@@ -25,6 +27,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -79,6 +82,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                             TutorialBase tutorialBase = TutorialPanel.getTutorialBaseFromBeacon((Component)event.getSource());
                             //show some animation while loading
                             setTitle(tutorialBase.getTitle());
+                            //whenever we get real tutorials this will be changed
                             startTutorial(null);
                             //System.out.println(tutorialBase.getTitle());
                         }
@@ -117,18 +121,40 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 //swap out beginnings and start tutorial
                 tutorialUI.getContentPane().removeAll();
                
-                ArrayList<StagePanel> stagePanels = new ArrayList<StagePanel>();
-                stagePanels.add(new MorphChartPanel());
-                stagePanels.add(new TaskDiagramPanel());
-                stagePanels.add(new ProblemDescriptionPanel());
-                stagePanels.add(new ConsiderationsAndConstraintsPanel());
-                stagePanels.add(new ProblemDescriptionPanel());
-
+                //this would be obtained from the caller
+                Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-project.xml"));
+                stagesList = tutorial.getStages();
+                
+                ArrayList<StagePanel> stagePanels = new ArrayList<>();
+                for(Stage stage : stagesList)
+                {
+                    switch(stage.getName())
+                    {
+                        case "Problem Statement":
+                            stagePanels.add(new ProblemDescriptionPanel(stage.getRootOption()));
+                            System.out.println("generating problem statement");
+                            break;
+                        case "Limitations and Constraints":
+                            stagePanels.add(new MorphChartPanel(stage.getRootOption()));
+                            System.out.println("generating lims and consts");
+                            break;
+                        case "Task Diagram":
+                            stagePanels.add(new TaskDiagramPanel(stage.getRootOption()));
+                            System.out.println("generating task diagram");
+                            break;
+                        case "Morphological Chart":
+                            stagePanels.add(new MorphChartPanel(stage.getRootOption()));
+                            System.out.println("generating morph chart");
+                            break;
+                    }
+                    
+                }
+                
                 contentPane = new ContentPane(stagePanels.get(0));
                 navigationPanel = new NavigationPanel(stagePanels, tutorialUI);
                 splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
-                /* init split pane */
+                //initial split pane
                 splitPane.setLeftComponent(navigationPanel);
                 splitPane.setRightComponent(contentPane);
 

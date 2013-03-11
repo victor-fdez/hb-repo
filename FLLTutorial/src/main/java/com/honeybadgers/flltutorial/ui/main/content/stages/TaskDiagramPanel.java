@@ -44,7 +44,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
     private HashMap parentPanelBeaconsHashes;
     /*the current depth of the leaves shown*/
     private int currentDepth;
-    public TaskDiagramPanel()
+    public TaskDiagramPanel(Option rootOption)
     {
         super();
         //setup object variables
@@ -54,14 +54,10 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         this.childPanelBeaconsHashes = new HashMap();
         this.parentPanelBeaconsHashes = new HashMap();
         
-        //creating some fake options for testing purposes
-        ArrayList<Option> options = this.tutorialGenerator(3, "");
-        this.tutorialOption = new Option("problem description option - tops", true);
-        for(Option option : options)
-        {
-            this.tutorialOption.addChild(option);
-        }
-        this.currentTrackerPointer = new OptionTracker(this.tutorialOption);
+        //adding real options
+        this.tutorialOption = rootOption;
+        this.currentTrackerPointer = OptionTracker.generateOptionTrackerTree(this.tutorialOption);
+        
         for(int i = 0; i < this.depthPanelsHashes.length; i++)
         {
             this.depthPanelsHashes[i] = new HashMap();

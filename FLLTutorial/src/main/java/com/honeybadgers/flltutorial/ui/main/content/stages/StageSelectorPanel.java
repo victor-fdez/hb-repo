@@ -31,17 +31,12 @@ public class StageSelectorPanel extends StagePanel{
     private PanelsScrollPane scrollPane;
     private Option mainOption;
     private int lastPosition;
-    StageSelectorPanel()
+    StageSelectorPanel(Option rootOption)
     {
         super();
-        this.mainOption = new Option("this is the generic problem, please follow this directions before processing to perform this problem", true, null);
-        mainOption.addChild(new Option("some description", false, null));
-        for(int i = 0; i < 11; i++){
-            mainOption.addChild(new Option("larger description that gives a really boring, and uncomprenhensive detailed, and I forget to say more boring explanation", true, null));
-        }
-        mainOption.addChild(new Option("some description", true, null));
-        this.currentTracker = new OptionTracker(mainOption);
-        //this.stageName = "Generic Stage Selector";
+        this.mainOption = rootOption;
+        this.currentTracker = OptionTracker.generateOptionTrackerTree(rootOption);
+        
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTracker, 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
     }

@@ -4,14 +4,16 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content.stages;
 
+import com.honeybadgers.flltutorial.model.Option;
+
 /**
  *
  * @author chingaman
  */
 public class ConsiderationsAndConstraintsPanel extends StageSelectorPanel{
-    public ConsiderationsAndConstraintsPanel()
+    public ConsiderationsAndConstraintsPanel(Option rootOption)
     {
-        super();
+        super(rootOption);
         this.stageName = "Considerations and Constraints";
         this.initComponents();
     }
