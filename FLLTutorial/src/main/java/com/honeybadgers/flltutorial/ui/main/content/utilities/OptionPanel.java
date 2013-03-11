@@ -69,7 +69,6 @@ public final class OptionPanel extends JPanel implements Cloneable
         this.description.setEditable(false);
         this.description.setLineWrap(true);
         this.description.setWrapStyleWord(true);
-   
         this.description.setVisible(true);
         
         //this.setBorder(new LineBorder(Color.BLACK, 1,));

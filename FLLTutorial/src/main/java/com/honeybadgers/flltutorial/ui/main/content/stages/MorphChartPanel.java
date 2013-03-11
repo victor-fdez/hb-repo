@@ -65,10 +65,13 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.panelTypeHashes = new HashMap();
         this.indexesHashes = new HashMap();
         this.indexesChildrenHashes = new HashMap();
-        this.listsOptionPanels = new ArrayList<List<OptionPanel>>();
-        this.initComponents();
+        this.listsOptionPanels = new ArrayList<>();
+        if(this instanceof MorphChartPanel)
+        {
+            this.initComponents();
+        }
     }
-    private void initComponents()
+    protected void initComponents()
     {
         //setup title of stage
         JTextArea titleLabel = new JTextArea(this.stageName);

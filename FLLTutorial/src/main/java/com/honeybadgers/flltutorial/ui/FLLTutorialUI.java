@@ -135,7 +135,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                             System.out.println("generating problem statement");
                             break;
                         case "Limitations and Constraints":
-                            stagePanels.add(new MorphChartPanel(stage.getRootOption()));
+                            stagePanels.add(new ConsiderationsAndConstraintsPanel(stage.getRootOption()));
                             System.out.println("generating lims and consts");
                             break;
                         case "Task Diagram":

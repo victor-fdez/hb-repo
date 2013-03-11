@@ -10,7 +10,7 @@ import com.honeybadgers.flltutorial.model.Option;
  *
  * @author chingaman
  */
-public class ConsiderationsAndConstraintsPanel extends StageSelectorPanel{
+public class ConsiderationsAndConstraintsPanel extends MorphChartPanel{
     public ConsiderationsAndConstraintsPanel(Option rootOption)
     {
         super(rootOption);

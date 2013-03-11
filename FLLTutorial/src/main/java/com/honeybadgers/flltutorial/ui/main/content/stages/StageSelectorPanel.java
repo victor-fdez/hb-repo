@@ -27,17 +27,17 @@ import javax.swing.border.EmptyBorder;
  */
 public class StageSelectorPanel extends StagePanel{
 
-    private OptionTracker currentTracker;
     private PanelsScrollPane scrollPane;
-    private Option mainOption;
     private int lastPosition;
+    private OptionPanel parentOptionPanel;
     StageSelectorPanel(Option rootOption)
     {
         super();
-        this.mainOption = rootOption;
-        this.currentTracker = OptionTracker.generateOptionTrackerTree(rootOption);
+        this.tutorialOption = rootOption;
+        this.solutionTracker = OptionTracker.generateOptionTrackerTree(rootOption);
+     
         
-        List<OptionPanel> optionPanels = this.generateOptionPanels(this.currentTracker, 1);
+        List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker, 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
     }
     
@@ -72,7 +72,16 @@ public class StageSelectorPanel extends StagePanel{
         c.ipady = 0;
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
-        this.add(new OptionPanel(this.mainOption), c);
+        this.parentOptionPanel = new OptionPanel(this.tutorialOption);
+        if(this.solutionTracker.isFinished())
+        {
+            this.parentOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+        }
+        else
+        {
+            this.parentOptionPanel.setState(OptionPanel.OptionState.CORRECT);
+        }
+        this.add(this.parentOptionPanel, c);
         
         //setup scroll pane
         this.scrollPane = new PanelsScrollPane(true);
@@ -85,6 +94,20 @@ public class StageSelectorPanel extends StagePanel{
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
+        
+        //add options that have been selected
+        for(OptionTracker optionTracker : this.solutionTracker.getAllCorrectTrackers())
+        {
+            if(optionTracker == null)
+            {
+                continue;
+            }
+            //add correct option panel
+            this.lastPosition++;
+            OptionPanel optionPanel = new OptionPanel(optionTracker.getOption());
+            optionPanel.setState(OptionPanel.OptionState.FINISHED);
+            this.scrollPane.appendPanel(optionPanel);
+        }
         
         this.add(this.scrollPane, c);
         
@@ -103,20 +126,33 @@ public class StageSelectorPanel extends StagePanel{
         int y = (int)optionPanel.getBounds().getCenterY();
         int sx = (int)this.scrollPane.getX();
         int sy = (int)this.scrollPane.getY();
-        System.out.println("x : "+x+" y : "+y);
-        System.out.println("scroll sx: "+sx+" sy: "+sy);
+        //System.out.println("x : "+x+" y : "+y);
+        //System.out.println("scroll sx: "+sx+" sy: "+sy);
         Point dropPoint = new Point(x-sx, y-sy);
         //check whether the option fell inside the answers panel
         if(this.scrollPane.contains(dropPoint))
         {
             //check with option tracker
             Option option = optionPanel.getOption();
-            boolean newTracked = this.currentTracker.addOptionAt(this.lastPosition, option);
+            boolean newTracked = this.solutionTracker.addOptionAt(this.lastPosition, option);
             if(newTracked)
             {
+                OptionTracker optionTracker = this.solutionTracker.getCorrectChild(this.lastPosition);
                 if(option.isCorrect())
                 {
-                    optionPanel.setState(OptionPanel.OptionState.CORRECT);
+                    if(optionTracker.isFinished())
+                    {
+                        optionPanel.setState(OptionPanel.OptionState.FINISHED);
+                        if(this.solutionTracker.isFinished())
+                        {
+                            this.parentOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+                        }
+                    }
+                    else
+                    {
+                        //this should not happen, because there should not be more leveles
+                        optionPanel.setState(OptionPanel.OptionState.CORRECT);
+                    }
                     this.scrollPane.appendPanel(optionPanel);
                     this.lastPosition++;
                     return 0;
@@ -131,7 +167,7 @@ public class StageSelectorPanel extends StagePanel{
         }
         return 2;
     }
-
+    
     @Override
     public void scrolled(AWTEvent e) {
         this.scrollPane.dispatchEvent(e);

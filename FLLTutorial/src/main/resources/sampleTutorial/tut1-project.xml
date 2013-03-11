@@ -19,11 +19,11 @@
                 <desc>Move to guidepost</desc>
                 <reason>Why this option is right/wrong</reason>
             </option>
-            <option oid="0.1" correct="true" position="-1" selected="-1">
+            <option oid="0.1" correct="true" position="0" selected="-1">
                 <desc>Read color on guidepost</desc>
                 <reason>Why this option is right/wrong</reason>
             </option>
-            <option oid="0.2" correct="true" position="-1" selected="-1">
+            <option oid="0.2" correct="true" position="1" selected="-1">
                 <desc>Move to ball location</desc>
                 <reason>Why this option is right/wrong</reason>
             </option>
@@ -104,15 +104,15 @@
                     <desc>0</desc>
                     <reason>Why this option is right/wrong</reason>
                 </option>
-                <option oid="1.0.1" correct="false" position="-1" selected="-1">
+                <option oid="1.0.1" correct="false" position="-3" selected="-1">
                     <desc>1</desc>
                     <reason>Why this option is right/wrong</reason>
                 </option>
-                <option oid="1.0.2" correct="false" position="-1" selected="-1">
+                <option oid="1.0.2" correct="false" position="-3" selected="-1">
                     <desc>2</desc>
                     <reason>Why this option is right/wrong</reason>
                 </option>
-                <option oid="1.0.3" correct="true" position="-1" selected="-1">
+                <option oid="1.0.3" correct="true" position="0" selected="-1">
                     <desc>3</desc>
                     <reason>Why this option is right/wrong</reason>
                 </option>
@@ -128,7 +128,7 @@
                     <desc>0</desc>
                     <reason>Why this option is right/wrong</reason>
                 </option>
-                <option oid="1.1.1" correct="true" position="-1" selected="-1">
+                <option oid="1.1.1" correct="true" position="0" selected="-1">
                     <desc>1</desc>
                     <reason>Why this option is right/wrong</reason>
                 </option>
