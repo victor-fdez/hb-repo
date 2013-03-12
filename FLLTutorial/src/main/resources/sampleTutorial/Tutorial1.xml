@@ -399,7 +399,7 @@
         <option correct="true" oid="3.0.2" position="-1" selected="-1">
           <desc>Tank Treads</desc>
           <reason>Why this option is right/wrong</reason>
-          <img src="media/motion-TankThreads.png"/>
+          <img src="media/motion-TankTreads.png"/>
         </option>
         <option correct="true" oid="3.0.3" position="-1" selected="-1">
           <desc>3 Wheels</desc>

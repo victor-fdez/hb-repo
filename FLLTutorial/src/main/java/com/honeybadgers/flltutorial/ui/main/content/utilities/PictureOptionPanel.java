@@ -5,7 +5,14 @@
 package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
+import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.CORRECT;
+import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.FINISHED;
+import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.HIDDEN_OCCUPY;
+import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.INCORRECT;
+import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.NORMAL;
+import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.UNOCCUPIED;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,26 +20,36 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author chingaman
  */
-public class PictureOptionPanel extends javax.swing.JPanel {
+public class PictureOptionPanel extends OptionPanel {
 
     /**
      * Creates new form PictureOptionPanel
      */
     public PictureOptionPanel(Option option) {
         initComponents();
-        this.contentPanel.setBackground(Color.red);
-        File dir = new File(".");
         
-        System.out.println(""+dir.getAbsolutePath());
-        File pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/media/ballDetection-ColorSensor.png");
+        if(option == null)
+        {
+            this.iconDisplay.setIcon(null);
+            this.iconDisplay.setText("");
+            this.setState(NORMAL);
+            return;
+        }
+                        
+        System.out.println(option.getImagePath());
+        File pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/"+option.getImagePath());
         if(pictureFile.exists())
         {
             try {
@@ -50,6 +67,8 @@ public class PictureOptionPanel extends javax.swing.JPanel {
             }
         }
         
+        this.iconDisplay.setText("");   
+        this.setState(NORMAL);
     }
 
     public static void main(String[] args)
@@ -126,6 +145,109 @@ public class PictureOptionPanel extends javax.swing.JPanel {
         this.iconDisplay.revalidate();
     }//GEN-LAST:event_layeredPaneResize
 
+    @Override
+    public OptionPanel copy()
+    {
+            OptionPanel optionPanel = new PictureOptionPanel(this.option);
+            return optionPanel;
+    }
+    /**
+     * This object method transfers in a give option, and stores it. It may not show
+     * the option immediately, unless the state of the option panel is NORMAL.
+     * 
+     * @param option the Option object that will be stored in this OptionPanel
+     */
+    
+    @Override
+    public void transferOption(Option option)
+    {
+        this.option = option;
+        if(this.iconDisplay != null)
+        {
+            //try
+            //{this.description.getDocument().insertString(0, this.option.getDescription(), null);}
+            //catch(Exception e){System.err.println("OptionPanel - exception");}
+            this.iconDisplay.setText(option.getDescription());
+            this.revalidate();
+        }
+    }
+    /**
+     * This object method sets the state of this OptionPanel. It is mainly used for display
+     * purposes.
+     * 
+     * @param state the enumerate type OptionPanel.OptionState which denotes the state of the panel.
+     */
+    @Override
+    public void setState(OptionState state)
+    {
+        this.state = state;
+        switch(this.state)
+        {
+            case NORMAL: /*beginning state*/
+                this.setOpaque(true);
+                this.contentPanel.setBackground(Color.YELLOW);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
+            case HIDDEN_OCCUPY:
+                this.contentPanel.setBackground(Color.GRAY);
+                this.setBorder(null);
+                break;
+            case UNOCCUPIED:
+                this.contentPanel.setBackground(Color.LIGHT_GRAY);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            case CORRECT:
+                this.setOpaque(true);
+                this.contentPanel.setBackground(Color.GREEN);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
+            case INCORRECT:
+                this.setOpaque(true);
+                this.contentPanel.setBackground(Color.RED);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
+           case FINISHED:
+                this.setOpaque(true);
+                this.contentPanel.setBackground(Color.GREEN.darker());
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
+            default:
+                break;
+        }
+    }
+  
+    @Override
+    public OptionState getState()
+    {
+        return this.state;
+    }
+    
+   
+    @Override
+    public Option getOption() {
+        return option;
+    }
+    /**
+     * Returns an Object that covers the whole panel and can be used to track, and
+     * receive events on the given option panel.
+     * 
+     * @return 
+     */
+    @Override
+    public Component getBeacon()
+    {
+        return this.beaconPanel;
+    }
+    /**
+     * Returns the corresponding option panel from the input beacon.
+     * 
+     * @param object
+     * @return 
+     */
+    public static OptionPanel getOptionPanelFromBeaconSpecific(Component object)
+    {
+        System.out.println(object.getParent().getParent().getParent().getParent());
+        return (OptionPanel)object.getParent().getParent().getParent().getParent();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel beaconPanel;
     private javax.swing.JPanel contentPanel;

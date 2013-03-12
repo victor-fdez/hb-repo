@@ -19,15 +19,15 @@ import javax.swing.border.EmptyBorder;
  *
  * @author chingaman
  */
-public final class OptionPanel extends JPanel implements Cloneable
+public class OptionPanel extends JPanel implements Cloneable
 {
     public static enum OptionState
     {
         NORMAL, HIDDEN_OCCUPY, DRAGGED, DROPPED, UNOCCUPIED, CORRECT, INCORRECT, FINISHED
     }
-    OptionState state;
-    private Option option;
-    JTextArea description;
+    protected OptionState state;
+    protected Option option;
+    private JTextArea description;
     //JLabel description;
     public OptionPanel()
     {
@@ -41,10 +41,13 @@ public final class OptionPanel extends JPanel implements Cloneable
         super();
         this.option = option;
         this.state = OptionState.NORMAL;
-        this.initComponents();
+        if(this.getClass() == OptionPanel.class)
+        {   
+            this.initComponents();
+        }
         this.setState(OptionState.NORMAL);
     }
-    void initComponents()
+    private void initComponents()
     {
         try
         {
@@ -195,14 +198,20 @@ public final class OptionPanel extends JPanel implements Cloneable
      */
     public static OptionPanel getOptionPanelFromBeacon(Component object)
     {
-        if(object instanceof JTextArea)
+        if(object.getClass() == JTextArea.class)
         {
+            System.out.println("Option Panel Beacon");
             JTextArea textArea = (JTextArea)object;
             if(textArea.getParent() instanceof OptionPanel)
             {
                 return (OptionPanel)textArea.getParent();
             }
+            return null;
         }
-        return null;
+        else
+        {
+            System.out.println("Picture Option Panel Beacon");
+            return PictureOptionPanel.getOptionPanelFromBeaconSpecific(object);
+        }
     }
 }

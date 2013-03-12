@@ -8,6 +8,7 @@ import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -62,7 +63,17 @@ abstract public class StagePanel extends JPanel
     /**
      * 
      */
-    public abstract void scrolled(AWTEvent e);
+    public abstract void scrolled(AWTEvent e); 
+    /**
+     * Default option panel generator
+     * @param option
+     * @return 
+     */
+    protected OptionPanel createOptionPanel(Option option)
+    {
+        System.out.println("Generated Option Panel in Stage");
+        return new OptionPanel(option);
+    } 
     /**
      * This methods generates an List of OptionPanels. If the type is 1, the options panels
      * are generated based on the child options of the options being tracked by the options tracker.
@@ -70,7 +81,7 @@ abstract public class StagePanel extends JPanel
      * @param option
      * @param optionTracker
      * @return 
-     */   
+     */ 
     protected List<OptionPanel> generateOptionPanels(OptionTracker optionTracker, int type)
     {
         ArrayList<OptionPanel> optionPanels = new ArrayList<OptionPanel>();
@@ -83,7 +94,7 @@ abstract public class StagePanel extends JPanel
                 if(optionTrackerChild != null)
                 {
                     Option option = optionTrackerChild.getOption();
-                    optionPanel = new OptionPanel(option);
+                    optionPanel = this.createOptionPanel(option);
                     if(optionTrackerChild.isFinished())
                     {
                         optionPanel.setState(OptionPanel.OptionState.FINISHED);
@@ -110,14 +121,13 @@ abstract public class StagePanel extends JPanel
         }
         else
         {
-            System.out.println("optionTracker option"+optionTracker.getOption().getDescription()+" isCorrect"+optionTracker.getOption().isCorrect());
             ArrayList<Option> options = (ArrayList<Option>)(optionTracker.getOption().getOptions());
             for(Option childOption : options)
             {
                 OptionPanel optionPanel;
                 if(childOption != null)
                 {
-                    optionPanel = new OptionPanel(childOption);
+                    optionPanel = this.createOptionPanel(childOption);
                     if(childOption.isCorrect())
                     {
                         if(optionTracker.isChoosed(childOption))

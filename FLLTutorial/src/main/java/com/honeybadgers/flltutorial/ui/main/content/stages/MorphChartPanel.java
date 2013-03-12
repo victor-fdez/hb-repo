@@ -9,6 +9,7 @@ import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -68,7 +69,6 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.listsOptionPanels = new ArrayList<>();
         if(this.getClass() == MorphChartPanel.class)
         {
-            System.out.println("morph chart init components");
             this.initComponents();
         }
     }
@@ -183,6 +183,21 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.scrollPane.revalidate();
         this.repaint();
     }
+    
+    @Override
+    protected OptionPanel createOptionPanel(Option option)
+    {
+        System.out.println("Generated in Morph State "+option.getImagePath());
+        if(option.getImagePath().isEmpty())
+        {
+            return new OptionPanel(option);
+        }
+        else
+        {
+            return new PictureOptionPanel(option);
+        }
+    } 
+    
     private void morphChartGenerator()
     {
         Option morphChartOption = new Option("Click a row, then chose whichever options you think will enable you to do the given functionality", true);
@@ -281,6 +296,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         }
         return 2;
     }
+    
     @Override
     public void scrolled(AWTEvent e) {
         this.scrollPane.dispatchEvent(e);
