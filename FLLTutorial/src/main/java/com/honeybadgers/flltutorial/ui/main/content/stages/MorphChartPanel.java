@@ -66,8 +66,9 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.indexesHashes = new HashMap();
         this.indexesChildrenHashes = new HashMap();
         this.listsOptionPanels = new ArrayList<>();
-        if(this instanceof MorphChartPanel)
+        if(this.getClass() == MorphChartPanel.class)
         {
+            System.out.println("morph chart init components");
             this.initComponents();
         }
     }
