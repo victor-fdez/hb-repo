@@ -110,6 +110,7 @@ abstract public class StagePanel extends JPanel
         }
         else
         {
+            System.out.println("optionTracker option"+optionTracker.getOption().getDescription()+" isCorrect"+optionTracker.getOption().isCorrect());
             ArrayList<Option> options = (ArrayList<Option>)(optionTracker.getOption().getOptions());
             for(Option childOption : options)
             {

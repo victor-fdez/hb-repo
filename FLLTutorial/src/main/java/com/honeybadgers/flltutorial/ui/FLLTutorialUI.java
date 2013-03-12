@@ -122,7 +122,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 tutorialUI.getContentPane().removeAll();
                
                 //this would be obtained from the caller
-                Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/tut1-project.xml"));
+                Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/Tutorial1.xml"));
                 stagesList = tutorial.getStages();
                 
                 ArrayList<StagePanel> stagePanels = new ArrayList<>();

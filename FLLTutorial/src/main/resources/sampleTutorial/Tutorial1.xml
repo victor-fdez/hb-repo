@@ -2,7 +2,7 @@
 <tutorial name="Tutorial1">
   <mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost.</mission>
   <stage name="Problem Statement" time="0" video="">
-    <option correct="true" oid="0" position="-1" selected="-1">
+    <option correct="true" oid="0" selected="-1">
       <desc>Based on your robot's mission, identify the basic tasks that your robot should perform.</desc>
       <reason/>
       <img src=""/>
@@ -29,11 +29,11 @@
     </option>
   </stage>
   <stage name="Limitations and Constraints" time="0" video="">
-    <option correct="true" oid="1" position="-1" selected="-1">
+    <option correct="true" oid="1" selected="-1">
       <desc>Select the limitations and constraints that apply to this project.</desc>
       <reason/>
       <img src=""/>
-      <option correct="true" oid="1.0" position="-1" selected="-1">
+      <option correct="true" oid="1.0" selected="-1">
         <desc>Number of Motors</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -63,7 +63,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.1" position="-1" selected="-1">
+      <option correct="true" oid="1.1" selected="-1">
         <desc>Number of Sensors</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -93,7 +93,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.2" position="-1" selected="-1">
+      <option correct="true" oid="1.2" selected="-1">
         <desc>Robot Height</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -118,7 +118,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.3" position="-1" selected="-1">
+      <option correct="true" oid="1.3" selected="-1">
         <desc>Robot Width</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -143,7 +143,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.4" position="-1" selected="-1">
+      <option correct="true" oid="1.4" selected="-1">
         <desc>Robot Weight</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -173,7 +173,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.5" position="-1" selected="-1">
+      <option correct="true" oid="1.5" selected="-1">
         <desc>Weather and Lighting</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -193,7 +193,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.6" position="-1" selected="-1">
+      <option correct="true" oid="1.6" selected="-1">
         <desc>Surface Conditions</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -228,7 +228,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.7" position="-1" selected="-1">
+      <option correct="true" oid="1.7" selected="-1">
         <desc>Movement Requirements</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
@@ -256,7 +256,7 @@
     </option>
   </stage>
   <stage name="Task Diagram" time="0" video="">
-    <option correct="true" oid="2" position="-1" selected="-1">
+    <option correct="true" oid="2" selected="-1">
       <desc>Create a task diagram</desc>
       <reason/>
       <img src=""/>
@@ -378,34 +378,79 @@
     </option>
   </stage>
   <stage name="Morphological Chart" time="0" video="">
-    <option correct="true" oid="3" position="-1" selected="-1">
+    <option correct="true" oid="3" selected="-1">
       <desc>Create a morphological chart.</desc>
       <reason/>
       <img src=""/>
-      <option correct="true" oid="3.0" position="-1" selected="-1">
+      <option correct="true" oid="3.0" selected="-1">
         <desc>Move</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
         <option correct="true" oid="3.0.0" position="-1" selected="-1">
           <desc>4 Wheels</desc>
           <reason>Why this option is right/wrong</reason>
-          <img src="media/fourWheels.png"/>
+          <img src="media/motion-FourWheels.png"/>
         </option>
-        <option correct="true" oid="3.0.1" position="-1" selected="-1">
-          <desc>3 Wheels</desc>
+        <option correct="false" oid="3.0.1" position="-1" selected="-1">
+          <desc>Legs</desc>
           <reason>Why this option is right/wrong</reason>
-          <img src="media/threeWheels.png"/>
+          <img src="media/motion-Legs.png"/>
         </option>
         <option correct="true" oid="3.0.2" position="-1" selected="-1">
           <desc>Tank Treads</desc>
           <reason>Why this option is right/wrong</reason>
-          <img src="media/tankTreads.png"/>
+          <img src="media/motion-TankThreads.png"/>
+        </option>
+        <option correct="true" oid="3.0.3" position="-1" selected="-1">
+          <desc>3 Wheels</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/motion-ThreeWheels.png"/>
         </option>
       </option>
-      <option correct="true" oid="3.1" position="-1" selected="-1">
-        <desc>Pick Up Ball</desc>
+      <option correct="true" oid="3.1" selected="-1">
+        <desc>Carry</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
+        <option correct="true" oid="3.1.0" position="-1" selected="-1">
+          <desc>Bull Dozing</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballHolding-BullDozer.png"/>
+        </option>
+        <option correct="true" oid="3.1.1" position="-1" selected="-1">
+          <desc>Drop Arm</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballHolding-DropArm.png"/>
+        </option>
+        <option correct="false" oid="3.1.2" position="-1" selected="-1">
+          <desc>Hinged Claw</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballHolding-HingedClaw.png"/>
+        </option>
+        <option correct="true" oid="3.1.3" position="-1" selected="-1">
+          <desc>Ramp And Bin</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballHolding-RampAndBin.png"/>
+        </option> 
+      </option>
+      <option correct="true" oid="3.2" selected="-1">
+        <desc>Detection</desc>
+        <reason>Why this option is right/wrong</reason>
+        <img src=""/>
+        <option correct="true" oid="3.2.0" position="-1" selected="-1">
+          <desc>Color Sensor</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballDetection-ColorSensor.png"/>
+        </option>
+        <option correct="true" oid="3.2.1" position="-1" selected="-1">
+          <desc>Sonar Sensor</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballDetection-SonarSensor.png"/>
+        </option>
+        <option correct="false" oid="3.2.2" position="-1" selected="-1">
+          <desc>Touch Sensor</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src="media/ballDetection-TouchSensor.png"/>
+        </option>
       </option>
     </option>
   </stage>
