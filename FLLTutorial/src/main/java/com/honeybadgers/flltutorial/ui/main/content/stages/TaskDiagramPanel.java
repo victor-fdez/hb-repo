@@ -9,6 +9,7 @@ import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,7 +17,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         //setup problem description option
         //should make to setup the tutorial at a specific depth
         JPanel setupPanel = this.depthPanels[0];
-        OptionPanel setupOption = new OptionPanel(this.tutorialOption);
+        OptionPanel setupOption = new TextOptionPanel(this.tutorialOption);
         setupOption.setState(OptionPanel.OptionState.CORRECT);
         setupPanel.add(setupOption);
         this.depthPanelsHashes[0].put(setupOption, 0);

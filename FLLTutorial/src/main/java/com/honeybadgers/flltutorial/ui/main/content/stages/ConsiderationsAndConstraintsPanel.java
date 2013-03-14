@@ -6,6 +6,7 @@ package com.honeybadgers.flltutorial.ui.main.content.stages;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 
 /**
  *
@@ -23,6 +24,6 @@ public class ConsiderationsAndConstraintsPanel extends MorphChartPanel{
     {
                     System.out.println("Generated in consideration");
 
-        return new OptionPanel(option);
+        return new TextOptionPanel(option);
     } 
 }

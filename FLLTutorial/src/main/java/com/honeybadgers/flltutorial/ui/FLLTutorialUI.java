@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -87,7 +88,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                             //System.out.println(tutorialBase.getTitle());
                         }
                     });
-                    tutorialsScrollPane.appendPanel(tutorialPanel);
+                    tutorialsScrollPane.appendPanel((JComponent)tutorialPanel);
                 }
             
                 beginnings.getListPanel().add(tutorialsScrollPane);

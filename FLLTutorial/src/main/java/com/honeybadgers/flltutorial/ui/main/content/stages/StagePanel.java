@@ -9,6 +9,7 @@ import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -72,7 +73,7 @@ abstract public class StagePanel extends JPanel
     protected OptionPanel createOptionPanel(Option option)
     {
         System.out.println("Generated Option Panel in Stage");
-        return new OptionPanel(option);
+        return (OptionPanel)new TextOptionPanel(option);
     } 
     /**
      * This methods generates an List of OptionPanels. If the type is 1, the options panels
@@ -113,7 +114,7 @@ abstract public class StagePanel extends JPanel
                 }
                 else
                 {
-                    optionPanel = new OptionPanel();
+                    optionPanel = this.createOptionPanel(null);
                     optionPanel.setState(OptionPanel.OptionState.NORMAL);
                 }
                 optionPanels.add(optionPanel);
@@ -153,7 +154,7 @@ abstract public class StagePanel extends JPanel
                 }
                 else
                 {
-                    optionPanel = new OptionPanel();
+                    optionPanel = this.createOptionPanel(null);
                     optionPanel.setState(OptionPanel.OptionState.NORMAL);
                 }
                 optionPanels.add(optionPanel);

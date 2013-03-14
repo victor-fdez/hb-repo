@@ -10,6 +10,7 @@ import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -103,7 +104,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         c.ipady = 0;
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
-        this.add(new OptionPanel(this.problem), c);
+        this.add(new TextOptionPanel(this.problem), c);
         
         //setup scroll pane
         this.scrollPane = new PanelsScrollPane(true);
@@ -187,15 +188,16 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     @Override
     protected OptionPanel createOptionPanel(Option option)
     {
-        System.out.println("Generated in Morph State "+option.getImagePath());
-        if(option.getImagePath().isEmpty())
+        //System.out.println("Generated in Morph State "+option.getImagePath());
+        /*if(option.getImagePath().isEmpty())
         {
             return new OptionPanel(option);
         }
         else
         {
             return new PictureOptionPanel(option);
-        }
+        }*/
+        return new TextOptionPanel(option);
     } 
     
     private void morphChartGenerator()

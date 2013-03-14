@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 /**
  *
@@ -56,7 +57,7 @@ abstract public class OptionsPanel extends JPanel{
     
     OptionPanel getButtonAt(Point point) 
     {
-        JPanel panelAtPoint;
+        JComponent panelAtPoint;
         point.translate(-this.getX(), -this.getY());
         panelAtPoint = this.optionPanelsScrollPane.getPanelAtPoint(point);
         if(panelAtPoint instanceof OptionPanel) 

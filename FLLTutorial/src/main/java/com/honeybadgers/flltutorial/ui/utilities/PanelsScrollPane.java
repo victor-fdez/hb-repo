@@ -15,6 +15,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -77,7 +78,7 @@ public class PanelsScrollPane extends JScrollPane{
      * 
      * @param appendedPanel 
      */
-    public void appendPanel(JPanel appendedPanel)
+    public void appendPanel(JComponent appendedPanel)
     {
         //remove glue from fitted panel
         this.fittedViewportPanel.remove(this.glue);
@@ -112,6 +113,8 @@ public class PanelsScrollPane extends JScrollPane{
         this.fittedViewportPanel.add(this.glue, this.glueConstraints);
         
         //revalidate layout of scroll pane
+        this.fittedViewportPanel.revalidate();
+        this.fittedViewportPanel.repaint();
         this.revalidate();
         this.repaint();
     }
@@ -148,13 +151,13 @@ public class PanelsScrollPane extends JScrollPane{
      * @param point
      * @return 
      */
-    public JPanel getPanelAtPoint(Point point)
+    public JComponent getPanelAtPoint(Point point)
     {
         //Point translated
         point.translate(-this.getX(), -this.getY());
         point.translate(-this.fittedViewportPanel.getX(), -this.fittedViewportPanel.getY());
         System.out.println(point.toString());
-        JPanel panelAtPoint = (JPanel)this.fittedViewportPanel.getComponentAt(point);
+        JComponent panelAtPoint = (JComponent)this.fittedViewportPanel.getComponentAt(point);
         if(panelAtPoint == this.glue)
         {
             return null;

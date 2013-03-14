@@ -9,6 +9,7 @@ import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -72,7 +73,7 @@ public class StageSelectorPanel extends StagePanel{
         c.ipady = 0;
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
-        this.parentOptionPanel = new OptionPanel(this.tutorialOption);
+        this.parentOptionPanel = new TextOptionPanel(this.tutorialOption);
         if(this.solutionTracker.isFinished())
         {
             this.parentOptionPanel.setState(OptionPanel.OptionState.FINISHED);
@@ -104,7 +105,7 @@ public class StageSelectorPanel extends StagePanel{
             }
             //add correct option panel
             this.lastPosition++;
-            OptionPanel optionPanel = new OptionPanel(optionTracker.getOption());
+            OptionPanel optionPanel = new TextOptionPanel(optionTracker.getOption());
             optionPanel.setState(OptionPanel.OptionState.FINISHED);
             this.scrollPane.appendPanel(optionPanel);
         }

@@ -145,7 +145,6 @@ public class PictureOptionPanel extends OptionPanel {
         this.iconDisplay.revalidate();
     }//GEN-LAST:event_layeredPaneResize
 
-    @Override
     public OptionPanel copy()
     {
             OptionPanel optionPanel = new PictureOptionPanel(this.option);
@@ -158,7 +157,6 @@ public class PictureOptionPanel extends OptionPanel {
      * @param option the Option object that will be stored in this OptionPanel
      */
     
-    @Override
     public void transferOption(Option option)
     {
         this.option = option;
@@ -177,7 +175,6 @@ public class PictureOptionPanel extends OptionPanel {
      * 
      * @param state the enumerate type OptionPanel.OptionState which denotes the state of the panel.
      */
-    @Override
     public void setState(OptionState state)
     {
         this.state = state;
@@ -226,28 +223,7 @@ public class PictureOptionPanel extends OptionPanel {
     public Option getOption() {
         return option;
     }
-    /**
-     * Returns an Object that covers the whole panel and can be used to track, and
-     * receive events on the given option panel.
-     * 
-     * @return 
-     */
-    @Override
-    public Component getBeacon()
-    {
-        return this.beaconPanel;
-    }
-    /**
-     * Returns the corresponding option panel from the input beacon.
-     * 
-     * @param object
-     * @return 
-     */
-    public static OptionPanel getOptionPanelFromBeaconSpecific(Component object)
-    {
-        System.out.println(object.getParent().getParent().getParent().getParent());
-        return (OptionPanel)object.getParent().getParent().getParent().getParent();
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel beaconPanel;
     private javax.swing.JPanel contentPanel;
