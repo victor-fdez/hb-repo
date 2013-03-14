@@ -67,7 +67,7 @@ public class PictureOptionPanel extends OptionPanel {
             }
         }
         
-        this.iconDisplay.setText("");   
+        this.iconDisplay.setText(option.getDescription());   
         this.setState(NORMAL);
     }
 
