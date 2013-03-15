@@ -43,6 +43,7 @@ public class TextOptionPanel extends OptionPanel{
     }
     private void initComponents()
     {
+        System.out.println("TextOptionPanel.initComponents() : started");
         try
         {
             this.description = new DepthTextArea("");
@@ -62,10 +63,10 @@ public class TextOptionPanel extends OptionPanel{
         //make content panel atleast this height
         Font currentFont = this.description.getFont();
         int height = this.description.getFontMetrics(currentFont).getHeight();
-        this.setMinimumSize(new Dimension(150, height*4+8));
-        this.setPreferredSize(new Dimension(150, height*4+8));
+        this.setMinimumSize(new Dimension(100, height*4+8));
+        this.setPreferredSize(new Dimension(100, height*4+8));
         
-        //this.description.setBorder(new EmptyBorder(4,4,4,4));
+        this.description.setBorder(new EmptyBorder(4,4,4,4));
         this.description.setEditable(false);
         this.description.setLineWrap(true);
         this.description.setWrapStyleWord(true);
@@ -74,6 +75,8 @@ public class TextOptionPanel extends OptionPanel{
         this.contentPanel.setOpaque(true);
         this.contentPanel.setBackground(Color.GRAY);
         this.contentPanel.add(this.description);
+        
+        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
     
     public OptionPanel copy()
@@ -134,6 +137,9 @@ public class TextOptionPanel extends OptionPanel{
                 this.description.changeBackgroundColor(Color.GREEN.darker());
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 break;
+           case TRANSPARENT:
+                this.setOpaque(false);
+                break;
             default:
                 break;
         }
@@ -146,7 +152,7 @@ public class TextOptionPanel extends OptionPanel{
         public DepthTextArea(String text)
         {
             super(text);
-            this.setOpaque(false);
+            this.setOpaque(true);
             this.setBackground(new Color(0,0,0,0));
         }
         
@@ -170,6 +176,7 @@ public class TextOptionPanel extends OptionPanel{
             super.paintComponent(g);
         }
     }
+    /*
     static public void main(String[] args)
     {
         OptionPanel optionPanel = new TextOptionPanel(new Option("hello world this is a test, please tell me if I said hello", false));
@@ -187,4 +194,5 @@ public class TextOptionPanel extends OptionPanel{
         frame.pack();
         frame.setVisible(true);
     }
+    */
 }

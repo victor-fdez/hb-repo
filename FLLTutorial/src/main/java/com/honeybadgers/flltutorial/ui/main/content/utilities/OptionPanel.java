@@ -11,8 +11,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -27,21 +29,23 @@ import javax.swing.border.EmptyBorder;
  */
 public abstract class OptionPanel extends JLayeredPane implements Cloneable
 {
+    
     public static enum OptionState
     {
-        NORMAL, HIDDEN_OCCUPY, DRAGGED, DROPPED, UNOCCUPIED, CORRECT, INCORRECT, FINISHED
+        NORMAL, HIDDEN_OCCUPY, DRAGGED, DROPPED, UNOCCUPIED, CORRECT, INCORRECT, FINISHED, TRANSPARENT
     }
     protected OptionState state;
     protected Option option;
     protected JPanel beaconPanel;
     protected JPanel contentPanel;
+    protected BufferedImage panelImage;
     //JLabel description;
     public OptionPanel()
     {
         super();
         this.state = OptionState.UNOCCUPIED;
         
-        
+      
         this.initComponents();
     }
     public OptionPanel(Option option)
@@ -55,6 +59,7 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
     }
     private void initComponents()
     {
+        System.out.println("OptionPanel.initComponents() : started");
         this.contentPanel = new JPanel();
         this.contentPanel.setVisible(true);
         this.contentPanel.setOpaque(true);
@@ -106,6 +111,33 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
     
     public Option getOption() {
         return option;
+    }
+    
+    @Override
+    public void paint(Graphics g)
+    {
+        if(this.state == OptionState.TRANSPARENT)
+        {
+            if(panelImage == null || panelImage.getWidth() != this.getWidth() || panelImage.getHeight() != this.getHeight())
+            {
+                this.panelImage = (BufferedImage)this.createImage(this.getWidth(), this.getHeight());
+            }
+            //System.out.println("->"+this.panelImage.getWidth()+" "+this.panelImage.getHeight());
+            Graphics gPanel = this.panelImage.getGraphics();
+            gPanel.setClip(g.getClip());
+            
+            super.paint(gPanel);
+            
+            Graphics2D g2 = (Graphics2D)g;
+            
+            AlphaComposite srcComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
+            g2.setComposite(srcComposite);
+            g2.drawImage(this.panelImage, 0, 0, null);
+        }
+        else
+        {
+            super.paint(g);
+        }
     }
     /**
      * Returns an Object that covers the whole panel and can be used to track, and

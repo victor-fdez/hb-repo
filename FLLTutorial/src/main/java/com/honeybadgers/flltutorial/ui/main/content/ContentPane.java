@@ -6,6 +6,7 @@ package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -30,6 +31,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private Dimension preferedDimension = new Dimension(750, 500);
     private Dimension minDimension = new Dimension(750, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
+    private OptionState draggingOptionState;
     /*
      * this panel covers the whole layered pane, but it will be transparent and
      * it will mainly intercept all mouse and keyboard event to jcomponents on other
@@ -198,6 +200,10 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 this.draggingOptionPanel = this.selectedOptionPanel.copy();
                 this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
                 this.draggingOptionPanel.setState(this.selectedOptionPanel.getState());
+                this.draggingOptionState = this.draggingOptionPanel.getState();
+                this.draggingOptionPanel.setState(OptionState.TRANSPARENT);
+                this.draggingOptionPanel.repaint();
+                this.draggingOptionPanel.revalidate();
                 //add dragging option panel to glass pane
                 //revalidate button after adding it to the glass panel
                 this.glassPanel.add(this.draggingOptionPanel);
@@ -224,6 +230,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             //Rectangle rect = this.draggingOptionPanel.getVisibleRect();
             this.glassPanel.remove(this.draggingOptionPanel);
             this.glassPanel.repaint();
+            this.draggingOptionPanel.setState(this.draggingOptionState);
             if(component == this.stagePanel)
             {/*don't do anything, althought this will send points to stage panel*/
                 int status = this.stagePanel.dropOptionPanel(this.draggingOptionPanel);

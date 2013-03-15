@@ -54,6 +54,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     protected HashMap indexesHashes;
     protected HashMap indexesChildrenHashes;
     protected List<List<OptionPanel>> listsOptionPanels;
+    private int type = 0;
     public MorphChartPanel(Option rootOption)
     {
         super();
@@ -62,6 +63,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.problem = rootOption;
         this.solutionTracker = OptionTracker.generateOptionTrackerTree(rootOption);
         //show the options of the first child
+        this.type = 1;
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker.getCorrectChild(0), 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
         this.panelTypeHashes = new HashMap();
@@ -111,6 +113,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         
             //add row panels to scroll pane
             int i = 0;
+            this.type = 0;
             for(OptionPanel leftMostOptionPanel : this.generateOptionPanels(this.solutionTracker, 1))
             {
                 //setup beacon for top most elements
@@ -132,6 +135,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
 
                 JPanel rowPanel = new JPanel();
                 rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
+                rowPanel.setBackground(Color.GRAY);
                 
                 rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
                 
@@ -146,6 +150,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 rowPanel.add(childrenPanel);
                 
                         //add panels to children panel
+                        this.type = 1;
                         List<OptionPanel> optionPanelsChilds = this.generateOptionPanels(this.solutionTracker.getCorrectChild(i),0);
                         this.listsOptionPanels.add(optionPanelsChilds);
                         if(i == 0)
@@ -189,15 +194,15 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     protected OptionPanel createOptionPanel(Option option)
     {
         //System.out.println("Generated in Morph State "+option.getImagePath());
-        /*if(option.getImagePath().isEmpty())
+        if(this.type == 0)
         {
-            return new OptionPanel(option);
+            return new TextOptionPanel(option);
         }
         else
         {
             return new PictureOptionPanel(option);
-        }*/
-        return new TextOptionPanel(option);
+        }
+        //return new TextOptionPanel(option);
     } 
     
     private void morphChartGenerator()
@@ -338,6 +343,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 this.panelTypeHashes.put(beacon, BeaconType.SelectedParentPanel);
                 
                 int index = (int)this.indexesHashes.get(this.selectedPanel);
+                this.type = 1;
                 List<OptionPanel> optionPanels = this.generateOptionPanels(solutionTracker.getCorrectChild(index), 1);
                 ((OptionsSelectorPanel)this.optionsPanel).updateOptionPanels(optionPanels);
                 //System.out.println("MorphChartPanel.mouseClicked : clicked parent panel");

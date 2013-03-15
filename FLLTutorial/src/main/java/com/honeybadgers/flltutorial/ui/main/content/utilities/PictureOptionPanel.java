@@ -12,8 +12,14 @@ import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.NORMAL;
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.UNOCCUPIED;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Paint;
+import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,12 +27,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -34,178 +39,166 @@ import javax.swing.JTextArea;
  */
 public class PictureOptionPanel extends OptionPanel {
 
-    /**
-     * Creates new form PictureOptionPanel
-     */
+    // Variables declaration - do not modify                     
+    private JLabel iconDisplay;
+    protected BufferedImage image;
     public PictureOptionPanel(Option option) {
-        initComponents();
+        super(option);
         
-        if(option == null)
+        this.initComponents();
+        this.setState(NORMAL);
+    }
+    
+    private void initComponents()
+    {
+        System.out.println("OptionPanel.initComponents() : started");
+        
+        this.setMinimumSize(new Dimension(100, 100));
+        this.setPreferredSize(new Dimension(100, 100));
+        
+        //setup the new default layer
+        this.remove(this.contentPanel);
+        
+        this.contentPanel = new DepthContentPanel();
+        this.contentPanel.setVisible(true);
+        this.contentPanel.setOpaque(true);
+        this.contentPanel.setLayout(new GridLayout(1,1));
+        this.contentPanel.setBackground(new Color(0,0,0,0));
+        
+        this.add(this.contentPanel, JLayeredPane.DEFAULT_LAYER);
+        
+        this.iconDisplay = new JLabel();
+        this.iconDisplay.setHorizontalAlignment(JLabel.CENTER);
+        this.iconDisplay.setVerticalAlignment(JLabel.TOP);
+        this.iconDisplay.setHorizontalTextPosition(JLabel.CENTER);
+        this.iconDisplay.setVerticalTextPosition(JLabel.BOTTOM);
+        
+        this.contentPanel.add(this.iconDisplay);
+        
+        this.loadOptionImage();
+    }
+    
+    private void loadOptionImage()
+    {
+        
+        File pictureFile;
+        if(this.option == null || "".equals(option.getImagePath()))
         {
-            this.iconDisplay.setIcon(null);
-            this.iconDisplay.setText("");
-            this.setState(NORMAL);
-            return;
+            //add a default image here
+            pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/media/motion-Legs.png");
+            this.iconDisplay.setText("-");
         }
-                        
-        System.out.println(option.getImagePath());
-        File pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/"+option.getImagePath());
+        else
+        {
+            pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/"+option.getImagePath());
+            this.iconDisplay.setText(option.getDescription());      
+        }
+                  
+        //System.out.println(option.getImagePath());
         if(pictureFile.exists())
         {
             try {
                 
-                BufferedImage img = ImageIO.read(pictureFile);
-                System.out.println(""+img.getHeight()+" "+img.getWidth());
-                System.out.println(""+this.contentPanel.getSize());
-                int sizeY = this.contentPanel.getSize().height - 100;
-                Image image = img.getScaledInstance(sizeY, sizeY, Image.SCALE_SMOOTH);
-                System.out.println(""+sizeY);
-                this.iconDisplay.setIcon(new ImageIcon(image));
+                this.image = ImageIO.read(pictureFile);
+                this.resizeImage();
                 
             } catch (IOException ex) {
                 Logger.getLogger(PictureOptionPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        else
+        {
+            System.out.println("does not exist");
+        }
         
-        this.iconDisplay.setText(option.getDescription());   
-        this.setState(NORMAL);
+        if(this.contentPanel.getComponentListeners().length == 0)
+        {
+            this.contentPanel.addComponentListener(new ComponentAdapter(){
+                @Override
+                public void componentResized(java.awt.event.ComponentEvent evt)
+                {
+                    resizeImage();
+                }
+                @Override
+                public void componentShown(java.awt.event.ComponentEvent evt)
+                {
+                    resizeImage();
+                }
+            });
+        }
+    }
+    
+    public void resizeImage()
+    {
+            int sizeY = contentPanel.getSize().height - 25;
+            if(sizeY < 50)
+            {
+                sizeY = 50;
+            }
+            iconDisplay.setIcon(new ImageIcon(image.getScaledInstance(sizeY, sizeY, Image.SCALE_SMOOTH)));
     }
 
     public static void main(String[] args)
     {
         JFrame frame = new JFrame("FrameDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new PictureOptionPanel(null));
+        Option option = new Option("hello", true);
+        option.setImagePath("");
+        frame.getContentPane().add(new PictureOptionPanel(option));
         frame.pack();
         frame.setVisible(true);
-    }
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        layeredPane = new javax.swing.JLayeredPane();
-        contentPanel = new javax.swing.JPanel();
-        iconDisplay = new javax.swing.JLabel();
-        beaconPanel = new javax.swing.JPanel();
-
-        setLayout(new java.awt.GridLayout(1, 1));
-
-        layeredPane.setPreferredSize(new java.awt.Dimension(200, 200));
-        layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                layeredPaneResize(evt);
-            }
-        });
-
-        contentPanel.setLayout(new java.awt.BorderLayout());
-
-        iconDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iconDisplay.setIcon(new javax.swing.ImageIcon("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/media/motion-FourWheels.png")); // NOI18N
-        iconDisplay.setText("default title\n");
-        iconDisplay.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        iconDisplay.setDisabledIcon(new javax.swing.ImageIcon("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/media/ballDetection-ColorSensor.png")); // NOI18N
-        iconDisplay.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        iconDisplay.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        contentPanel.add(iconDisplay, java.awt.BorderLayout.CENTER);
-
-        contentPanel.setBounds(0, 0, 210, 220);
-        layeredPane.add(contentPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        beaconPanel.setOpaque(false);
-
-        org.jdesktop.layout.GroupLayout beaconPanelLayout = new org.jdesktop.layout.GroupLayout(beaconPanel);
-        beaconPanel.setLayout(beaconPanelLayout);
-        beaconPanelLayout.setHorizontalGroup(
-            beaconPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 210, Short.MAX_VALUE)
-        );
-        beaconPanelLayout.setVerticalGroup(
-            beaconPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 210, Short.MAX_VALUE)
-        );
-
-        beaconPanel.setBounds(0, 0, 210, 210);
-        layeredPane.add(beaconPanel, javax.swing.JLayeredPane.DRAG_LAYER);
-
-        add(layeredPane);
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void layeredPaneResize(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_layeredPaneResize
-        this.beaconPanel.setSize(this.layeredPane.getSize());
-        this.contentPanel.setSize(this.layeredPane.getSize());
-        this.iconDisplay.setSize(this.beaconPanel.getSize());
-        
-        this.beaconPanel.revalidate();
-        this.contentPanel.revalidate();
-        this.iconDisplay.revalidate();
-    }//GEN-LAST:event_layeredPaneResize
+    }                                
 
     public OptionPanel copy()
     {
             OptionPanel optionPanel = new PictureOptionPanel(this.option);
             return optionPanel;
     }
-    /**
-     * This object method transfers in a give option, and stores it. It may not show
-     * the option immediately, unless the state of the option panel is NORMAL.
-     * 
-     * @param option the Option object that will be stored in this OptionPanel
-     */
     
+    @Override
     public void transferOption(Option option)
     {
         this.option = option;
-        if(this.iconDisplay != null)
-        {
-            //try
-            //{this.description.getDocument().insertString(0, this.option.getDescription(), null);}
-            //catch(Exception e){System.err.println("OptionPanel - exception");}
-            this.iconDisplay.setText(option.getDescription());
-            this.revalidate();
-        }
+        this.loadOptionImage();
     }
-    /**
-     * This object method sets the state of this OptionPanel. It is mainly used for display
-     * purposes.
-     * 
-     * @param state the enumerate type OptionPanel.OptionState which denotes the state of the panel.
-     */
-    public void setState(OptionState state)
+    
+    @Override
+    public void setState(OptionPanel.OptionState state)
     {
         this.state = state;
+        DepthContentPanel depthContentPanel = (DepthContentPanel)this.contentPanel;
         switch(this.state)
         {
             case NORMAL: /*beginning state*/
-                this.setOpaque(true);
-                this.contentPanel.setBackground(Color.YELLOW);
+                this.setVisible(true);
+                depthContentPanel.changeBackgroundColor(Color.yellow);
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 break;
             case HIDDEN_OCCUPY:
-                this.contentPanel.setBackground(Color.GRAY);
+                this.setVisible(false);
+                depthContentPanel.changeBackgroundColor(Color.yellow);
                 this.setBorder(null);
                 break;
             case UNOCCUPIED:
-                this.contentPanel.setBackground(Color.LIGHT_GRAY);
+                depthContentPanel.changeBackgroundColor(Color.yellow);
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             case CORRECT:
-                this.setOpaque(true);
-                this.contentPanel.setBackground(Color.GREEN);
+                this.setVisible(true);
+                depthContentPanel.changeBackgroundColor(Color.GREEN);
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 break;
             case INCORRECT:
-                this.setOpaque(true);
-                this.contentPanel.setBackground(Color.RED);
+                this.setVisible(true);
+                depthContentPanel.changeBackgroundColor(Color.RED);
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 break;
            case FINISHED:
-                this.setOpaque(true);
-                this.contentPanel.setBackground(Color.GREEN.darker());
+                this.setVisible(true);
+                depthContentPanel.changeBackgroundColor(Color.GREEN.darker());
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                break;
+           case TRANSPARENT:
+                this.setOpaque(false);
                 break;
             default:
                 break;
@@ -213,21 +206,44 @@ public class PictureOptionPanel extends OptionPanel {
     }
   
     @Override
-    public OptionState getState()
+    public OptionPanel.OptionState getState()
     {
         return this.state;
     }
-    
    
     @Override
     public Option getOption() {
         return option;
+    }                
+    
+    private class DepthContentPanel extends JPanel
+    {
+        private Color backgroundColor = Color.YELLOW;
+        
+        public DepthContentPanel()
+        {
+            this.setOpaque(true);
+        }
+        
+        public void changeBackgroundColor(Color newColor)
+        {
+            this.backgroundColor = newColor;
+            this.repaint();
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            Graphics2D g2 = (Graphics2D)g;
+            GradientPaint gradPaint = new GradientPaint(0,0, backgroundColor, 0, getHeight(), backgroundColor.darker());
+
+            Paint oldPaint = g2.getPaint();
+
+            g2.setPaint(gradPaint);
+            g2.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+            g2.setPaint(oldPaint);
+            super.paintComponent(g);
+        }
     }
-   
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel beaconPanel;
-    private javax.swing.JPanel contentPanel;
-    private javax.swing.JLabel iconDisplay;
-    private javax.swing.JLayeredPane layeredPane;
-    // End of variables declaration//GEN-END:variables
 }
