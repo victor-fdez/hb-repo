@@ -1,5 +1,6 @@
 package com.honeybadgers.flltutorial;
 
+import com.honeybadgers.flltutorial.model.TutorialBase;
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import java.util.ArrayList;
@@ -17,11 +18,14 @@ public class App
         System.out.println("Is this the EDT thread: "+SwingUtilities.isEventDispatchThread());
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                  FLLTutorialUI topComp = new FLLTutorialUI(); 
-                  topComp.setVisible(true);
-                  System.out.println("Is this the EDT thread: "+SwingUtilities.isEventDispatchThread());
+                ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
+                FLLTutorialUI topComp = new FLLTutorialUI(); 
+                topComp.beginnings(tutorialBases);
+                topComp.setVisible(true);
+                System.out.println("Is this the EDT thread: "+SwingUtilities.isEventDispatchThread());
             }
         });
-        ArrayList<TutorialManager> allTutorialsAtFolder = TutorialManager.getAllTutorialsAtFolder();
+        //ArrayList<TutorialManager> allTutorialsAtFolder = TutorialManager.getAllTutorialsAtFolder();
+        
     }
 }

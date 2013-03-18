@@ -44,7 +44,7 @@ public class OptionTest extends TestCase {
     /**
      * Test of getChildAtIndex method, of class Option.
      */
-    public void testGetChildAtIndex() {
+    /*public void testGetChildAtIndex() {
         Option option = new Option("some description", true, null);
         option.addChild(new Option("some description", true, null));
         option.addChild(new Option("some description", true, null));
@@ -89,12 +89,12 @@ public class OptionTest extends TestCase {
         child3rd2nd.addChild(new Option("some decription", true, null));
         child3rd2nd.addChild(new Option("some decription", true, null));
         Option child3rd2nd3rd = child3rd2nd.getChildAtIndex(2);
-        /*test root finds*/
+        /*test root finds
         assertEquals(child3rd2nd3rd, option.getChildWithId(child3rd2nd3rd.getId()));
         assertEquals(child1st.getChildAtIndex(1), option.getChildWithId(child1st.getChildAtIndex(1).getId()));
-        /*some child finds*/
+        /*some child finds
         assertEquals(child3rd2nd3rd, child3rd.getChildWithId(child3rd2nd3rd.getId()));
-    }
+    }*/
 
     /**
      * Test of equals method, of class Option.

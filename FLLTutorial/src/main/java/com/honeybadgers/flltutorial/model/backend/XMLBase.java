@@ -41,45 +41,59 @@ public class XMLBase {
      * Load a Tutorial Base (ie. basic tutorial information, not the full
      * tutorial) from an XML file.
      *
-     * @param xmlFile File to load Tutorial Base from.
+     * @param tutorialFile File to load Tutorial Base from.
      * @return The Tutorial Base loaded from the file.
      */
-    public static TutorialBase loadTutorialBase(File xmlFile) {
-        //todo: fill this in
-        return null;
+    public static TutorialBase loadTutorialBase(File tutorialFile) {
+        Document doc = loadDOM(tutorialFile);
+        if(doc==null){
+            return null;
+        }
+        
+        Element rootElement = (Element) doc.getElementsByTagName("tutorial").item(0);
+
+        String title = rootElement.getAttribute("name");
+        String author = rootElement.getAttribute("author");
+        String description = rootElement.getElementsByTagName("mission").item(0).getTextContent();
+        
+        return new TutorialBase(title, author, description);
     }
 
+    
+    private static Document loadDOM(File xmlFile){
+        Document doc=null;
+        try {
+            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder(); //throws ParserConfigurationException
+            doc = docBuilder.parse(xmlFile); //throws SAXException, IOException
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            //handle exception here
+            e.printStackTrace();
+        }
+        return doc;
+    }
     /**
      * Loads a tutorial from the given XML file
      *
-     * @param xmlFile The XML file to read the tutorial from
+     * @param tutorialFile The XML file to read the tutorial from
      * @return Tutorial that was loaded from the file
      */
-    public static Tutorial loadTutorial(File xmlFile) {
-        String name = null;
-        String mission = null;
+    public static Tutorial loadTutorial(File tutorialFile) {
         List<Stage> stages = new ArrayList<>();
-
-        try {
-            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder(); //throws ParserConfigurationException
-            Document doc = docBuilder.parse(xmlFile); //throws SAXException, IOException
-
-            Element rootElement = (Element) doc.getElementsByTagName("tutorial").item(0);
-            name = rootElement.getAttribute("name");
-            //add author here
-
-            mission = rootElement.getElementsByTagName("mission").item(0).getTextContent();
-
-            NodeList stageNodeList = doc.getElementsByTagName("stage");
-            for (int i = 0; i < stageNodeList.getLength(); i++) {
-                Element stageElement = (Element) stageNodeList.item(i);
-                Stage stage = loadStage(stageElement);
-                stages.add(stage);
-                //printStage(stage);
-            }
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            //handle exception here
+        
+        Document doc = loadDOM(tutorialFile);
+        Element rootElement = (Element) doc.getElementsByTagName("tutorial").item(0);
+        
+        String name = rootElement.getAttribute("name");
+        String mission = rootElement.getElementsByTagName("mission").item(0).getTextContent();
+        
+        NodeList stageNodeList = doc.getElementsByTagName("stage");
+        for (int i = 0; i < stageNodeList.getLength(); i++) {
+            Element stageElement = (Element) stageNodeList.item(i);
+            Stage stage = loadStage(stageElement);
+            stages.add(stage);
+            //printStage(stage);
         }
+
 
         return new Tutorial(name, mission, stages);
     }

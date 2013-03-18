@@ -51,10 +51,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     public FLLTutorialUI() {
         super();
         this.tutorialUI = this;
-        this.beginnings(null);
+        //this.beginnings(null);
     }
     
-    public void beginnings(List<TutorialBase> tutorials)
+    public void beginnings(final List<TutorialBase> tutorials)
     {
         //all of this will be called from the controller so it should be wrapped in
         //swing runnable
@@ -66,13 +66,13 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 beginnings = new Beginnings();
                 tutorialsScrollPane = new PanelsScrollPane(true);
         
-                List<TutorialBase> tutorialsList = new ArrayList<>();
+                /*List<TutorialBase> tutorialsList = new ArrayList<>();
                 tutorialsList.add(new TutorialBase("car tutorial","Victor Fernandez", "The design process of a car factory"));
                 tutorialsList.add(new TutorialBase("robot exercise","Taylor Peet", "The design process of a robot exercise"));
                 tutorialsList.add(new TutorialBase("cake factory tutorial","Pushkara", "The design process of a cake baking robot"));
-        
+                */
                 //add every tutorial to the scroll pane in the content pane
-                for(TutorialBase tutorialBase : tutorialsList)
+                for(TutorialBase tutorialBase : tutorials)
                 {
                     TutorialPanel tutorialPanel = new TutorialPanel(tutorialBase);
                     tutorialPanel.getBeacon().addMouseListener(new MouseAdapter(){
@@ -123,7 +123,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 tutorialUI.getContentPane().removeAll();
                
                 //this would be obtained from the caller
-                Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/sampleTutorial/Tutorial1.xml"));
+                Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/Tutorials/Tutorial1/Tutorial1.xml"));
                 stagesList = tutorial.getStages();
                 
                 ArrayList<StagePanel> stagePanels = new ArrayList<>();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<tutorial name="Tutorial1">
+<tutorial name="Tutorial1" author="JoRay Van Vliet" date="03/07/2013 14:30">
   <mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost.</mission>
   <stage name="Problem Statement" time="0" video="">
     <option correct="true" oid="0" selected="-1">
@@ -256,123 +256,118 @@
     </option>
   </stage>
   <stage name="Task Diagram" time="0" video="">
-    <option correct="true" oid="2" selected="-1">
-      <desc>Create a task diagram</desc>
-      <reason/>
+    <option correct="true" oid="2.0" position="-1" selected="-1">
+      <desc>Robot Mission</desc>
+      <reason>Why this option is right/wrong</reason>
       <img src=""/>
-      <option correct="true" oid="2.0" position="-1" selected="-1">
-        <desc>Robot Mission</desc>
+      <option correct="true" oid="2.0.0" position="-1" selected="-1">
+        <desc>Movement</desc>
         <reason>Why this option is right/wrong</reason>
         <img src=""/>
-        <option correct="true" oid="2.0.0" position="-1" selected="-1">
-          <desc>Movement</desc>
+        <option correct="true" oid="2.0.0.0" position="-1" selected="-1">
+          <desc>Turn Left/Right</desc>
           <reason>Why this option is right/wrong</reason>
           <img src=""/>
-          <option correct="true" oid="2.0.0.0" position="-1" selected="-1">
-            <desc>Turn Left/Right</desc>
+        </option>
+        <option correct="true" oid="2.0.0.1" position="-1" selected="-1">
+          <desc>Move Forward</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="2.0.0.2" position="-1" selected="-1">
+          <desc>Move Backward</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="2.0.0.3" position="-1" selected="-1">
+          <desc>Move Sideways</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="2.0.1" position="-1" selected="-1">
+        <desc>Sensing</desc>
+        <reason>Why this option is right/wrong</reason>
+        <img src=""/>
+        <option correct="true" oid="2.0.1.0" position="-1" selected="-1">
+          <desc>Color Sensing</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+          <option correct="true" oid="2.0.1.0.0" position="-1" selected="-1">
+            <desc>Sense Red</desc>
             <reason>Why this option is right/wrong</reason>
             <img src=""/>
           </option>
-          <option correct="true" oid="2.0.0.1" position="-1" selected="-1">
-            <desc>Move Forward</desc>
+          <option correct="true" oid="2.0.1.0.1" position="-1" selected="-1">
+            <desc>Sense Blue</desc>
             <reason>Why this option is right/wrong</reason>
             <img src=""/>
           </option>
-          <option correct="false" oid="2.0.0.2" position="-1" selected="-1">
-            <desc>Move Backward</desc>
+          <option correct="false" oid="2.0.1.0.2" position="-1" selected="-1">
+            <desc>Sense Yellow</desc>
             <reason>Why this option is right/wrong</reason>
             <img src=""/>
           </option>
-          <option correct="false" oid="2.0.0.3" position="-1" selected="-1">
-            <desc>Move Sideways</desc>
+          <option correct="false" oid="2.0.1.0.3" position="-1" selected="-1">
+            <desc>Sense Green</desc>
+            <reason>Why this option is right/wrong</reason>
+            <img src=""/>
+          </option>
+          <option correct="false" oid="2.0.1.0.4" position="-1" selected="-1">
+            <desc>Sense Black</desc>
+            <reason>Why this option is right/wrong</reason>
+            <img src=""/>
+          </option>
+          <option correct="false" oid="2.0.1.0.5" position="-1" selected="-1">
+            <desc>Sense White</desc>
             <reason>Why this option is right/wrong</reason>
             <img src=""/>
           </option>
         </option>
-        <option correct="true" oid="2.0.1" position="-1" selected="-1">
-          <desc>Sensing</desc>
+        <option correct="false" oid="2.0.1.1" position="-1" selected="-1">
+          <desc>Light Sensing</desc>
           <reason>Why this option is right/wrong</reason>
           <img src=""/>
-          <option correct="true" oid="2.0.1.0" position="-1" selected="-1">
-            <desc>Color Sensing</desc>
-            <reason>Why this option is right/wrong</reason>
-            <img src=""/>
-            <option correct="true" oid="2.0.1.0.0" position="-1" selected="-1">
-              <desc>Sense Red</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-            <option correct="true" oid="2.0.1.0.1" position="-1" selected="-1">
-              <desc>Sense Blue</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-            <option correct="false" oid="2.0.1.0.2" position="-1" selected="-1">
-              <desc>Sense Yellow</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-            <option correct="false" oid="2.0.1.0.3" position="-1" selected="-1">
-              <desc>Sense Green</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-            <option correct="false" oid="2.0.1.0.4" position="-1" selected="-1">
-              <desc>Sense Black</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-            <option correct="false" oid="2.0.1.0.5" position="-1" selected="-1">
-              <desc>Sense White</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-          </option>
-          <option correct="false" oid="2.0.1.1" position="-1" selected="-1">
-            <desc>Light Sensing</desc>
+        </option>
+        <option correct="false" oid="2.0.1.2" position="-1" selected="-1">
+          <desc>Radar Sensing</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="2.0.1.3" position="-1" selected="-1">
+          <desc>Object Sensing</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="2.0.2" position="-1" selected="-1">
+        <desc>Transport Ball</desc>
+        <reason>Why this option is right/wrong</reason>
+        <img src=""/>
+        <option correct="true" oid="2.0.2.0" position="-1" selected="-1">
+          <desc>Pick Up Ball</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+          <option correct="true" oid="2.0.2.0.0" position="-1" selected="-1">
+            <desc>Move Arm</desc>
             <reason>Why this option is right/wrong</reason>
             <img src=""/>
           </option>
-          <option correct="false" oid="2.0.1.2" position="-1" selected="-1">
-            <desc>Radar Sensing</desc>
-            <reason>Why this option is right/wrong</reason>
-            <img src=""/>
-          </option>
-          <option correct="true" oid="2.0.1.3" position="-1" selected="-1">
-            <desc>Object Sensing</desc>
+          <option correct="true" oid="2.0.2.0.1" position="-1" selected="-1">
+            <desc>Grab Ball</desc>
             <reason>Why this option is right/wrong</reason>
             <img src=""/>
           </option>
         </option>
-        <option correct="true" oid="2.0.2" position="-1" selected="-1">
-          <desc>Transport Ball</desc>
+        <option correct="true" oid="2.0.2.1" position="-1" selected="-1">
+          <desc>Trap Ball</desc>
           <reason>Why this option is right/wrong</reason>
           <img src=""/>
-          <option correct="true" oid="2.0.2.0" position="-1" selected="-1">
-            <desc>Pick Up Ball</desc>
-            <reason>Why this option is right/wrong</reason>
-            <img src=""/>
-            <option correct="true" oid="2.0.2.0.0" position="-1" selected="-1">
-              <desc>Move Arm</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-            <option correct="true" oid="2.0.2.0.1" position="-1" selected="-1">
-              <desc>Grab Ball</desc>
-              <reason>Why this option is right/wrong</reason>
-              <img src=""/>
-            </option>
-          </option>
-          <option correct="true" oid="2.0.2.1" position="-1" selected="-1">
-            <desc>Trap Ball</desc>
-            <reason>Why this option is right/wrong</reason>
-            <img src=""/>
-          </option>
-          <option correct="true" oid="2.0.2.2" position="-1" selected="-1">
-            <desc>Kick Ball</desc>
-            <reason>Why this option is right/wrong</reason>
-            <img src=""/>
-          </option>
+        </option>
+        <option correct="true" oid="2.0.2.2" position="-1" selected="-1">
+          <desc>Kick Ball</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
         </option>
       </option>
     </option>
