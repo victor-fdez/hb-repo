@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <tutorial name="Tutorial1">
   <mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost.</mission>
-  <project name="nomanches">
-    <team name="nomanches luis mario">
-      <member>oscar felix</member>
-      <member>lilia fernandez</member>
-      <member>tomas fernandez</member>
-      <member>luly ruiz</member>
+  <project name="robotics project 1">
+    <team name="thomazon">
+      <member>luis</member>
+      <member>victor</member>
+      <member>lola ruiz</member>
     </team>
   </project>
   <stage name="Problem Statement" time="0" video="">

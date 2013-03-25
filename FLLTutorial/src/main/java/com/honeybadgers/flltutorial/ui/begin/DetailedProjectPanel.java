@@ -5,7 +5,16 @@
 package com.honeybadgers.flltutorial.ui.begin;
 
 import com.honeybadgers.flltutorial.model.Tutorial;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -33,8 +42,58 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
             this.membersListModel.addElement(memberName);
         }
         this.membersList.setModel(this.membersListModel);
+        
+        //add action listener to document of member name text field
+        this.addTeamMember.setEnabled(false);
+        this.memberNameTextField.getDocument().addDocumentListener(new  DocListener());
+        
+        this.membersList.addListSelectionListener(new ListListener());
+        this.deleteMemberButton.setEnabled(false);
     }
+    
+    private class DocListener implements DocumentListener
+    {
 
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            memberNameTextFieldChanged();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            memberNameTextFieldChanged();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+        }
+        
+    }
+    
+    private void memberNameTextFieldChanged()
+    {
+        if(!this.memberNameTextField.getText().isEmpty())
+        {
+            this.addTeamMember.setEnabled(true);
+            return;
+        }
+        this.addTeamMember.setEnabled(false);
+    }
+    
+    private class ListListener implements ListSelectionListener
+    {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            ListSelectionModel lsm = ((JList)e.getSource()).getSelectionModel();
+
+            if (lsm.isSelectionEmpty()) {
+                deleteMemberButton.setEnabled(false);
+            } else {
+                // Find out which indexes are selected.
+                deleteMemberButton.setEnabled(true);
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,12 +139,6 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
 
         jLabel4.setText("member name");
 
-        memberNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                memberNameTextFieldActionPerformed(evt);
-            }
-        });
-
         addTeamMember.setText("add member");
         addTeamMember.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,6 +149,11 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(membersList);
 
         deleteMemberButton.setText("delete selected member");
+        deleteMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMemberButtonActionPerformed(evt);
+            }
+        });
 
         saveProjectButton.setText("save project information");
 
@@ -164,9 +222,6 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
                         .add(52, 52, 52)))
                 .addContainerGap())
         );
-
-        layout.linkSize(new java.awt.Component[] {memberNameTextField, nameTextField, teamNameTextField}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
-
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
@@ -190,14 +245,14 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
                 .add(separator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel1)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel4)
                     .add(memberNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(addTeamMember)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(deleteMemberButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -227,14 +282,68 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_addTeamMemberActionPerformed
 
-    private void memberNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberNameTextFieldActionPerformed
-        if(!this.memberNameTextField.getText().isEmpty())
+    private void deleteMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMemberButtonActionPerformed
+        ListSelectionModel selectionsModel = this.membersList.getSelectionModel();
+        int minIndex = -1;
+        while((minIndex = selectionsModel.getMinSelectionIndex()) != -1)
         {
-            this.addTeamMember.setEnabled(true);
+            if(selectionsModel.isSelectedIndex(minIndex))
+            {
+                this.membersListModel.remove(minIndex);
+            }
         }
-        this.addTeamMember.setEnabled(false);
-    }//GEN-LAST:event_memberNameTextFieldActionPerformed
+    }//GEN-LAST:event_deleteMemberButtonActionPerformed
 
+    public boolean checkSaveIsCorrect()
+    {
+        boolean anyWrong = false;
+        if(this.teamNameTextField.getText().isEmpty())
+        {
+            anyWrong = true;
+        }
+        
+        if(this.nameTextField.getText().isEmpty())
+        {
+            anyWrong = true;
+        }
+        
+        if(this.membersListModel.isEmpty())
+        {
+            anyWrong = true;
+        }
+        
+        if(anyWrong) //if something is wrong
+        {
+            
+        }
+        else //if nothing is wrong
+        {
+            
+        }
+        
+        return !anyWrong;
+    }
+
+    public Tutorial getTutorial() {
+        //update tutorial information before it is gotten
+        this.tutorial.setProjectName(this.nameTextField.getText());
+        this.tutorial.setTeamName(this.teamNameTextField.getText());
+        
+        //get all members
+        Object[] objectArray = this.membersListModel.toArray();
+        String[] memberStrings = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+        List<String> members = Arrays.asList(memberStrings);
+
+        this.tutorial.setMembers(members);
+        
+        return this.tutorial;
+    }
+    
+    public JButton getSaveProjectButton() {
+        return saveProjectButton;
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTeamMember;
     private javax.swing.JButton deleteMemberButton;

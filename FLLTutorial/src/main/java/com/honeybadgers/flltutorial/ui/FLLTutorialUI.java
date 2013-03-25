@@ -59,10 +59,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         super();
         this.tutorialUI = this;
         this.selectedTutorial = null;
-        this.beginnings(TutorialManager.getAllTutorialBases());
+        this.showAllTutorials(TutorialManager.getAllTutorialBases());
     }
     
-    public void beginnings(final List<TutorialBase> tutorials)
+    public void showAllTutorials(final List<TutorialBase> tutorials)
     {
         //all of this will be called from the controller so it should be wrapped in
         //swing runnable
@@ -146,6 +146,20 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 currentTutorial = TutorialManager.getNewProject(selectedTutorialBase);
                 detailedProjectPanel = new DetailedProjectPanel(currentTutorial);
                
+                detailedProjectPanel.getSaveProjectButton().addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        boolean saveTutorial = detailedProjectPanel.checkSaveIsCorrect();
+                        if(saveTutorial)
+                        {
+                            System.out.println("FLLTutorialUI.showNewProjectDetailes : saving new project");
+                            Tutorial newProject = detailedProjectPanel.getTutorial();
+                            TutorialManager.saveProject(newProject);
+                            currentTutorial = newProject;
+                        }
+                    }
+                    
+                });
                 contentPane.setLayout(new GridLayout(1,1));
                 contentPane.add(detailedProjectPanel);
         

@@ -20,7 +20,7 @@ public class App
             public void run() {
                 ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
                 FLLTutorialUI topComp = new FLLTutorialUI(); 
-                topComp.beginnings(tutorialBases);
+                topComp.showAllTutorials(tutorialBases);
                 topComp.setVisible(true);
                 System.out.println("Is this the EDT thread: "+SwingUtilities.isEventDispatchThread());
             }

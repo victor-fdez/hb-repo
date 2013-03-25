@@ -248,6 +248,7 @@ public class XMLBase {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
+            System.out.println("trying to save to src/main/resources/Projects/"+name+"/"+fileName);
             StreamResult result = new StreamResult(new File("src/main/resources/Projects/"+name+"/"+fileName)); //***not sure if I can save here
 
             // Output to console for testing

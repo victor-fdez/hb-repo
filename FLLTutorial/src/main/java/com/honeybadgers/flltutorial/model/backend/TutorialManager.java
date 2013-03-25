@@ -62,12 +62,12 @@ public class TutorialManager {
     
     public static void saveProject(Tutorial projectTutorial)
     {
-        File projectsDirectory = new File("src/main/resources/Tutorials/"+projectTutorial.getTutorialName());
+        File projectsDirectory = new File("src/main/resources/Projects/"+projectTutorial.getTutorialName());
         int numberOfFiles = projectsDirectory.list().length;
 
         if(projectTutorial.getFileName().isEmpty())
         {
-            projectTutorial.setFileName("project"+numberOfFiles+".xml");
+            projectTutorial.setFileName("project"+(numberOfFiles+1)+".xml");
         }
         XMLBase.saveTutorial(projectTutorial);
     }
