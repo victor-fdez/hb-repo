@@ -12,13 +12,13 @@ import javax.swing.JPanel;
  *
  * @author chingaman
  */
-public class TutorialPanel extends javax.swing.JPanel {
+public class ProjectPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form tutorialPanel
      */
     private TutorialBase tutorialBase;
-    public TutorialPanel(TutorialBase tutorialBase) {
+    public ProjectPanel(TutorialBase tutorialBase) {
         initComponents();
         this.tutorialBase = tutorialBase;
         this.titleLabel.setText(tutorialBase.getTitle());
@@ -115,7 +115,7 @@ public class TutorialPanel extends javax.swing.JPanel {
             .add(0, 144, Short.MAX_VALUE)
         );
 
-        beaconPanel.setBounds(0, 0, 404, 144);
+        beaconPanel.setBounds(0, 0, 0, 0);
         layeredPane.add(beaconPanel, javax.swing.JLayeredPane.DRAG_LAYER);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -146,7 +146,7 @@ public class TutorialPanel extends javax.swing.JPanel {
     {
         if(beacon instanceof JPanel)
         {
-            TutorialPanel tutorialPanel = (TutorialPanel)beacon.getParent().getParent();
+            ProjectPanel tutorialPanel = (ProjectPanel)beacon.getParent().getParent();
             return tutorialPanel.tutorialBase;
         }
         return null;

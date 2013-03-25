@@ -79,23 +79,44 @@ public class XMLBase {
      */
     public static Tutorial loadTutorial(File tutorialFile) {
         List<Stage> stages = new ArrayList<>();
+        List<String> members = new ArrayList<>();
+        String projectName = "";
+        String teamName = "";
         
         Document doc = loadDOM(tutorialFile);
         Element rootElement = (Element) doc.getElementsByTagName("tutorial").item(0);
         
-        String name = rootElement.getAttribute("name");
+        String tutorialName = rootElement.getAttribute("name");
         String mission = rootElement.getElementsByTagName("mission").item(0).getTextContent();
         
+        //a clean tutorial will not have this information
+        NodeList projectInfo = rootElement.getElementsByTagName("project");
+        if(projectInfo.getLength() > 0)
+        {
+            Element projectElement = (Element)projectInfo.item(0);
+            Element teamNode = (Element)projectElement.getElementsByTagName("team").item(0);
+            System.out.println(teamNode);
+            
+            projectName = projectElement.getAttribute("name");
+            teamName = teamNode.getAttribute("name");
+            
+            NodeList teamMemberNodes = teamNode.getElementsByTagName("member");
+            for(int i = 0; i < teamMemberNodes.getLength(); i++)
+            {
+                String memberName = teamMemberNodes.item(i).getTextContent();
+                members.add(memberName);
+            }
+        }
+        
         NodeList stageNodeList = doc.getElementsByTagName("stage");
-        for (int i = 0; i < stageNodeList.getLength(); i++) {
+        for(int i = 0; i < stageNodeList.getLength(); i++) {
             Element stageElement = (Element) stageNodeList.item(i);
             Stage stage = loadStage(stageElement);
             stages.add(stage);
             //printStage(stage);
         }
 
-
-        return new Tutorial(name, mission, stages);
+        return new Tutorial(tutorialName, mission, stages, projectName, teamName, members);
     }
 
     /**
@@ -180,6 +201,7 @@ public class XMLBase {
      */
     public static void saveTutorial(Tutorial tutorial) {
         String name = tutorial.getName();
+        String fileName = tutorial.getFileName();
         String mission = tutorial.getMission();
         List<Stage> stages = tutorial.getStages();
 
@@ -195,6 +217,26 @@ public class XMLBase {
             Element missionElement = doc.createElement("mission");
             missionElement.appendChild(doc.createTextNode(mission));
             rootElement.appendChild(missionElement);
+            
+            //add project information
+            Element projectElement = doc.createElement("project");
+            projectElement.setAttribute("name", tutorial.getProjectName());
+            rootElement.appendChild(projectElement);
+            
+            //add team to project
+            Element teamElement = doc.createElement("team");
+            teamElement.setAttribute("name", tutorial.getTeamName());
+            projectElement.appendChild(teamElement);
+            
+            //add all members to team
+            for(String memberName : tutorial.getMembers())
+            {
+                Element member = doc.createElement("member");
+                member.appendChild(doc.createTextNode(memberName));
+                teamElement.appendChild(member);
+            }
+            
+            //add team information
 
             for (Stage stage : stages) {
                 rootElement.appendChild(constructStage(stage, doc));
@@ -206,7 +248,7 @@ public class XMLBase {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("src/main/resources/sampleTutorial/" + name + ".xml")); //***not sure if I can save here
+            StreamResult result = new StreamResult(new File("src/main/resources/Projects/"+name+"/"+fileName)); //***not sure if I can save here
 
             // Output to console for testing
             //StreamResult result = new StreamResult(System.out);

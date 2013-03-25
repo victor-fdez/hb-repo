@@ -11,19 +11,15 @@ import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.INCORRECT;
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.NORMAL;
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.UNOCCUPIED;
-import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Paint;
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 

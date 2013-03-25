@@ -4,6 +4,7 @@
  */
 package com.honeybadgers.flltutorial.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,25 +13,33 @@ import java.util.List;
  */
 public class Tutorial extends TutorialBase
 {
-    /*private List<Option> subTasks;
-    private List<Option> taskDiagram;
-    private List<Option> morphologicalChart;
-    private List<Option> limitationsAndConstraints;*/
-    
-    private String name;
+    private String tutorialName;
+    private String projectName;
+    private String teamName;
+    private String fileName;
+    private List<String> members;
     private String mission;
     List<Stage> stages;
     
     public Tutorial(String name, String mission, List<Stage> stages)
     {
+        this(name, mission, stages, "", "", new ArrayList<String>());
+    }
+    
+    public Tutorial(String name, String mission, List<Stage> stages, String projectName, String teamName, List<String> members)
+    {
         super(null, null, null);
-        this.name = name;
+        this.tutorialName = name;
         this.mission = mission;
         this.stages = stages;
+        this.projectName = projectName;
+        this.teamName = teamName;
+        this.members = members;
+        this.fileName = "";
     }
     
     public String getName(){
-        return name;
+        return tutorialName;
     }
     
     public String getMission(){
@@ -40,7 +49,46 @@ public class Tutorial extends TutorialBase
     public List<Stage> getStages(){
         return stages;
     }
-    
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public List<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
+
+    public String getTutorialName() {
+        return tutorialName;
+    }
+
+    public void setTutorialName(String tutorialName) {
+        this.tutorialName = tutorialName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
     
     public int equals(Tutorial anotherTutorial)
     {

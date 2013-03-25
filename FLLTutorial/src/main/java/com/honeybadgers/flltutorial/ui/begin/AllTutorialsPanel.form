@@ -22,12 +22,13 @@
                   <Component id="listPanel" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="164" max="32767" attributes="0"/>
-                      <Component id="userChooser" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="310" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="beginButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="openButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="startButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -38,14 +39,14 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="listPanel" pref="225" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="titleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="userChooser" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="startButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="openButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="listPanel" pref="219" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="beginButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -60,26 +61,10 @@
         <Property name="text" type="java.lang.String" value="long title"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="userChooser">
+    <Component class="javax.swing.JButton" name="startButton">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="I am a student"/>
-            <StringItem index="1" value="I am a teacher"/>
-          </StringArray>
-        </Property>
+        <Property name="text" type="java.lang.String" value="start new project"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userChooserActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="beginButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="start"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="beginButtonActionPerformed"/>
-      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="listPanel">
       <Properties>
@@ -93,5 +78,13 @@
         <Property name="rows" type="int" value="1"/>
       </Layout>
     </Container>
+    <Component class="javax.swing.JButton" name="openButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="open previous project"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openButtonActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
