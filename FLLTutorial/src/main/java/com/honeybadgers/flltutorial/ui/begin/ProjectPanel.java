@@ -23,9 +23,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         this.tutorialBase = tutorialBase;
         this.titleLabel.setText(tutorialBase.getTitle());
         this.authorLabel.setText(tutorialBase.getAuthor());
-        this.descriptionTextArea.setText(tutorialBase.getDescription());
-        this.descriptionTextArea.setWrapStyleWord(true);
-        this.descriptionTextArea.setLineWrap(true);
+        
     }
 
     /**
@@ -41,7 +39,8 @@ public class ProjectPanel extends javax.swing.JPanel {
         tutorialContentPanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         authorLabel = new javax.swing.JLabel();
-        descriptionTextArea = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
         beaconPanel = new javax.swing.JPanel();
 
         layeredPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -54,14 +53,16 @@ public class ProjectPanel extends javax.swing.JPanel {
         tutorialContentPanel.setBackground(new java.awt.Color(153, 153, 153));
 
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        titleLabel.setText("tutorial title");
+        titleLabel.setText("project name");
 
-        authorLabel.setText("by author");
+        authorLabel.setText("by team name");
 
-        descriptionTextArea.setEditable(false);
-        descriptionTextArea.setColumns(20);
-        descriptionTextArea.setRows(5);
-        descriptionTextArea.setText("description");
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
         org.jdesktop.layout.GroupLayout tutorialContentPanelLayout = new org.jdesktop.layout.GroupLayout(tutorialContentPanel);
         tutorialContentPanel.setLayout(tutorialContentPanelLayout);
@@ -70,32 +71,25 @@ public class ProjectPanel extends javax.swing.JPanel {
             .add(tutorialContentPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane1)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, tutorialContentPanelLayout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(authorLabel))
                     .add(tutorialContentPanelLayout.createSequentialGroup()
                         .add(titleLabel)
-                        .add(0, 318, Short.MAX_VALUE)))
+                        .add(0, 308, Short.MAX_VALUE)))
                 .addContainerGap())
-            .add(tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(org.jdesktop.layout.GroupLayout.TRAILING, tutorialContentPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .add(descriptionTextArea, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
         tutorialContentPanelLayout.setVerticalGroup(
             tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(tutorialContentPanelLayout.createSequentialGroup()
                 .add(12, 12, 12)
                 .add(titleLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 99, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(authorLabel)
                 .addContainerGap())
-            .add(tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(tutorialContentPanelLayout.createSequentialGroup()
-                    .add(35, 35, 35)
-                    .add(descriptionTextArea)
-                    .add(35, 35, 35)))
         );
 
         tutorialContentPanel.setBounds(0, 0, 410, 150);
@@ -115,7 +109,7 @@ public class ProjectPanel extends javax.swing.JPanel {
             .add(0, 144, Short.MAX_VALUE)
         );
 
-        beaconPanel.setBounds(0, 0, 0, 0);
+        beaconPanel.setBounds(0, 0, 404, 144);
         layeredPane.add(beaconPanel, javax.swing.JLayeredPane.DRAG_LAYER);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -154,7 +148,8 @@ public class ProjectPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel;
     private javax.swing.JPanel beaconPanel;
-    private javax.swing.JTextArea descriptionTextArea;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLayeredPane layeredPane;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel tutorialContentPanel;
