@@ -4,6 +4,7 @@
  */
 package com.honeybadgers.flltutorial.ui.begin;
 
+import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -33,7 +34,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         startButton = new javax.swing.JButton();
         listPanel = new javax.swing.JPanel();
         openButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        descriptionScrollPane = new javax.swing.JScrollPane();
         descriptionArea = new javax.swing.JTextArea();
 
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
@@ -53,7 +54,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         descriptionArea.setWrapStyleWord(true);
         descriptionArea.setFocusable(false);
         descriptionArea.setRequestFocusEnabled(false);
-        jScrollPane1.setViewportView(descriptionArea);
+        descriptionScrollPane.setViewportView(descriptionArea);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -71,7 +72,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(titleLabel)
                         .add(0, 0, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, descriptionScrollPane))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -80,7 +81,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(titleLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(descriptionScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -93,7 +94,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea descriptionArea;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane descriptionScrollPane;
     private javax.swing.JPanel listPanel;
     private javax.swing.JButton openButton;
     private javax.swing.JButton startButton;
@@ -122,6 +123,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         if(description == null)
         {
             this.descriptionArea.setVisible(false);
+            this.descriptionScrollPane.setVisible(false);
             return;
         }
         this.descriptionArea.setText(description);

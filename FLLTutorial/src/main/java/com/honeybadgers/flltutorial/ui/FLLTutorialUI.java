@@ -20,6 +20,7 @@ import com.honeybadgers.flltutorial.ui.main.content.stages.ProblemDescriptionPan
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.stages.TaskDiagramPanel;
 import com.honeybadgers.flltutorial.ui.main.navigation.NavigationPanel;
+import com.honeybadgers.flltutorial.ui.utilities.Blocked;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.Component;
 import java.awt.Container;
@@ -53,15 +54,18 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private PanelsScrollPane tutorialsScrollPane;
     private AllTutorialsPanel allTutorialsPanel;
     private FLLTutorialUI tutorialUI;
-    private TutorialBase selectedTutorial;
+    private TutorialBase selectedTutorialBase;
+    private Tutorial selectedTutorial;
     /**
      * Creates new form BeginTopComponent
      */
     public FLLTutorialUI() {
         super();
         this.tutorialUI = this;
-        this.selectedTutorial = null;
+        this.selectedTutorialBase = null;
     }
+    
+    private Blocked previousSelectedTutorialPanel;
     
     public void showAllTutorials(final List<TutorialBase> tutorials)
     {
@@ -71,7 +75,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             @Override
             public void run() {
                 Container contentPane = getContentPane();
+                contentPane.removeAll();
                 
+                previousSelectedTutorialPanel = null;
+                selectedTutorialBase = null;
                 allTutorialsPanel = new AllTutorialsPanel();
                 allTutorialsPanel.setTitle("All Tutorials");
                 allTutorialsPanel.setDescription(null);
@@ -88,7 +95,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("opened clicked");
-                        if(selectedTutorial == null)
+                        if(selectedTutorialBase == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
                             JFrame frame = new JFrame();
@@ -96,7 +103,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                             return;
                         }
                         
-                        showAllOldProjects(selectedTutorial);
+                        showAllOldProjects(selectedTutorialBase);
                         
                     }
                     
@@ -106,7 +113,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("start clicked");
-                        if(selectedTutorial == null)
+                        if(selectedTutorialBase == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
                             JFrame frame = new JFrame();
@@ -114,7 +121,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                             return;
                         }
                         
-                        showNewProjectDetails(selectedTutorial);
+                        showNewProjectDetails(selectedTutorialBase);
                         
                     }
                 });
@@ -127,9 +134,15 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         public void mouseClicked(MouseEvent event)
                         {
                             //this will actually ask for the list of stages, but still need xml base for that
-                            selectedTutorial = TutorialPanel.getTutorialBaseFromBeacon((Component)event.getSource());
+                            selectedTutorialBase = TutorialPanel.getTutorialBaseFromBeacon((Component)event.getSource());
                             //show some animation while loading
-                            System.out.println("selected "+selectedTutorial.getTitle());
+                            if(previousSelectedTutorialPanel != null)
+                            {
+                                previousSelectedTutorialPanel.setBlocked(true);
+                            }
+                            previousSelectedTutorialPanel = TutorialPanel.getTutorialPanelFromBeacon((Component)event.getSource());
+                            previousSelectedTutorialPanel.setBlocked(false);
+                            //System.out.println("selected "+selectedTutorialBase.getTitle());
                         }
                     });
                     tutorialsScrollPane.appendPanel((JComponent)tutorialPanel);
@@ -188,22 +201,57 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     }
     /**
      * 
-     * @param selectedTutorial 
+     * @param selectedTutorialBase 
      */
     private List<Tutorial> projects;
-    private void showAllOldProjects(final TutorialBase selectedTutorial) {
+    private void showAllOldProjects(final TutorialBase allProjectsBaseTutorial) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 Container contentPane = getContentPane();
                 contentPane.removeAll();
                 
+                selectedTutorial = null;
                 allTutorialsPanel = new AllTutorialsPanel();
-                allTutorialsPanel.setTitle("All Projects - "+selectedTutorial.getTitle());
-                allTutorialsPanel.setDescription(selectedTutorial.getDescription());
+                allTutorialsPanel.setTitle("All Projects - "+allProjectsBaseTutorial.getTitle());
+                allTutorialsPanel.setDescription(allProjectsBaseTutorial.getDescription());
                 tutorialsScrollPane = new PanelsScrollPane(true);
         
-                projects = TutorialManager.getAllTutorialBaseProjects(selectedTutorial);
+                allTutorialsPanel.getStartButton().setText("cancel");
+                allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("opened clicked");
+                        if(selectedTutorial == null)
+                        {
+                            //display dialog, telling user he has not selected a tutorial
+                            JFrame frame = new JFrame();
+                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        showAllTutorials(TutorialManager.getAllTutorialBases());
+                    }
+                });
+                
+                allTutorialsPanel.getOpenButton().setText("start project");
+                allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("start clicked");
+                        if(selectedTutorial == null)
+                        {
+                            //display dialog, telling user he has not selected a tutorial
+                            JFrame frame = new JFrame();
+                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        currentTutorial = TutorialManager.getTutorialBaseProject(selectedTutorial);
+                        startTutorial();                        
+                    }
+                });
+                
+                projects = TutorialManager.getAllTutorialBaseProjects(allProjectsBaseTutorial);
                 //add every tutorial to the scroll pane in the content pane
                 for(Tutorial tutorialBase : projects)
                 {
@@ -213,12 +261,15 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         public void mouseClicked(MouseEvent event)
                         {
                             //this will actually ask for the list of stages, but still need xml base for that
-                            Tutorial tutorial = ProjectPanel.getTutorialFromBeacon((Component)event.getSource());
+                            selectedTutorial = ProjectPanel.getTutorialFromBeacon((Component)event.getSource());
                             //show some animation while loading
-                            setTitle(tutorial.getProjectName());
+                            if(previousSelectedTutorialPanel != null)
+                            {
+                                previousSelectedTutorialPanel.setBlocked(true);
+                            }
+                            previousSelectedTutorialPanel = ProjectPanel.getTutorialPanelFromBeacon((Component)event.getSource());
+                            previousSelectedTutorialPanel.setBlocked(false);
                             //whenever we get real tutorials this will be changed
-                            currentTutorial = TutorialManager.getTutorialBaseProject(tutorial);
-                            startTutorial();
                         }
                     });
                     tutorialsScrollPane.appendPanel((JComponent)projectPanel);

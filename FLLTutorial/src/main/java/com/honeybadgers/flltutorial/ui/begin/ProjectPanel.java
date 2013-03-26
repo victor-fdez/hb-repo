@@ -5,7 +5,13 @@
 package com.honeybadgers.flltutorial.ui.begin;
 
 import com.honeybadgers.flltutorial.model.Tutorial;
+import com.honeybadgers.flltutorial.ui.utilities.Blocked;
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
@@ -13,15 +19,17 @@ import javax.swing.JPanel;
  *
  * @author chingaman
  */
-public class ProjectPanel extends javax.swing.JPanel {
+public class ProjectPanel extends javax.swing.JPanel implements Blocked{
 
     /**
      * Creates new form tutorialPanel
      */
     private Tutorial tutorial;
     private DefaultListModel membersListModel;
+    private boolean blocked;
     public ProjectPanel(Tutorial projectBase) {
         initComponents();
+        this.blocked = true;
         this.tutorial = projectBase;
         this.titleLabel.setText(projectBase.getProjectName());
         this.authorLabel.setText(projectBase.getTeamName());
@@ -145,6 +153,16 @@ public class ProjectPanel extends javax.swing.JPanel {
         return (Component)this.beaconPanel;
     }
     
+    public static ProjectPanel getTutorialPanelFromBeacon(Component beacon)
+    {
+        if(beacon instanceof JPanel)
+        {
+            ProjectPanel tutorialPanel = (ProjectPanel)beacon.getParent().getParent();
+            return tutorialPanel;
+        }
+        return null;
+    }
+    
     public static Tutorial getTutorialFromBeacon(Component beacon)
     {
         if(beacon instanceof JPanel)
@@ -163,4 +181,28 @@ public class ProjectPanel extends javax.swing.JPanel {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel tutorialContentPanel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        if(blocked)
+        {
+            Rectangle rect = g.getClipBounds();
+
+            AlphaComposite alpha = AlphaComposite.SrcOver.derive(0.65f);
+            Graphics2D g2 = (Graphics2D)g;
+
+            g2.setComposite(alpha);
+            //later change to gradient
+            g2.setColor(Color.WHITE);
+            g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+        }
+    }
+    
+    @Override
+    public void setBlocked(boolean block) {
+        this.blocked = block;
+        this.repaint();
+    }
 }
