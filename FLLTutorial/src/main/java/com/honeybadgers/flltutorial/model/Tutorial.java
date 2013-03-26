@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author chingaman
  */
-public class Tutorial extends TutorialBase
+    public class Tutorial extends TutorialBase
 {
     private String tutorialName;
     private String projectName;
@@ -20,11 +20,6 @@ public class Tutorial extends TutorialBase
     private List<String> members;
     private String mission;
     List<Stage> stages;
-    
-    public Tutorial(String name, String mission, List<Stage> stages)
-    {
-        this(name, mission, stages, "", "", new ArrayList<String>());
-    }
     
     public Tutorial(String name, String mission, List<Stage> stages, String projectName, String teamName, List<String> members)
     {

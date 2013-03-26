@@ -4,8 +4,9 @@
  */
 package com.honeybadgers.flltutorial.ui.begin;
 
-import com.honeybadgers.flltutorial.model.TutorialBase;
+import com.honeybadgers.flltutorial.model.Tutorial;
 import java.awt.Component;
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
 /**
@@ -17,13 +18,21 @@ public class ProjectPanel extends javax.swing.JPanel {
     /**
      * Creates new form tutorialPanel
      */
-    private TutorialBase tutorialBase;
-    public ProjectPanel(TutorialBase tutorialBase) {
+    private Tutorial tutorial;
+    private DefaultListModel membersListModel;
+    public ProjectPanel(Tutorial projectBase) {
         initComponents();
-        this.tutorialBase = tutorialBase;
-        this.titleLabel.setText(tutorialBase.getTitle());
-        this.authorLabel.setText(tutorialBase.getAuthor());
+        this.tutorial = projectBase;
+        this.titleLabel.setText(projectBase.getProjectName());
+        this.authorLabel.setText(projectBase.getTeamName());
+        this.membersListModel = new DefaultListModel();
         
+        //add all members
+        for(String memberName : this.tutorial.getMembers())
+        {
+            this.membersListModel.addElement(memberName);
+        }
+        this.membersList.setModel(this.membersListModel);
     }
 
     /**
@@ -40,7 +49,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         titleLabel = new javax.swing.JLabel();
         authorLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        membersList = new javax.swing.JList();
         beaconPanel = new javax.swing.JPanel();
 
         layeredPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -57,12 +66,12 @@ public class ProjectPanel extends javax.swing.JPanel {
 
         authorLabel.setText("by team name");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        membersList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(membersList);
 
         org.jdesktop.layout.GroupLayout tutorialContentPanelLayout = new org.jdesktop.layout.GroupLayout(tutorialContentPanel);
         tutorialContentPanel.setLayout(tutorialContentPanelLayout);
@@ -136,21 +145,21 @@ public class ProjectPanel extends javax.swing.JPanel {
         return (Component)this.beaconPanel;
     }
     
-    public static TutorialBase getTutorialBaseFromBeacon(Component beacon)
+    public static Tutorial getTutorialFromBeacon(Component beacon)
     {
         if(beacon instanceof JPanel)
         {
             ProjectPanel tutorialPanel = (ProjectPanel)beacon.getParent().getParent();
-            return tutorialPanel.tutorialBase;
+            return tutorialPanel.tutorial;
         }
         return null;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel;
     private javax.swing.JPanel beaconPanel;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLayeredPane layeredPane;
+    private javax.swing.JList membersList;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel tutorialContentPanel;
     // End of variables declaration//GEN-END:variables

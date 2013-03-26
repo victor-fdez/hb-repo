@@ -10,6 +10,7 @@ import com.honeybadgers.flltutorial.model.TutorialBase;
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import com.honeybadgers.flltutorial.ui.begin.AllTutorialsPanel;
 import com.honeybadgers.flltutorial.ui.begin.DetailedProjectPanel;
+import com.honeybadgers.flltutorial.ui.begin.ProjectPanel;
 import com.honeybadgers.flltutorial.ui.begin.TutorialPanel;
 import com.honeybadgers.flltutorial.ui.main.content.ContentPane;
 import com.honeybadgers.flltutorial.ui.main.content.PanelReceiver;
@@ -50,7 +51,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
 
     public static Tutorial currentTutorial;
     private PanelsScrollPane tutorialsScrollPane;
-    private AllTutorialsPanel beginnings;
+    private AllTutorialsPanel allTutorialsPanel;
     private FLLTutorialUI tutorialUI;
     private TutorialBase selectedTutorial;
     /**
@@ -71,7 +72,9 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             public void run() {
                 Container contentPane = getContentPane();
                 
-                beginnings = new AllTutorialsPanel();
+                allTutorialsPanel = new AllTutorialsPanel();
+                allTutorialsPanel.setTitle("All Tutorials");
+                allTutorialsPanel.setDescription(null);
                 tutorialsScrollPane = new PanelsScrollPane(true);
         
                 /*List<TutorialBase> tutorialsList = new ArrayList<>();
@@ -79,15 +82,27 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 tutorialsList.add(new TutorialBase("robot exercise","Taylor Peet", "The design process of a robot exercise aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
                 tutorialsList.add(new TutorialBase("cake factory tutorial","Pushkara", "The design process of a cake baking robot"));
                 tutorialsList.add(tutorials.remove(0));*/
+                
                 //add every tutorial to the scroll pane in the content pane
-                beginnings.getOpenButton().addActionListener(new ActionListener(){
+                allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("opened clicked");
+                        if(selectedTutorial == null)
+                        {
+                            //display dialog, telling user he has not selected a tutorial
+                            JFrame frame = new JFrame();
+                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        showAllOldProjects(selectedTutorial);
+                        
                     }
+                    
                 });
                 
-                beginnings.getStartButton().addActionListener(new ActionListener(){
+                allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("start clicked");
@@ -95,7 +110,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         {
                             //display dialog, telling user he has not selected a tutorial
                             JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before starting", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         
@@ -120,10 +135,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     tutorialsScrollPane.appendPanel((JComponent)tutorialPanel);
                 }
             
-                beginnings.getListPanel().add(tutorialsScrollPane);
+                allTutorialsPanel.getListPanel().add(tutorialsScrollPane);
         
                 contentPane.setLayout(new GridLayout(1,1));
-                contentPane.add(beginnings);
+                contentPane.add(allTutorialsPanel);
         
                 pack();
                 setInCenterOfScreen();
@@ -171,47 +186,48 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             }
         });
     }
-    
-    public void showProjects(final List<TutorialBase> projects)
-    {
+    /**
+     * 
+     * @param selectedTutorial 
+     */
+    private List<Tutorial> projects;
+    private void showAllOldProjects(final TutorialBase selectedTutorial) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 Container contentPane = getContentPane();
                 contentPane.removeAll();
                 
-                beginnings = new AllTutorialsPanel();
+                allTutorialsPanel = new AllTutorialsPanel();
+                allTutorialsPanel.setTitle("All Projects - "+selectedTutorial.getTitle());
+                allTutorialsPanel.setDescription(selectedTutorial.getDescription());
                 tutorialsScrollPane = new PanelsScrollPane(true);
         
-                /*List<TutorialBase> tutorialsList = new ArrayList<>();
-                tutorialsList.add(new TutorialBase("car tutorial","Victor Fernandez", "The design process of a car factory"));
-                tutorialsList.add(new TutorialBase("robot exercise","Taylor Peet", "The design process of a robot exercise aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-                tutorialsList.add(new TutorialBase("cake factory tutorial","Pushkara", "The design process of a cake baking robot"));
-                tutorialsList.add(tutorials.remove(0));*/
+                projects = TutorialManager.getAllTutorialBaseProjects(selectedTutorial);
                 //add every tutorial to the scroll pane in the content pane
-                for(TutorialBase tutorialBase : projects)
+                for(Tutorial tutorialBase : projects)
                 {
-                    TutorialPanel tutorialPanel = new TutorialPanel(tutorialBase);
-                    tutorialPanel.getBeacon().addMouseListener(new MouseAdapter(){
+                    ProjectPanel projectPanel = new ProjectPanel(tutorialBase);
+                    projectPanel.getBeacon().addMouseListener(new MouseAdapter(){
                         @Override
                         public void mouseClicked(MouseEvent event)
                         {
                             //this will actually ask for the list of stages, but still need xml base for that
-                            TutorialBase tutorialBase = TutorialPanel.getTutorialBaseFromBeacon((Component)event.getSource());
+                            Tutorial tutorial = ProjectPanel.getTutorialFromBeacon((Component)event.getSource());
                             //show some animation while loading
-                            setTitle(tutorialBase.getTitle());
+                            setTitle(tutorial.getProjectName());
                             //whenever we get real tutorials this will be changed
+                            currentTutorial = TutorialManager.getTutorialBaseProject(tutorial);
                             startTutorial();
-                            //System.out.println(tutorialBase.getTitle());
                         }
                     });
-                    tutorialsScrollPane.appendPanel((JComponent)tutorialPanel);
+                    tutorialsScrollPane.appendPanel((JComponent)projectPanel);
                 }
             
-                beginnings.getListPanel().add(tutorialsScrollPane);
+                allTutorialsPanel.getListPanel().add(tutorialsScrollPane);
         
                 contentPane.setLayout(new GridLayout(1,1));
-                contentPane.add(beginnings);
+                contentPane.add(allTutorialsPanel);
         
                 pack();
                 setInCenterOfScreen();
@@ -229,13 +245,14 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
+    
     public void startTutorial()
     {
         this.tutorialUI = this;
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                //swap out beginnings and start tutorial
+                //swap out allTutorialsPanel and start tutorial
                 tutorialUI.getContentPane().removeAll();
                
                 //create the menu bar
@@ -258,6 +275,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("FLLTutorialUI.showTutorial : saving project");
+                        TutorialManager.saveProject(currentTutorial);
                     }
                 });
                 fileMenu.add(saveMI);

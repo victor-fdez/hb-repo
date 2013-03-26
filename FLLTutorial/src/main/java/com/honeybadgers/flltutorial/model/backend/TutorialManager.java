@@ -15,6 +15,9 @@ import java.util.ArrayList;
  */
 public class TutorialManager {
     
+    public static String projectsFolderPath = "src/main/resources/Projects/";
+    public static String tutorialsFolderPath = "src/main/resources/Tutorials/";
+    
     public static ArrayList<TutorialBase> getAllTutorialBases()
     {
         ArrayList<TutorialBase> tutorialBases = new ArrayList<>();
@@ -31,15 +34,16 @@ public class TutorialManager {
         return tutorialBases;
     }
     
-    public static ArrayList<TutorialBase> getAllTutorialBaseProjects(TutorialBase tutorialBase)
+    public static ArrayList<Tutorial> getAllTutorialBaseProjects(TutorialBase tutorialBase)
     {
-        ArrayList<TutorialBase> projectBases = new ArrayList<>();
+        ArrayList<Tutorial> projectBases = new ArrayList<>();
         
         File tutorialsParentDirectory = new File("src/main/resources/Projects/"+tutorialBase.getTitle());
         File[] tutorialProjectFiles = tutorialsParentDirectory.listFiles();
         for(File projectFile : tutorialProjectFiles){
             if(projectFile.isFile()){
-                TutorialBase projectBase = XMLBase.loadTutorialBase(projectFile);
+                Tutorial projectBase = XMLBase.loadTutorialProjectBase(projectFile);
+                projectBase.setFileName(projectFile.getName());
                 projectBases.add(projectBase);
             }
         }
@@ -69,6 +73,17 @@ public class TutorialManager {
             projectTutorial.setFileName("project"+(numberOfFiles+1)+".xml");
         }
         XMLBase.saveTutorial(projectTutorial);
+    }
+
+    public static Tutorial getTutorialBaseProject(Tutorial tutorial) {
+        File projectFile = new File(TutorialManager.projectsFolderPath+tutorial.getTutorialName()+"/"+tutorial.getFileName());
+        Tutorial projectTutorial = XMLBase.loadTutorial(projectFile);
+        projectTutorial.setFileName(tutorial.getFileName());
+        return projectTutorial;
+    }
+
+    public static void saveProject(Tutorial currentTutorial) {
+        XMLBase.saveTutorial(currentTutorial);
     }
     
 }

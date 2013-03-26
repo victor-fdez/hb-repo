@@ -18,7 +18,6 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
      */
     public AllTutorialsPanel() {
         initComponents();
-        this.titleLabel.setText("Design Process Tutorials");
     }
 
     /**
@@ -34,6 +33,8 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         startButton = new javax.swing.JButton();
         listPanel = new javax.swing.JPanel();
         openButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        descriptionArea = new javax.swing.JTextArea();
 
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         titleLabel.setText("long title");
@@ -44,28 +45,33 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         listPanel.setLayout(new java.awt.GridLayout(1, 1));
 
         openButton.setText("open previous project");
-        openButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openButtonActionPerformed(evt);
-            }
-        });
+
+        descriptionArea.setEditable(false);
+        descriptionArea.setColumns(20);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setRows(5);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setFocusable(false);
+        descriptionArea.setRequestFocusEnabled(false);
+        jScrollPane1.setViewportView(descriptionArea);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(titleLabel)
-                        .add(0, 310, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
+                        .add(0, 319, Short.MAX_VALUE)
                         .add(openButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(startButton)))
+                        .add(startButton))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                        .add(titleLabel)
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -73,8 +79,10 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(titleLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(startButton)
@@ -83,11 +91,9 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_openButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea descriptionArea;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel listPanel;
     private javax.swing.JButton openButton;
     private javax.swing.JButton startButton;
@@ -104,5 +110,20 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
 
     public JButton getStartButton() {
         return startButton;
+    }
+    
+    public void setTitle(String title)
+    {
+        this.titleLabel.setText(title);
+    }
+    
+    public void setDescription(String description)
+    {
+        if(description == null)
+        {
+            this.descriptionArea.setVisible(false);
+            return;
+        }
+        this.descriptionArea.setText(description);
     }
 }

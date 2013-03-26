@@ -58,7 +58,48 @@ public class XMLBase {
         
         return new TutorialBase(title, author, description);
     }
+    /**
+     * Load project information, without loading all stages
+     * 
+     * @param tutorialFile
+     * @return 
+     */
+    public static Tutorial loadTutorialProjectBase(File tutorialFile) {
+        List<String> members = new ArrayList<>();
+        String projectName = "";
+        String teamName = "";
+        
+        Document doc = loadDOM(tutorialFile);
+        
+        if(doc==null){
+            return null;
+        }
+        
+        Element rootElement = (Element) doc.getElementsByTagName("tutorial").item(0);
 
+        String tutorialName = rootElement.getAttribute("name");        
+        
+        //a clean tutorial will not have this information
+        NodeList projectInfo = rootElement.getElementsByTagName("project");
+        if(projectInfo.getLength() > 0)
+        {
+            Element projectElement = (Element)projectInfo.item(0);
+            Element teamNode = (Element)projectElement.getElementsByTagName("team").item(0);
+            System.out.println(teamNode);
+            
+            projectName = projectElement.getAttribute("name");
+            teamName = teamNode.getAttribute("name");
+            
+            NodeList teamMemberNodes = teamNode.getElementsByTagName("member");
+            for(int i = 0; i < teamMemberNodes.getLength(); i++)
+            {
+                String memberName = teamMemberNodes.item(i).getTextContent();
+                members.add(memberName);
+            }
+        }
+        
+        return new Tutorial(tutorialName, "", null, projectName, teamName, members);
+    }
     
     private static Document loadDOM(File xmlFile){
         Document doc=null;
