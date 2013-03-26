@@ -48,7 +48,6 @@ public class TutorialManager {
     
     public static Tutorial getNewProject(TutorialBase tutorialBase)
     {
-        //File cleanTutorial = new File("src/main/resources/Projects/Tutorial1/project1.xml");
         //System.out.println("TutorialManager.getNewProject : getting clean tutorial "+tutorialBase.getTitle()+" "+cleanTutorial);
         
         //find the main directory for tutorial's projects
@@ -60,7 +59,7 @@ public class TutorialManager {
         return initialTutorial;
     }
     
-    public static void saveProject(Tutorial projectTutorial)
+    public static void saveNewProject(Tutorial projectTutorial)
     {
         File projectsDirectory = new File("src/main/resources/Projects/"+projectTutorial.getTutorialName());
         int numberOfFiles = projectsDirectory.list().length;

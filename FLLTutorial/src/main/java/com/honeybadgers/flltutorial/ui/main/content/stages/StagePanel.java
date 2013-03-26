@@ -8,11 +8,9 @@ import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
-import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import java.awt.AWTEvent;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -72,7 +70,6 @@ abstract public class StagePanel extends JPanel
      */
     protected OptionPanel createOptionPanel(Option option)
     {
-        System.out.println("Generated Option Panel in Stage");
         return (OptionPanel)new TextOptionPanel(option);
     } 
     /**

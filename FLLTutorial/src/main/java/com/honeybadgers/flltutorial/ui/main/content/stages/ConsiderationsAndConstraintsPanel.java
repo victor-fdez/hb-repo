@@ -22,7 +22,7 @@ public class ConsiderationsAndConstraintsPanel extends MorphChartPanel{
     @Override
     protected OptionPanel createOptionPanel(Option option)
     {
-                    System.out.println("Generated in consideration");
+                    //System.out.println("Generated in consideration");
 
         return new TextOptionPanel(option);
     } 

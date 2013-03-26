@@ -39,7 +39,7 @@ public class TextOptionPanel extends OptionPanel{
     }
     private void initComponents()
     {
-        System.out.println("TextOptionPanel.initComponents() : started");
+        //System.out.println("TextOptionPanel.initComponents() : started");
         try
         {
             this.description = new DepthTextArea("");

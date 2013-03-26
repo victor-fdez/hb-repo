@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
+import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.CORRECT;
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.FINISHED;
 import static com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState.HIDDEN_OCCUPY;
@@ -51,7 +52,7 @@ public class PictureOptionPanel extends OptionPanel {
     
     private void initComponents()
     {
-        System.out.println("OptionPanel.initComponents() : started");
+        //System.out.println("OptionPanel.initComponents() : started");
         
         this.setMinimumSize(new Dimension(100, 100));
         this.setPreferredSize(new Dimension(100, 100));
@@ -82,15 +83,16 @@ public class PictureOptionPanel extends OptionPanel {
     {
         
         File pictureFile;
+        String mainTutorialDirectoryPath = FLLTutorialUI.getMainTutorialDirectoryPath();
         if(this.option == null || "".equals(option.getImagePath()))
         {
             //add a default image here
-            pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/media/motion-Legs.png");
+            pictureFile = new File(mainTutorialDirectoryPath+"media/motion-Legs.png");
             this.iconDisplay.setText("-");
         }
         else
         {
-            pictureFile = new File("/Users/chingaman/Desktop/hb-repo/FLLTutorial/src/main/resources/sampleTutorial/"+option.getImagePath());
+            pictureFile = new File(mainTutorialDirectoryPath+option.getImagePath());
             this.iconDisplay.setText(option.getDescription());      
         }
                   
@@ -98,7 +100,6 @@ public class PictureOptionPanel extends OptionPanel {
         if(pictureFile.exists())
         {
             try {
-                
                 this.image = ImageIO.read(pictureFile);
                 this.resizeImage();
                 

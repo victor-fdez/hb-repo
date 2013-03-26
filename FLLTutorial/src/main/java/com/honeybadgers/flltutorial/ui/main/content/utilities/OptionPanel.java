@@ -6,22 +6,14 @@ package com.honeybadgers.flltutorial.ui.main.content.utilities;
 
 import com.honeybadgers.flltutorial.model.Option;
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
+
 
 /**
  *
@@ -59,7 +51,6 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
     }
     private void initComponents()
     {
-        System.out.println("OptionPanel.initComponents() : started");
         this.contentPanel = new JPanel();
         this.contentPanel.setVisible(true);
         this.contentPanel.setOpaque(true);
@@ -83,7 +74,6 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
                  contentPanel.revalidate();
              }
         });
-        //this.setBorder(new LineBorder(Color.BLACK, 1,));
     }
     //TODO: create methods that will draw a button under different STATES
     abstract public OptionPanel copy();
@@ -122,7 +112,6 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
             {
                 this.panelImage = (BufferedImage)this.createImage(this.getWidth(), this.getHeight());
             }
-            //System.out.println("->"+this.panelImage.getWidth()+" "+this.panelImage.getHeight());
             Graphics gPanel = this.panelImage.getGraphics();
             gPanel.setClip(g.getClip());
             
@@ -157,7 +146,6 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
      */
     public static OptionPanel getOptionPanelFromBeacon(Component object)
     {
-        System.out.println(""+object.getParent());
         if(object.getParent() instanceof OptionPanel)
         {
             return (OptionPanel)object.getParent();

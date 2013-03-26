@@ -8,7 +8,6 @@ import com.honeybadgers.flltutorial.model.Stage;
 import com.honeybadgers.flltutorial.model.Tutorial;
 import com.honeybadgers.flltutorial.model.TutorialBase;
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
-import com.honeybadgers.flltutorial.model.backend.XMLBase;
 import com.honeybadgers.flltutorial.ui.begin.AllTutorialsPanel;
 import com.honeybadgers.flltutorial.ui.begin.DetailedProjectPanel;
 import com.honeybadgers.flltutorial.ui.begin.TutorialPanel;
@@ -31,11 +30,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -154,8 +155,9 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         {
                             System.out.println("FLLTutorialUI.showNewProjectDetailes : saving new project");
                             Tutorial newProject = detailedProjectPanel.getTutorial();
-                            TutorialManager.saveProject(newProject);
+                            TutorialManager.saveNewProject(newProject);
                             currentTutorial = newProject;
+                            startTutorial();
                         }
                     }
                     
@@ -177,6 +179,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             @Override
             public void run() {
                 Container contentPane = getContentPane();
+                contentPane.removeAll();
                 
                 beginnings = new AllTutorialsPanel();
                 tutorialsScrollPane = new PanelsScrollPane(true);
@@ -199,7 +202,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                             //show some animation while loading
                             setTitle(tutorialBase.getTitle());
                             //whenever we get real tutorials this will be changed
-                            startTutorial(null);
+                            startTutorial();
                             //System.out.println(tutorialBase.getTitle());
                         }
                     });
@@ -227,9 +230,8 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
-    public void startTutorial(List<Stage> stages)
+    public void startTutorial()
     {
-        this.stagesList = stages;
         this.tutorialUI = this;
         SwingUtilities.invokeLater(new Runnable(){
             @Override
@@ -237,9 +239,54 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 //swap out beginnings and start tutorial
                 tutorialUI.getContentPane().removeAll();
                
+                //create the menu bar
+                JMenuBar menuBar = new JMenuBar();
+                JMenu fileMenu = new JMenu("File");
+                menuBar.add(fileMenu);
+                
+                
+                JMenuItem openMI = new JMenuItem("Open Project");
+               openMI.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("FLLTutorialUI.showTutorial : open project");
+                    }
+                });
+                fileMenu.add(openMI);
+                
+                JMenuItem saveMI = new JMenuItem("Save Project");
+                saveMI.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("FLLTutorialUI.showTutorial : saving project");
+                    }
+                });
+                fileMenu.add(saveMI);
+                
+                fileMenu.addSeparator();
+                JMenuItem showDetailsMI = new JMenuItem("Show Project Details");
+                showDetailsMI.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("FLLTutorialUI.showTutorial : show project details");
+                    }
+                });
+                fileMenu.add(showDetailsMI);
+                
+                fileMenu.addSeparator();
+                JMenuItem createReportMI = new JMenuItem("Create Project Report");
+                createReportMI.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("FLLTutorialUI.showTutorial : create project report");
+                    }
+                });
+                fileMenu.add(createReportMI);
+                
+                setJMenuBar(menuBar);
+                
                 //this would be obtained from the caller
-                Tutorial tutorial = XMLBase.loadTutorial(new File("src/main/resources/Tutorials/Tutorial1/Tutorial1.xml"));
-                stagesList = tutorial.getStages();
+                stagesList = currentTutorial.getStages();
                 
                 ArrayList<StagePanel> stagePanels = new ArrayList<>();
                 for(Stage stage : stagesList)
@@ -248,19 +295,19 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     {
                         case "Problem Statement":
                             stagePanels.add(new ProblemDescriptionPanel(stage.getRootOption()));
-                            System.out.println("generating problem statement");
+                            //System.out.println("generating problem statement");
                             break;
                         case "Limitations and Constraints":
                             stagePanels.add(new ConsiderationsAndConstraintsPanel(stage.getRootOption()));
-                            System.out.println("generating lims and consts");
+                            //System.out.println("generating lims and consts");
                             break;
                         case "Task Diagram":
                             stagePanels.add(new TaskDiagramPanel(stage.getRootOption()));
-                            System.out.println("generating task diagram");
+                            //System.out.println("generating task diagram");
                             break;
                         case "Morphological Chart":
                             stagePanels.add(new MorphChartPanel(stage.getRootOption()));
-                            System.out.println("generating morph chart");
+                            //System.out.println("generating morph chart");
                             break;
                     }
                     
@@ -282,6 +329,18 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             }
         });
     }
+    
+    public static String getMainTutorialDirectoryPath()
+    {
+        if(currentTutorial == null)
+        {
+            return "";
+        }
+        else
+        {
+            return "src/main/resources/Tutorials/"+currentTutorial.getTutorialName()+"/";
+        }
+    }
 
     @Override
     public void receivePanel(JPanel panelSent, Point point) {
@@ -299,6 +358,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     public static void startUI()
     {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new FLLTutorialUI();
             }

@@ -191,7 +191,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //System.out.println("component -> "+component);
         //if
-        System.out.println(""+e.getSource());
+        //System.out.println(""+e.getSource());
         if(component == this.optionsPanel)
         {
             this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());
@@ -234,7 +234,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             if(component == this.stagePanel)
             {/*don't do anything, althought this will send points to stage panel*/
                 int status = this.stagePanel.dropOptionPanel(this.draggingOptionPanel);
-                System.out.println("dropping on stage panel "+status);
+                //System.out.println("dropping on stage panel "+status);
                 switch(status)
                 {
                     case 0:
