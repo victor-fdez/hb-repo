@@ -190,7 +190,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     {    
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //System.out.println("component -> "+component);
-        //if
+
         //System.out.println(""+e.getSource());
         if(component == this.optionsPanel)
         {
@@ -199,11 +199,11 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             {
                 this.draggingOptionPanel = this.selectedOptionPanel.copy();
                 this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
-                this.draggingOptionPanel.setState(this.selectedOptionPanel.getState());
-                this.draggingOptionState = this.draggingOptionPanel.getState();
+                //this.draggingOptionPanel.setState(this.selectedOptionPanel.getState());
+                this.draggingOptionState = this.selectedOptionPanel.getState();
                 this.draggingOptionPanel.setState(OptionState.TRANSPARENT);
-                this.draggingOptionPanel.repaint();
-                this.draggingOptionPanel.revalidate();
+                //may need to repaint the dragging option panel
+                
                 //add dragging option panel to glass pane
                 //revalidate button after adding it to the glass panel
                 this.glassPanel.add(this.draggingOptionPanel);
@@ -242,6 +242,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                         break;
                     case 1:
                         this.selectedOptionPanel.setState(OptionPanel.OptionState.INCORRECT);
+                        //tell the student here, why the answer was wrong
+                        
                         break;
                     case 2:
                         this.selectedOptionPanel.setState(this.draggingOptionPanel.getState());
@@ -267,7 +269,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     /* mouse movement listener*/
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.redispatchEvent(e);
+        //useless
+        //this.redispatchEvent(e);
     }
     /*TODO:
      * remember last component that was entered so that it may be exited
@@ -277,8 +280,9 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     @Override
     public void mouseExited(MouseEvent e) {
-        this.redispatchEvent(e);
-    } 
+        //useless
+        //this.redispatchEvent(e);
+    }
     @Override
     public void mouseDragged(MouseEvent e) 
     {
@@ -295,20 +299,49 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         {
             this.redispatchEvent(e);
         }
-        //System.out.println("mouse dragged");
     }
+    private Component lastMouseMovedComponent;
     @Override
     public void mouseMoved(MouseEvent e) {
-        this.redispatchEvent(e);
+        //System.out.println("moved ");
+        Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
+        
+        if(lastMouseMovedComponent == null)
+        {
+            this.redispatchEvent(e, component);
+            lastMouseMovedComponent = component;
+            return;
+        }
+        
+        if(lastMouseMovedComponent != component)
+        {
+            Point exitPoint = e.getPoint();
+            //System.out.println("last component global coordinates "+exitPoint);
+            exitPoint.setLocation(SwingUtilities.convertPoint(this.contentPanel, exitPoint, lastMouseMovedComponent));      
+            //System.out.println("last component local coordinates "+exitPoint);
+            MouseEvent exitEvent = new MouseEvent(lastMouseMovedComponent, MouseEvent.MOUSE_EXITED, e.getWhen(), e.getModifiers(), exitPoint.x, exitPoint.y, e.getClickCount(), e.isPopupTrigger());
+            lastMouseMovedComponent.dispatchEvent(exitEvent);
+        }
+        this.redispatchEvent(e, component);
+        lastMouseMovedComponent = component;
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        //Component component = this.contentPanel.getComponentAt(e.getPoint());
         this.redispatchEvent(e); 
     }
+    /**
+     * Redispatches an event received events on the glass panel, to components behind it.
+     * 
+     * @param e  event to redispatch
+     */
     private void redispatchEvent(MouseEvent e)
     {
-         Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
+          Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
+          this.redispatchEvent(e, component);
+    }
+    
+    private void redispatchEvent(MouseEvent e, Component component)
+    {
          if(component != null){
             e.setSource(component);
             Point point = e.getPoint();
@@ -316,9 +349,6 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             e.translatePoint(-((int)point.getX()), -((int)point.getY()));
             e.translatePoint(((int)newPoint.getX()), ((int)newPoint.getY()));
             component.dispatchEvent(e);
-            //System.out.println(e+"");
-            //System.out.println(""+component);
-            //component.dispatchEvent(e);
          }
     }
 }

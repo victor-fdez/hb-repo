@@ -64,9 +64,15 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         this.tutorialUI = this;
         this.selectedTutorialBase = null;
     }
-    
+    //this variable is used change blurry graphics on a previously panel, that was
+    //non blurry.
     private Blocked previousSelectedTutorialPanel;
-    
+    /**
+     * This methods shows all of the available Tutorials, from which either a new project
+     * instance can be created, or old projects instances may be listed.
+     * 
+     * @param tutorials     A list of all Tutorials 
+     */
     public void showAllTutorials(final List<TutorialBase> tutorials)
     {
         //all of this will be called from the controller so it should be wrapped in
@@ -83,12 +89,6 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.setTitle("All Tutorials");
                 allTutorialsPanel.setDescription(null);
                 tutorialsScrollPane = new PanelsScrollPane(true);
-        
-                /*List<TutorialBase> tutorialsList = new ArrayList<>();
-                tutorialsList.add(new TutorialBase("car tutorial","Victor Fernandez", "The design process of a car factory"));
-                tutorialsList.add(new TutorialBase("robot exercise","Taylor Peet", "The design process of a robot exercise aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-                tutorialsList.add(new TutorialBase("cake factory tutorial","Pushkara", "The design process of a cake baking robot"));
-                tutorialsList.add(tutorials.remove(0));*/
                 
                 //add every tutorial to the scroll pane in the content pane
                 allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
@@ -162,7 +162,15 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     }
     
     private DetailedProjectPanel detailedProjectPanel; 
-    
+    /**
+     * This methods shows the details of a new project (to be created), from a given
+     * Tutorial. The methods also provides features, to edit the name of the project,
+     * the name of the team, and the names of the members of the team. Afterwards if user
+     * chooses to create this new project, then it will be created, else the user may
+     * choose to not continue.
+     * 
+     * @param selectedTutorialBase  The tutorial used to create a project instance
+     */
     public void showNewProjectDetails(final TutorialBase selectedTutorialBase)
     {
         SwingUtilities.invokeLater(new Runnable() {
@@ -200,8 +208,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         });
     }
     /**
+     * This methods displays a list of old projects that were previously created. The
+     * User may the proceed to select on of the project to work on what ever was last saved.
      * 
-     * @param selectedTutorialBase 
+     * @param selectedTutorialBase  the tutorial for which all project instances come from
      */
     private List<Tutorial> projects;
     private void showAllOldProjects(final TutorialBase allProjectsBaseTutorial) {
@@ -287,16 +297,16 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             }
         });
     }
-    /**
-     * Called by TutorialManager when it has finished getting the stages of this tutorial
-     * 
-     * @param stages 
-     */
+    //some variables storing information of the project tutorial, and the user
+    //interfaces
     private List<Stage> stagesList;
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
-    
+    /**
+     * Start a given project for a specific tutorial, at which was the last stage the
+     * project was in.
+     */
     public void startTutorial()
     {
         this.tutorialUI = this;
@@ -423,6 +433,49 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
+    /*For testing purposes*/
+    
+    public static void setCurrentTutorial(Tutorial currentTutorial)
+    {
+        FLLTutorialUI.currentTutorial = currentTutorial;
+    }
+
+    
+    public static void main(String[] args)
+    {
+        //look and feel
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FLLTutorialUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FLLTutorialUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FLLTutorialUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FLLTutorialUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() 
+            {
+                ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
+                ArrayList<Tutorial> projectBases = TutorialManager.getAllTutorialBaseProjects(tutorialBases.get(0));
+                Tutorial project = TutorialManager.getTutorialBaseProject(projectBases.get(0));
+                FLLTutorialUI topComp = new FLLTutorialUI(); 
+                //topComp.showAllTutorials(tutorialBases);
+                FLLTutorialUI.setCurrentTutorial(project);
+                topComp.startTutorial();
+                topComp.setVisible(true);
+            }
+        });
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
