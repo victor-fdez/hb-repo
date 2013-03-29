@@ -92,7 +92,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             @Override
             public void paintComponent(Graphics g)
             {        
-                System.out.println("painted glass panel");
+                //System.out.println("painted glass panel");
                 if(eventsBlocked)
                 {
                     Rectangle rect = g.getClipBounds();
@@ -180,7 +180,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     @Override
     public void paintComponent(Graphics g)
     {        
-        System.out.println("painted content panel");
+        //System.out.println("painted content panel");
         super.paintComponent(g);
     }
     /**
@@ -229,9 +229,6 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         if(eventsBlocked)
             return;
         Component component = this.contentPanel.getComponentAt(e.getPoint());
-        //System.out.println("component -> "+component);
-
-        //System.out.println(""+e.getSource());
         if(component == this.optionsPanel)
         {
             this.selectedOptionPanel = (OptionPanel) this.optionsPanel.getButtonAt(e.getPoint());

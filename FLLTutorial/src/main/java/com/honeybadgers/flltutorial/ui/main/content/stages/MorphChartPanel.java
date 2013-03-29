@@ -39,6 +39,7 @@ import javax.swing.border.EmptyBorder;
  * @author chingaman
  */
 public class MorphChartPanel extends StagePanel implements MouseListener{
+    private final HashMap panelForIndexHashes;
 
     
     protected enum BeaconType
@@ -49,6 +50,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     };
     protected PanelsScrollPane scrollPane;
     protected OptionPanel selectedPanel;
+    protected OptionPanel mainOptionPanel;
     /*used to look up the kind of panel that was clicked*/
     protected HashMap panelTypeHashes;
     protected HashMap indexesHashes;
@@ -67,6 +69,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker.getCorrectChild(0), 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
         this.panelTypeHashes = new HashMap();
+        this.panelForIndexHashes = new HashMap();
         this.indexesHashes = new HashMap();
         this.indexesChildrenHashes = new HashMap();
         this.listsOptionPanels = new ArrayList<>();
@@ -106,7 +109,8 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         c.ipady = 0;
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
-        this.add(new TextOptionPanel(this.problem), c);
+        this.mainOptionPanel = new TextOptionPanel(this.problem);
+        this.add(this.mainOptionPanel, c);
         
         //setup scroll pane
         this.scrollPane = new PanelsScrollPane(true);
@@ -129,6 +133,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                    this.panelTypeHashes.put(topBeacon, BeaconType.ParentPanel);
                 }
                 this.indexesHashes.put(leftMostOptionPanel, i);
+                this.panelForIndexHashes.put(i, leftMostOptionPanel);
                 //create a JPanel with one elements at the front, and then create empty
                 //option panels in a sub panel. All of the options panels in the subpanel
                 //will be equally sized
@@ -293,6 +298,20 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 {
                     dropOptionPanel.setState(OptionPanel.OptionState.CORRECT);
                 }
+                
+                if(parentOptionTracker.isFinished())
+                {
+                    OptionPanel parentPanel = (OptionPanel)this.panelForIndexHashes.get(selectedIndex);
+                    parentPanel.setState(OptionPanel.OptionState.FINISHED);
+                    parentPanel.repaint();
+                    if(parentOptionTracker.getParent().isFinished())
+                    {
+                        this.mainOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+                        this.mainOptionPanel.repaint();
+                    }
+                   
+                }
+                
                 this.revalidate();
                 return 0;
             }
