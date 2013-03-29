@@ -58,7 +58,25 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
         authorLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         membersList = new javax.swing.JList();
-        beaconPanel = new javax.swing.JPanel();
+        beaconPanel = new javax.swing.JPanel(){
+            @Override
+            protected void paintComponent(Graphics g)
+            {
+                super.paintComponent(g);
+                if(blocked)
+                {
+                    Rectangle rect = g.getClipBounds();
+
+                    AlphaComposite alpha = AlphaComposite.SrcOver.derive(0.65f);
+                    Graphics2D g2 = (Graphics2D)g;
+
+                    g2.setComposite(alpha);
+                    //later change to gradient
+                    g2.setColor(Color.WHITE);
+                    g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+                }
+            }
+        };
 
         layeredPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -182,23 +200,6 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
     private javax.swing.JPanel tutorialContentPanel;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        if(blocked)
-        {
-            Rectangle rect = g.getClipBounds();
-
-            AlphaComposite alpha = AlphaComposite.SrcOver.derive(0.65f);
-            Graphics2D g2 = (Graphics2D)g;
-
-            g2.setComposite(alpha);
-            //later change to gradient
-            g2.setColor(Color.WHITE);
-            g2.fillRect(rect.x, rect.y, rect.width, rect.height);
-        }
-    }
     
     @Override
     public void setBlocked(boolean block) {

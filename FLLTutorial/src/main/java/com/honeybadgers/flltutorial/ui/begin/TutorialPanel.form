@@ -128,6 +128,9 @@
             </Property>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    @Override&#xa;    protected void paintComponent(Graphics g)&#xa;    {&#xa;        super.paintComponent(g);&#xa;        if(blocked)&#xa;        {&#xa;            Rectangle rect = g.getClipBounds();&#xa;&#xa;            AlphaComposite alpha = AlphaComposite.SrcOver.derive(0.65f);&#xa;            Graphics2D g2 = (Graphics2D)g;&#xa;&#xa;            g2.setComposite(alpha);&#xa;            //later change to gradient&#xa;            g2.setColor(Color.WHITE);&#xa;            g2.fillRect(rect.x, rect.y, rect.width, rect.height);&#xa;        }&#xa;    }&#xa;}"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
               <JLayeredPaneConstraints x="0" y="0" width="-1" height="-1" layer="400" position="-1"/>

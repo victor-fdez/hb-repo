@@ -7,10 +7,16 @@ package com.honeybadgers.flltutorial.ui.main.content;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState;
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -21,7 +27,10 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.GroupLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 /**
  *
  * @author chingaman
@@ -61,6 +70,14 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
        
         //init content panel
         //this.contentPanel.setBackground(Color.red);
+        this.messageTimer = new Timer(2000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clickedBlocked = false;
+                System.out.println("timer fired");
+            }
+        });
+        this.messageTimer.setRepeats(false);
         this.stagePanel = stage;
         this.initComponents();
     }
@@ -69,15 +86,35 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
      */
     private void initComponents()
     {
-        //this.stagePanel = new TaskDiagramPanel();
-        //this.stagePanel = new ProblemDescriptionPanel();
-        //this.stagePanel = new MorphChartPanel();
         this.optionsPanel = stagePanel.getOptionsPanel();
         this.contentPanel = new JPanel();
-        this.glassPanel = new JPanel();
+        this.glassPanel = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g)
+            {        
+                System.out.println("painted glass panel");
+                if(eventsBlocked)
+                {
+                    Rectangle rect = g.getClipBounds();
+
+                    AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.85f);
+                    Graphics2D g2 = (Graphics2D)g;
+
+                    g2.setComposite(alpha);
+                    //later change to gradient
+                    g2.setColor(Color.BLACK);
+                    g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+                    super.paintComponent(g);
+
+                }
+                else
+                {
+                    super.paintComponent(g);
+                }
+            }
+        };
         /*set view configurations*/
         this.glassPanel.setOpaque(false);
-        this.glassPanel.setVisible(true);
         this.glassPanel.setLayout(null);
         
         this.setPreferredSize(preferedDimension);
@@ -141,10 +178,10 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         
     }
     @Override
-    public void paint(Graphics g)
+    public void paintComponent(Graphics g)
     {        
-        //System.out.println("paint called on jlayered pane");
-        super.paint(g);
+        System.out.println("painted content panel");
+        super.paintComponent(g);
     }
     /**
      * Override of default to string method for debugging purposes.
@@ -152,7 +189,6 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     @Override
     public String toString()
     {
-        
         return super.toString() + "\n"
                 + this.contentPanel + "\n"
                 + this.stagePanel + "\n"
@@ -175,19 +211,23 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     /*mouse listener methods*/
     @Override
     public void mouseClicked(MouseEvent e) {
-        Component component = this.contentPanel.getComponentAt(e.getPoint());
-        
-        //TODO: get rid of clicked method
-        /*if(component == this.stagePanel)
+        if(clickedBlocked)
         {
-            this.stagePanel.clicked(e.getPoint()); 
             return;
-        }*/
+        }
+        else
+        {
+            this.glassPanel.removeAll();
+            this.repaint();
+            this.eventsBlocked = false;
+        }
         this.redispatchEvent(e);
     }
     @Override
     public void mousePressed(MouseEvent e)
     {    
+        if(eventsBlocked)
+            return;
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         //System.out.println("component -> "+component);
 
@@ -214,15 +254,21 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 int halfWidth = this.draggingOptionPanel.getWidth()/2;
                 int halfHeight = this.draggingOptionPanel.getHeight()/2;
                 this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
-                this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
+                this.glassPanel.paintImmediately(this.draggingOptionPanel.getVisibleRect());
                 return;
             }
         }
         this.redispatchEvent(e);
 
     }
+ 
+    private Timer messageTimer;
+    private boolean clickedBlocked = false;
+    private boolean eventsBlocked = false;
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(eventsBlocked)
+            return;
         /*check if there is a selectoption to drop*/
         if(this.selectedOptionPanel != null && this.draggingOptionPanel != null)
         {
@@ -242,8 +288,12 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                         break;
                     case 1:
                         this.selectedOptionPanel.setState(OptionPanel.OptionState.INCORRECT);
-                        //tell the student here, why the answer was wrong
-                        
+                        //tell 
+                        this.eventsBlocked = true;
+                        this.clickedBlocked = true;
+                        this.showMessageInGlassPanel();
+                        this.repaint();
+                        this.messageTimer.start();
                         break;
                     case 2:
                         this.selectedOptionPanel.setState(this.draggingOptionPanel.getState());
@@ -266,18 +316,36 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.redispatchEvent(e);
         //System.out.println("mouse released");
     }
+    
+    
+    JScrollPane moralityScrollPane;
+    private void showMessageInGlassPanel()
+    {
+        JTextArea moralityMessage = new JTextArea(this.selectedOptionPanel.getOption().getReason(), 5, 40);
+        moralityMessage.setLineWrap(true);
+        moralityMessage.setEditable(false);
+        moralityMessage.setFocusable(false);
+        moralityMessage.setRequestFocusEnabled(false);
+        
+        moralityScrollPane = new JScrollPane(moralityMessage);
+        int halfWidth = this.glassPanel.getWidth()/2;
+        int halfHeight = this.glassPanel.getHeight()/2;
+        int width = 300;
+        int height = 100;
+        this.moralityScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.moralityScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        moralityScrollPane.setBounds(halfWidth-(width/2), halfHeight-(height/2), width, height);
+        
+        System.out.println("height: "+this.contentPanel.getSize()+"\n"+this.selectedOptionPanel.getOption().getReason());
+        this.glassPanel.add(this.moralityScrollPane);
+        this.glassPanel.invalidate();
+    }
     /* mouse movement listener*/
     @Override
     public void mouseEntered(MouseEvent e) {
         //useless
         //this.redispatchEvent(e);
     }
-    /*TODO:
-     * remember last component that was entered so that it may be exited
-     * 
-     * -scroll bar show highlight effect after they have been exited
-     * -other problems
-     */
     @Override
     public void mouseExited(MouseEvent e) {
         //useless
@@ -286,6 +354,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     @Override
     public void mouseDragged(MouseEvent e) 
     {
+        if(eventsBlocked)
+            return;
         if(this.selectedOptionPanel != null)
         {
             //System.out.println("dragging panel "+this.draggingOptionPanel+" children "+this.draggingOptionPanel.getComponents());
@@ -303,6 +373,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private Component lastMouseMovedComponent;
     @Override
     public void mouseMoved(MouseEvent e) {
+        if(eventsBlocked)
+            return;
         //System.out.println("moved ");
         Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
         
@@ -327,6 +399,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if(eventsBlocked)
+            return;
         this.redispatchEvent(e); 
     }
     /**
