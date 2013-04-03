@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tutorial name="Tutorial1">
+  <mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost. The robot must fit within a 12" x 12" x 12" box.</mission>
+  <project name="robert">
+    <team name="robert">
+      <member>robert</member>
+    </team>
+  </project>
+  <stage name="Problem Statement" time="0" video="">
+    <option correct="true" oid="0" position="-2" selected="-1">
+      <desc>Based on your robot's mission, identify the basic tasks that your robot should perform.</desc>
+      <reason/>
+      <img src=""/>
+      <option correct="true" oid="0.0" position="0" selected="-1">
+        <desc>Move to guidepost</desc>
+        <reason>The guidepost will tell you which side the ball is on. Getting to it is the first step to reading it!</reason>
+        <img src=""/>
+      </option>
+      <option correct="true" oid="0.1" position="1" selected="-1">
+        <desc>Read color on guidepost</desc>
+        <reason>Knowing which side the ball is on will allow you to control it quicker.</reason>
+        <img src=""/>
+      </option>
+      <option correct="true" oid="0.2" position="2" selected="-1">
+        <desc>Move to ball location</desc>
+        <reason>Controlling the ball is important for scoring points.</reason>
+        <img src=""/>
+      </option>
+      <option correct="true" oid="0.3" position="3" selected="-1">
+        <desc>Transport ball to goal</desc>
+        <reason>Bringing the ball to the goal is the main way to score points!</reason>
+        <img src=""/>
+      </option>
+    </option>
+  </stage>
+  <stage name="Limitations and Constraints" time="0" video="">
+    <option correct="true" oid="1" position="-2" selected="-1">
+      <desc>Select the limitations and constraints that apply to this project.</desc>
+      <reason/>
+      <img src=""/>
+      <option correct="true" oid="1.0" position="0" selected="-1">
+        <desc>Number of Motors</desc>
+        <reason>The problem statement limits the parts used to just those available in the standard kit, which means the use of only a few motors.</reason>
+        <img src=""/>
+        <option correct="false" oid="1.0.0" position="-3" selected="-1">
+          <desc>Lighting Conditions</desc>
+          <reason>Lighting conditions are good during gameplay, and will not vary.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.0.1" position="-1" selected="-1">
+          <desc>Variable Size Ball Holding device</desc>
+          <reason>The ball will be a constant size.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.0.2" position="-1" selected="-1">
+          <desc>2</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="1.0.3" position="0" selected="-1">
+          <desc>3</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.0.4" position="-1" selected="-1">
+          <desc>4</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.1" position="1" selected="-1">
+        <desc>Number of Sensors</desc>
+        <reason>The problem statement limits the parts used to just those available in the standard kit, which means you can only use sensors from it.</reason>
+        <img src=""/>
+        <option correct="true" oid="1.1.0" position="0" selected="-1">
+          <desc>Color Sensor</desc>
+          <reason>This can be used to read the guidepost to find the ball.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.1.1" position="-1" selected="-1">
+          <desc>Sonic Sensor</desc>
+          <reason>There is no real use for this sensor in this situation.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.1.2" position="-1" selected="-1">
+          <desc>Touch Sensor</desc>
+          <reason>While this could be used to find the ball, or for other reasons, it is not the best solution.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.1.3" position="-1" selected="-1">
+          <desc>3 sensor</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.1.4" position="-1" selected="-1">
+          <desc>4 sensor</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.2" position="2" selected="-1">
+        <desc>Robot Height</desc>
+        <reason>The robot must fit in the 12" x 12" x 12" box.</reason>
+        <img src=""/>
+        <option correct="false" oid="1.2.0" position="-3" selected="-1">
+          <desc>Must be under 6"</desc>
+          <reason>There is no specific requirement that limits the robot to this size.</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="1.2.1" position="0" selected="-1">
+          <desc>Must be under 12"</desc>
+          <reason>This is the maximum height the robot can be.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.2.2" position="-1" selected="-1">
+          <desc>Must be under 18"</desc>
+          <reason>This is bigger than the allowed size of a robot.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.2.3" position="-3" selected="-1">
+          <desc>No specific height limitation</desc>
+          <reason>Robots are required to fit in a 12" x 12" x 12" box.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.3" position="3" selected="-1">
+        <desc>Robot Width</desc>
+        <reason>The robot must fit in the 12" x 12" x 12" box.</reason>
+        <img src=""/>
+        <option correct="false" oid="1.3.0" position="-3" selected="-1">
+          <desc>Must be under 6"</desc>
+          <reason>A robot may be more or less than 6".</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="1.3.1" position="0" selected="-1">
+          <desc>Must be under 12"</desc>
+          <reason>The robot must fit within a 12" x 12" x 12" box.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.3.2" position="-1" selected="-1">
+          <desc>Must be under 18"</desc>
+          <reason>This is bigger than the allowed size of a robot.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.3.3" position="-1" selected="-1">
+          <desc>No specific width limitation</desc>
+          <reason>Robots are required to fit in a 12" x 12" x 12" box.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.4" position="4" selected="-1">
+        <desc>Robot Weight</desc>
+        <reason>Weight is an important factor in how a robot works.</reason>
+        <img src=""/>
+        <option correct="false" oid="1.4.0" position="-1" selected="-1">
+          <desc>1 pound</desc>
+          <reason>Weight is not a specified constraint.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.4.3" position="-1" selected="-1">
+          <desc>10 pounds</desc>
+          <reason>This probably a little on the heavy side for this type of robot.</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="1.4.4" position="0" selected="-1">
+          <desc>No specific weight limitation</desc>
+          <reason>No weight is specified in the problem description.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.5" position="5" selected="-1">
+        <desc>Conditions</desc>
+        <reason>Arena conditions are important to consider when designing a robot.</reason>
+        <img src=""/>
+        <option correct="true" oid="1.5.0" position="0" selected="-1">
+          <desc>Well lit</desc>
+          <reason>This problem will be done in a well lit arena.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.5.1" position="-1" selected="-1">
+          <desc>Dark</desc>
+          <reason>The arena will be well lit, not dark.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.5.2" position="-1" selected="-1">
+          <desc>Foggy</desc>
+          <reason>The arena will not be foggy.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.6" position="6" selected="-1">
+        <desc>Surface Conditions</desc>
+        <reason>Surface conditions are important to consider when designing a robot.</reason>
+        <img src=""/>
+        <option correct="true" oid="1.6.0" position="0" selected="-1">
+          <desc>Dry</desc>
+          <reason>The floor will be dry, so most types of moving will work well.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.6.1" position="-1" selected="-1">
+          <desc>Wet</desc>
+          <reason>The arena will not be wet.</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="1.6.2" position="1" selected="-1">
+          <desc>Firm</desc>
+          <reason>The arena is made of a solid material.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.6.3" position="-1" selected="-1">
+          <desc>Soft</desc>
+          <reason>The arena will not be soft, so robots will have an easy time of moving.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.6.4" position="-1" selected="-1">
+          <desc>Slanted</desc>
+          <reason>The arena will not be slanted, however if it was the robots would need to not slip.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.6.5" position="-1" selected="-1">
+          <desc>Uneven</desc>
+          <reason>This arena will be even, but a robot would need to be able to not get stuck if it were on uneven terrain.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="1.7" position="7" selected="-1">
+        <desc>Special Movement Requirements</desc>
+        <reason>Considering the way the robot will move is important to designing it to work properly.</reason>
+        <img src=""/>
+        <option correct="false" oid="1.7.0" position="-3" selected="-1">
+          <desc>Step</desc>
+          <reason>There are no steps in the arena, so designing a robot that can step is not required.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="1.7.2" position="-1" selected="-1">
+          <desc>Ramp</desc>
+          <reason>There are no ramps in the arena, so the robot does not need to be able go up or down one.</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="1.7.3" position="0" selected="-1">
+          <desc>None of the above</desc>
+          <reason>There are no special features of the arena.</reason>
+          <img src=""/>
+        </option>
+      </option>
+    </option>
+  </stage>
+  <stage name="Task Diagram" time="0" video="">
+    <option correct="true" oid="2.0" position="-1" selected="-1">
+      <desc>Robot Mission</desc>
+      <reason>Robots must be designed to best complete the mission.</reason>
+      <img src=""/>
+      <option correct="true" oid="2.0.0" position="-1" selected="-1">
+        <desc>Movement</desc>
+        <reason>The robot should be able to move effectively in the arena to quickly complete the mission objectives.</reason>
+        <img src=""/>
+        <option correct="true" oid="2.0.0.0" position="-1" selected="-1">
+          <desc>Turn Left/Right</desc>
+          <reason>Turning is required to get to the ball, and then to the goal area.</reason>
+          <img src=""/>
+        </option>
+        <option correct="true" oid="2.0.0.1" position="-1" selected="-1">
+          <desc>Move Forward</desc>
+          <reason>Moving is required.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="2.0.0.2" position="-1" selected="-1">
+          <desc>Move Backward</desc>
+          <reason>This is a nice feature, but with being able to move forward and turn, moving backward is not needed.</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="2.0.0.3" position="-1" selected="-1">
+          <desc>Move Sideways</desc>
+          <reason>Moving sideways is not needed for this mission.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="2.0.1" position="-1" selected="-1">
+        <desc>Sensing</desc>
+        <reason>Sensing will make completing this mission much easier.</reason>
+        <img src=""/>
+        <option correct="true" oid="2.0.1.0" position="-1" selected="-1">
+          <desc>Color Sensing</desc>
+          <reason>Sensing the position of the ball from the color of the guidepost will help you find the ball quickly.</reason>
+          <img src=""/>
+          <option correct="true" oid="2.0.1.0.0" position="-1" selected="-1">
+            <desc>Sense Red</desc>
+            <reason>This is one color on the guidepost that will indicate the position of the ball.</reason>
+            <img src=""/>
+          </option>
+          <option correct="true" oid="2.0.1.0.1" position="-1" selected="-1">
+            <desc>Sense Blue</desc>
+            <reason>This is one color on the guidepost that will indicate the position of the ball.</reason>
+            <img src=""/>
+          </option>
+          <option correct="false" oid="2.0.1.0.2" position="-1" selected="-1">
+            <desc>Sense Yellow</desc>
+            <reason>This is the color of the ball.</reason>
+            <img src=""/>
+          </option>
+          <option correct="false" oid="2.0.1.0.3" position="-1" selected="-1">
+            <desc>Sense Green</desc>
+            <reason>This color is not needed in this game.</reason>
+            <img src=""/>
+          </option>
+        </option>
+        <option correct="false" oid="2.0.1.1" position="-1" selected="-1">
+          <desc>Light Sensing</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="2.0.1.2" position="-1" selected="-1">
+          <desc>Radar Sensing</desc>
+          <reason>Why this option is right/wrong</reason>
+          <img src=""/>
+        </option>
+        <option correct="false" oid="2.0.1.3" position="-1" selected="-1">
+          <desc>Bump Sensing</desc>
+          <reason>This sensor could be useful, but is too unreliable at sensing objects that are moveable.</reason>
+          <img src=""/>
+        </option>
+      </option>
+      <option correct="true" oid="2.0.2" position="-1" selected="-1">
+        <desc>Transport Ball</desc>
+        <reason>This is the main way to score points in this game.</reason>
+        <img src=""/>
+        <option correct="true" oid="2.0.2.0" position="-1" selected="-1">
+          <desc>Pick Up Ball</desc>
+          <reason>This is not required, but could help very much in controlling the ball.</reason>
+          <img src=""/>
+          <option correct="true" oid="2.0.2.0.1" position="-1" selected="-1">
+            <desc>Grab Ball</desc>
+            <reason>Controlling the ball is a important for gaining points in this game.</reason>
+            <img src=""/>
+          </option>
+        </option>
+        <option correct="true" oid="2.0.2.2" position="-1" selected="-1">
+          <desc>Kick Ball</desc>
+          <reason>Moving the ball with full control is better, but having a second plan is always a good idea.</reason>
+          <img src=""/>
+        </option>
+      </option>
+    </option>
+  </stage>
+  <stage name="Morphological Chart" time="0" video="">
+    <option correct="true" oid="3" position="-2" selected="-1">
+      <desc>Create a morphological chart.</desc>
+      <reason/>
+      <img src=""/>
+      <option correct="true" oid="3.0" position="0" selected="-1">
+        <desc>Move</desc>
+        <reason/>
+        <img src=""/>
+        <option correct="true" oid="3.0.0" position="-1" selected="-1">
+          <desc>4 Wheels</desc>
+          <reason/>
+          <img src="media/motion-FourWheels.png"/>
+        </option>
+        <option correct="false" oid="3.0.1" position="-1" selected="-1">
+          <desc>Legs</desc>
+          <reason/>
+          <img src="media/motion-Legs.png"/>
+        </option>
+        <option correct="true" oid="3.0.2" position="-1" selected="-1">
+          <desc>Tank Treads</desc>
+          <reason/>
+          <img src="media/motion-TankTreads.png"/>
+        </option>
+        <option correct="true" oid="3.0.3" position="-1" selected="-1">
+          <desc>3 Wheels</desc>
+          <reason/>
+          <img src="media/motion-ThreeWheels.png"/>
+        </option>
+      </option>
+      <option correct="true" oid="3.1" position="1" selected="-1">
+        <desc>Carry</desc>
+        <reason/>
+        <img src=""/>
+        <option correct="true" oid="3.1.0" position="-1" selected="-1">
+          <desc>Bull Dozing</desc>
+          <reason/>
+          <img src="media/ballHolding-BullDozer.png"/>
+        </option>
+        <option correct="true" oid="3.1.1" position="-1" selected="-1">
+          <desc>Drop Arm</desc>
+          <reason/>
+          <img src="media/ballHolding-DropArm.png"/>
+        </option>
+        <option correct="false" oid="3.1.2" position="-1" selected="-1">
+          <desc>Hinged Claw</desc>
+          <reason/>
+          <img src="media/ballHolding-HingedClaw.png"/>
+        </option>
+        <option correct="true" oid="3.1.3" position="-1" selected="-1">
+          <desc>Ramp And Bin</desc>
+          <reason/>
+          <img src="media/ballHolding-RampAndBin.png"/>
+        </option>
+      </option>
+      <option correct="true" oid="3.2" position="2" selected="-1">
+        <desc>Detection</desc>
+        <reason/>
+        <img src=""/>
+        <option correct="true" oid="3.2.0" position="-1" selected="-1">
+          <desc>Color Sensor</desc>
+          <reason/>
+          <img src="media/ballDetection-ColorSensor.png"/>
+        </option>
+        <option correct="true" oid="3.2.1" position="-1" selected="-1">
+          <desc>Sonar Sensor</desc>
+          <reason/>
+          <img src="media/ballDetection-SonarSensor.png"/>
+        </option>
+        <option correct="false" oid="3.2.2" position="-1" selected="-1">
+          <desc>Touch Sensor</desc>
+          <reason/>
+          <img src="media/ballDetection-TouchSensor.png"/>
+        </option>
+      </option>
+    </option>
+  </stage>
+</tutorial>
