@@ -94,12 +94,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("opened clicked");
+                        ///System.out.println("opened clicked");
                         if(selectedTutorialBase == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(tutorialUI, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         
@@ -112,12 +111,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("start clicked");
+                        ///System.out.println("start clicked");
                         if(selectedTutorialBase == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(tutorialUI, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         
@@ -231,12 +229,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("opened clicked");
+                        ///System.out.println("opened clicked");
                         if(selectedTutorial == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(tutorialUI, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         
@@ -248,12 +245,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("start clicked");
+                        ///System.out.println("start clicked");
                         if(selectedTutorial == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(tutorialUI, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         currentTutorial = TutorialManager.getTutorialBaseProject(selectedTutorial);

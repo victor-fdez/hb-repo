@@ -39,7 +39,6 @@ public class App
                 ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
                 FLLTutorialUI topComp = new FLLTutorialUI(); 
                 topComp.showAllTutorials(tutorialBases);
-                topComp.setVisible(true);
             }
         });
     }
