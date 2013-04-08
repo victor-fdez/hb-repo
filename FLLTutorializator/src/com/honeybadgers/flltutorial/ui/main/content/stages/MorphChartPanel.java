@@ -19,7 +19,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -134,6 +133,10 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 }
                 this.indexesHashes.put(leftMostOptionPanel, i);
                 this.panelForIndexHashes.put(i, leftMostOptionPanel);
+                if(this.solutionTracker.getCorrectChild(i).isFinished())
+                {
+                    leftMostOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+                }
                 //create a JPanel with one elements at the front, and then create empty
                 //option panels in a sub panel. All of the options panels in the subpanel
                 //will be equally sized
@@ -171,7 +174,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                         {
                             childrenPanel.appendPanel(childPanel);
                         }
-                
+                        
                 this.scrollPane.appendPanel(rowPanel);
                 rowPanel.revalidate();
                 i++;

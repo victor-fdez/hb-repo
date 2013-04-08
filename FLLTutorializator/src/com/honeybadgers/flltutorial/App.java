@@ -32,14 +32,10 @@ public class App
             java.util.logging.Logger.getLogger(FLLTutorialUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() 
-            {
-                ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
-                FLLTutorialUI topComp = new FLLTutorialUI(); 
-                topComp.showAllTutorials(tutorialBases);
-            }
-        });
+
+        ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
+        FLLTutorialUI topComp = new FLLTutorialUI(); 
+        topComp.showAllTutorials(tutorialBases);
+
     }
 }

@@ -37,6 +37,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
     private JPanel[] depthPanels = new JPanel[11];
     private HashMap childPanelBeaconsHashes;
     private HashMap parentPanelBeaconsHashes;
+    private OptionTracker bottomMostSolutionTracker;
     /*the current depth of the leaves shown*/
     private int currentDepth;
     public TaskDiagramPanel(Option rootOption)
@@ -51,7 +52,8 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         
         //adding real options
         this.tutorialOption = rootOption;
-        this.solutionTracker = OptionTracker.generateOptionTrackerTree(this.tutorialOption);
+        this.bottomMostSolutionTracker = OptionTracker.generateOptionTrackerTree(this.tutorialOption);
+        this.solutionTracker = this.bottomMostSolutionTracker;
         
         for(int i = 0; i < this.depthPanelsHashes.length; i++)
         {
@@ -62,7 +64,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         this.initComponents();
         
         //setup option panel
-        List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker, 1);
+        List<OptionPanel> optionPanels = this.generateOptionPanels(this.bottomMostSolutionTracker, 1);
         this.optionsPanel = new OptionsSelectorPanel(optionPanels);
     }
     /**
@@ -151,7 +153,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         this.parentPanelBeaconsHashes.put(beacon, 0);
                
         //setup unoccupied option panels
-        this.addOptionPanels(this.currentDepth, this.solutionTracker);
+        this.addOptionPanels(this.currentDepth, this.bottomMostSolutionTracker);
     }
     @Override
     public OptionsPanel getOptionsPanel() {
@@ -191,7 +193,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         childPanel = OptionPanel.getOptionPanelFromBeacon(beacon);
         cIndex = (int)childIndex;
         dropOption = optionPanel.getOption();
-        optionTracker = this.solutionTracker;
+        optionTracker = this.bottomMostSolutionTracker;
         
         //check if it can be added and is correct, then set correspondingly
         boolean added = optionTracker.addOptionAt(cIndex, dropOption);
@@ -339,24 +341,24 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
             //add child as only panel at the current depth 
             this.addSingleOptionPanel(this.currentDepth, childPanel);
             
-            if(this.solutionTracker.isEmptyCorrectChildren())
+            if(this.bottomMostSolutionTracker.isEmptyCorrectChildren())
             {
                 return;
             }
             
             //setup tracking information
             this.currentDepth++;
-            this.solutionTracker = this.solutionTracker.getCorrectChild(cIndex);
+            this.bottomMostSolutionTracker = this.bottomMostSolutionTracker.getCorrectChild(cIndex);
             
             //add children panels if it has any
             childOptionsPanel = ((OptionsSelectorPanel)this.optionsPanel);
-            if(this.solutionTracker.isEmptyCorrectChildren())
+            if(this.bottomMostSolutionTracker.isEmptyCorrectChildren())
             {
                 childOptionsPanel.updateOptionPanels(null);
                 return;
             }
-            this.addOptionPanels(this.currentDepth, this.solutionTracker);
-            List<OptionPanel> childPanels = this.generateOptionPanels(this.solutionTracker, 1);
+            this.addOptionPanels(this.currentDepth, this.bottomMostSolutionTracker);
+            List<OptionPanel> childPanels = this.generateOptionPanels(this.bottomMostSolutionTracker, 1);
             childOptionsPanel.updateOptionPanels(childPanels); 
             return;
         }
@@ -381,14 +383,14 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
                 //setup parent current tracker point
                 if((depthIndex - 1) > pIndex)
                 {
-                    this.solutionTracker = this.solutionTracker.getParent();
+                    this.bottomMostSolutionTracker = this.bottomMostSolutionTracker.getParent();
                 }
             }
             this.currentDepth = pIndex + 1;
             
             //if current tracker does not have any empty correct children
             childOptionsPanel = (OptionsSelectorPanel)this.optionsPanel;
-            if(this.solutionTracker.isEmptyCorrectChildren())
+            if(this.bottomMostSolutionTracker.isEmptyCorrectChildren())
             {
                 System.out.println("TaskDiagram.mouseClicked : parent childs not added");
                 childOptionsPanel.updateOptionPanels(null);
@@ -396,10 +398,10 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
             }
             System.out.println("TaskDiagram.mouseClicked : parent childs added");
             //else add children and finish
-            this.addOptionPanels(this.currentDepth, this.solutionTracker);
+            this.addOptionPanels(this.currentDepth, this.bottomMostSolutionTracker);
             
             //change panels in options selector
-            List<OptionPanel> optionPanels = this.generateOptionPanels(this.solutionTracker, 1);
+            List<OptionPanel> optionPanels = this.generateOptionPanels(this.bottomMostSolutionTracker, 1);
             childOptionsPanel.updateOptionPanels(optionPanels);   
             return;
         }

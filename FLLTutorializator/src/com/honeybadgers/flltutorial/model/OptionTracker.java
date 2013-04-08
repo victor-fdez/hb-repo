@@ -264,6 +264,13 @@ public class OptionTracker {
     /**
      * Print a recursive depiction of the current tracker tree.
      */
+    //@Override
+    /*public String toString()
+    {
+        String returnString = "";
+        
+        return returnString;
+    }*/
     public void printTree()
     {
         this.printTreeRecursive(0);
@@ -285,7 +292,7 @@ public class OptionTracker {
             return;
         }
         System.out.println(tabs+"{");
-        System.out.println(tabs+"+correct choosen");
+        System.out.println(tabs+"+correct choosen "+this.finishedCorrect+"/"+this.correctOptionsList.size());
         for(OptionTracker correctOption : this.correctOptionsList)
         {
             if(correctOption == null)
@@ -294,7 +301,7 @@ public class OptionTracker {
             }
             correctOption.printTreeRecursive(level+1);
         }
-        System.out.println(tabs+"-incorrect choosen");
+        System.out.println(tabs+"-incorrect choosen "+this.finishedCorrect+"/"+this.incorrectOptionsList.size());
         for(OptionTracker incorrectOption : this.incorrectOptionsList)
         {
             if(incorrectOption == null)

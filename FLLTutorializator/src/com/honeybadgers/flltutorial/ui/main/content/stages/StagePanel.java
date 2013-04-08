@@ -168,4 +168,9 @@ abstract public class StagePanel extends JPanel
     {
         return this.solutionTracker.isFinished();
     }
+    
+    public void printTracker()
+    {
+        this.solutionTracker.printTree();
+    }
 }
