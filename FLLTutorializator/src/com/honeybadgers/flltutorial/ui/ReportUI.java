@@ -6,13 +6,11 @@ package com.honeybadgers.flltutorial.ui;
 
 import com.honeybadgers.flltutorial.model.Stage;
 import com.honeybadgers.flltutorial.model.Tutorial;
-import java.awt.Color;
+import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import java.util.List;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 
 /**
  *
@@ -25,36 +23,53 @@ public class ReportUI extends javax.swing.JFrame {
      * Creates new form ReportUI
      */
     public ReportUI(Tutorial tutorial) {
-        System.out.println("1");
         initComponents();
         //List<Stage> stages = tutorial.getStages();
-        System.out.println("2");
-        StyleContext sc = new StyleContext();
-        DefaultStyledDocument doc = new DefaultStyledDocument(sc);
-        mainTextPane.setStyledDocument(doc);
-        System.out.println("3");
+        fillProjectDetails(tutorial);
+        fillTable(tutorial);
         
-        // Create and add the style
-        final Style headingStyle = sc.addStyle("Heading", null);
-        headingStyle.addAttribute(StyleConstants.Foreground, Color.red);
-        headingStyle.addAttribute(StyleConstants.FontSize, new Integer(16));
-        headingStyle.addAttribute(StyleConstants.FontFamily, "serif");
-        headingStyle.addAttribute(StyleConstants.Bold, true);
-        String text = "Attributes, Styles and Style Contexts\n"
-            + "The simple PlainDocument class that you saw in the previous "
-            + "chapter is only capable of holding text. The more complex text ";
-        try{
-            doc.insertString(0, text, null); //throws BadLocationException
-            doc.setParagraphAttributes(0, 1, headingStyle, false);
-        } catch (BadLocationException e) {
-            //handle exception here
-        }  
-        this.setSize(400, 400);
         setVisible(true);
         System.out.println("4");
+    }
+    
+    private void fillProjectDetails(Tutorial tutorial){
+        teamNameJL.setText(tutorial.getTeamName());
+        projectNameJL.setText(tutorial.getProjectName());
+        List<String> teamMembers=tutorial.getMembers();
+        if(teamMembers.size()>0){
+            String teamMembersString=teamMembers.get(0);
+            for(int i=1;i<teamMembers.size();i++){
+                teamMembersString.concat(", "+teamMembers.get(i));
+            }
+            teamMembersJL.setText(teamMembersString);
+        }
+    }
+    
+    private void fillTable(Tutorial tutorial){
+        List<Stage> stages=tutorial.getStages();
+        for(int i=0;i<stages.size();i++){
+            table.setValueAt(stages.get(i).getName(), i, 0);
+            ImageIcon icon = createImageIcon(TutorialManager.generalMediaPath+"check_mark.png","check mark");
+            table.setValueAt(icon, i, 1);
+            table.setValueAt("0/0", i, 2);
+            table.setValueAt("30 sec.", i, 3);
+            JButton viewStageButton = new JButton("View Page");
+            table.setValueAt(viewStageButton, i, 4);
+            viewStageButtons.add(viewStageButton);
+        }
         
     }
     
+    /** Returns an ImageIcon, or null if the path was invalid. */
+    protected ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
     
 
     /**
@@ -67,10 +82,17 @@ public class ReportUI extends javax.swing.JFrame {
     private void initComponents() {
 
         printButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        mainTextPane = new javax.swing.JTextPane();
         closeButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
+        projectViewButton = new javax.swing.JButton();
+        projectNameTitleJL = new javax.swing.JLabel();
+        teamNameTitleJL = new javax.swing.JLabel();
+        teamMembersTitleJL = new javax.swing.JLabel();
+        teamMembersJL = new javax.swing.JLabel();
+        projectNameJL = new javax.swing.JLabel();
+        teamNameJL = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,9 +102,6 @@ public class ReportUI extends javax.swing.JFrame {
                 printButtonActionPerformed(evt);
             }
         });
-
-        mainTextPane.setEditable(false);
-        jScrollPane1.setViewportView(mainTextPane);
 
         closeButton.setText("Close");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +113,53 @@ public class ReportUI extends javax.swing.JFrame {
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         titleLabel.setText("Project Report");
 
+        projectViewButton.setText("Project View");
+
+        projectNameTitleJL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        projectNameTitleJL.setText("Project Name:");
+
+        teamNameTitleJL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        teamNameTitleJL.setText("Team Name:");
+
+        teamMembersTitleJL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        teamMembersTitleJL.setText("Team Members:");
+
+        teamMembersJL.setText("jLabel5");
+
+        projectNameJL.setText("jLabel6");
+
+        teamNameJL.setText("jLabel7");
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Stage", "Complete?", "Errors", "Time", "View Page"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(table);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,13 +167,33 @@ public class ReportUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(titleLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(projectViewButton)
+                        .addGap(18, 18, 18)
                         .addComponent(printButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(closeButton)))
+                        .addComponent(closeButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(projectNameTitleJL)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(projectNameJL))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(teamNameTitleJL)
+                                            .addComponent(teamMembersTitleJL))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(teamMembersJL)
+                                            .addComponent(teamNameJL)))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 74, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -117,11 +203,24 @@ public class ReportUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(printButton)
-                        .addComponent(closeButton))
+                        .addComponent(closeButton)
+                        .addComponent(projectViewButton))
                     .addComponent(titleLabel))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(projectNameTitleJL)
+                    .addComponent(projectNameJL))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamNameTitleJL)
+                    .addComponent(teamNameJL, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamMembersTitleJL)
+                    .addComponent(teamMembersJL))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(653, 653, 653))
         );
 
         pack();
@@ -138,18 +237,19 @@ public class ReportUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane mainTextPane;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton printButton;
+    private javax.swing.JLabel projectNameJL;
+    private javax.swing.JLabel projectNameTitleJL;
+    private javax.swing.JButton projectViewButton;
+    private javax.swing.JTable table;
+    private javax.swing.JLabel teamMembersJL;
+    private javax.swing.JLabel teamMembersTitleJL;
+    private javax.swing.JLabel teamNameJL;
+    private javax.swing.JLabel teamNameTitleJL;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-    
 
-    public static void main( String[] args ){
-        System.out.println("1");
-        
-        ReportUI r = new ReportUI(null);
-        //r.setVisible(true);
-    }
+    private List<javax.swing.JButton> viewStageButtons;
     
 }
