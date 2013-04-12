@@ -21,20 +21,18 @@ import javax.swing.text.StyleContext;
 public class ReportUI extends javax.swing.JFrame {
 
     
-    public static void main(String[] args){
-        ReportUI r = new ReportUI(null);
-    }
-    
     /**
      * Creates new form ReportUI
      */
     public ReportUI(Tutorial tutorial) {
+        System.out.println("1");
         initComponents();
         //List<Stage> stages = tutorial.getStages();
-        
+        System.out.println("2");
         StyleContext sc = new StyleContext();
         DefaultStyledDocument doc = new DefaultStyledDocument(sc);
         mainTextPane.setStyledDocument(doc);
+        System.out.println("3");
         
         // Create and add the style
         final Style headingStyle = sc.addStyle("Heading", null);
@@ -51,6 +49,10 @@ public class ReportUI extends javax.swing.JFrame {
         } catch (BadLocationException e) {
             //handle exception here
         }  
+        this.setSize(400, 400);
+        setVisible(true);
+        System.out.println("4");
+        
     }
     
     
@@ -141,4 +143,13 @@ public class ReportUI extends javax.swing.JFrame {
     private javax.swing.JButton printButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+
+    public static void main( String[] args ){
+        System.out.println("1");
+        
+        ReportUI r = new ReportUI(null);
+        //r.setVisible(true);
+    }
+    
 }

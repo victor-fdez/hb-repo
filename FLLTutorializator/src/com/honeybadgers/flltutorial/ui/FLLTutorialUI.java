@@ -357,6 +357,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("FLLTutorialUI.showTutorial : create project report");
+                        ReportUI reportUI = new ReportUI(currentTutorial);
                     }
                 });
                 fileMenu.add(createReportMI);

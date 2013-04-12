@@ -19,7 +19,7 @@ import java.util.List;
     private String fileName;
     private List<String> members;
     private String mission;
-    List<Stage> stages;
+    private List<Stage> stages;
     
     public Tutorial(String name, String mission, List<Stage> stages, String projectName, String teamName, List<String> members)
     {
@@ -87,6 +87,7 @@ import java.util.List;
     
     public int equals(Tutorial anotherTutorial)
     {
+        //***do something here, do we actually need this method?
        return 0; 
     }
 }
