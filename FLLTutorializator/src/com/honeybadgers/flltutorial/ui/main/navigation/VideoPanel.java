@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SliderBuilder;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -146,6 +147,7 @@ public class VideoPanel extends JPanel {
         this.mp = new MediaPlayer(m);
         this.mp.setVolume(1.0f);
         
+        
         MediaView mediaView = MediaViewBuilder.create()
                 .mediaPlayer(this.mp)
                 .preserveRatio(true)
@@ -164,13 +166,6 @@ public class VideoPanel extends JPanel {
             public void run() {
                 System.err.println("VideoPanel.createScene:mp.setOnError: error in media player");
             } 
-        });
-        
-        this.mp.setOnReady(new Runnable(){
-            @Override
-            public void run() {
-                mp.play();
-            }    
         });
         
         //setup play and pause effect
@@ -203,37 +198,99 @@ public class VideoPanel extends JPanel {
                         }).duration(Duration.millis(500.0f))
                         .build();
         
+        //setup time slider properties
+        final Slider timeSlider = SliderBuilder.create()
+                .min(0)
+                .max(100)
+                .value(0)
+                .showTickLabels(false)
+                .showTickMarks(false)
+                .build();
+        
+        final SimpleBooleanProperty isChangingSlider = new SimpleBooleanProperty(false);
+        timeSlider.setOnMousePressed(new EventHandler<MouseEvent>(){  
+            @Override
+            public void handle(MouseEvent t) {
+                System.out.println("mouse pressed");
+                isChangingSlider.setValue(true);
+            }
+        });
+        
+        timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(isChangingSlider.getValue())
+                {
+                    long dur = newValue.intValue()*1000;
+                    mp.seek(new Duration(dur));
+                }
+            }
+        });
+        
+        timeSlider.setOnMouseReleased(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent t) {
+                System.out.println("mouse released");
+                double dur = timeSlider.getValue() * 1000;
+                mp.seek(new Duration(dur));
+                isChangingSlider.setValue(false);
+            }
+        });
+        
+        this.mp.setOnReady(new Runnable(){  
+            @Override
+            public void run() {
+      
+                //start playing video
+                timeSlider.setMax(mp.getTotalDuration().toSeconds());
+                mp.play();
+            }
+        });
+        
+        this.mp.currentTimeProperty().addListener(new ChangeListener<Duration>(){ 
+            @Override
+            public void changed(ObservableValue<? extends Duration> ov, Duration oldValue, Duration newValue) {
+                if(!isChangingSlider.getValue())
+                {
+                    Duration currentDuration = newValue;
+                    timeSlider.setValue(currentDuration.toSeconds());
+                }
+            }
+        });
+        
         EventHandler<MouseEvent> playPauseEventH = new EventHandler<MouseEvent>(){ 
             @Override
             public void handle(MouseEvent t) {
-                System.out.println("Clicked media view");
-                if(isPlayMode.getValue())
+                if(!isChangingSlider.getValue())
                 {
-                    isPlayMode.setValue(false);
-                    sT.stop();
-                    stackPane.getChildren().remove(playPath);
-                    
-                    //setup pause animation for next click
-                    stackPane.getChildren().add(pauseNode);
-                    sT.setNode(pauseNode);
-                    sT.play();
-                    
-                    //pause the media
-                    mp.pause();
-                }
-                else
-                {
-                    isPlayMode.setValue(true);
-                    sT.stop();
-                    stackPane.getChildren().remove(pauseNode);
-                    
-                    //play animation for next click
-                    stackPane.getChildren().add(playPath);
-                    sT.setNode(playPath);
-                    sT.play();
-                    
-                    //play the media
-                    mp.play();
+                    if(isPlayMode.getValue())
+                    {
+                        isPlayMode.setValue(false);
+                        sT.stop();
+                        stackPane.getChildren().remove(playPath);
+
+                        //setup pause animation for next click
+                        stackPane.getChildren().add(pauseNode);
+                        sT.setNode(pauseNode);
+                        sT.play();
+
+                        //pause the media
+                        mp.pause();
+                    }
+                    else
+                    {
+                        isPlayMode.setValue(true);
+                        sT.stop();
+                        stackPane.getChildren().remove(pauseNode);
+
+                        //play animation for next click
+                        stackPane.getChildren().add(playPath);
+                        sT.setNode(playPath);
+                        sT.play();
+
+                        //play the media
+                        mp.play();
+                    }
                 }
             }
         };
@@ -243,46 +300,7 @@ public class VideoPanel extends JPanel {
         pauseNode.setOnMouseClicked(playPauseEventH);
         mediaView.setOnMouseClicked(playPauseEventH);
         
-        final Rectangle rect = RectangleBuilder.create()
-                        .opacity(0.6f)
-                        .fill(Color.BLACK)
-                        .build();
-        rect.setOnMouseClicked(playPauseEventH);
-        rect.widthProperty().bind(stackPane.widthProperty());
-        rect.heightProperty().bind(stackPane.heightProperty());
-        
-        final FadeTransition fT = FadeTransitionBuilder.create()
-                        .node(rect)
-                        .duration(Duration.millis(500))
-                        .fromValue(0.5f)
-                        .toValue(0.0f)
-                        .onFinished(new EventHandler<ActionEvent>(){ 
-                            @Override
-                            public void handle(ActionEvent t) {
-                                System.out.println("Hello world");
-                                stackPane.getChildren().remove(rect);
-                            }
-                        })
-                        .cycleCount(1)
-                        .autoReverse(false)
-                        .build();
-                        
-        
-        //setup animation when mouse enters media player
-        this.scene.setOnMouseEntered(new EventHandler<MouseEvent>(){  
-            @Override
-            public void handle(MouseEvent t) {
-                //create 
-                if(!stackPane.getChildren().contains(rect))
-                {
-                    System.out.println("Hello world entered");
-                    stackPane.getChildren().add(rect);
-                    fT.play();
-                }
-            }
-        });
-        
-        AnchorPane mediaControlG = new AnchorPane();
+        final AnchorPane mediaControlG = new AnchorPane();
         mediaControlG.setOnMouseClicked(playPauseEventH);
         stackPane.getChildren().add(mediaControlG);
 
@@ -314,38 +332,71 @@ public class VideoPanel extends JPanel {
                 .width(mcWidth)
                 .build();
           
+        //setup the media control
         mediaControl.xProperty().bind(this.scene.widthProperty().divide(2.0f).subtract(mcWidth/2));
         mediaControl.yProperty().bind(this.scene.heightProperty().subtract(mcHeight+10));
-        mediaControlG.getChildren().add(mediaControl);
         
-        //setup time slider
-        final Slider timeSlider = SliderBuilder.create()
-                .min(0)
-                .max(100)
-                .value(1)
-                .showTickLabels(false)
-                .showTickMarks(false)
-                .build();
+        
+        //setup timer in the ractangle
         timeSlider.translateYProperty().bind(mediaControl.yProperty().add((mcHeight/2)-10.0f));
         timeSlider.translateXProperty().bind(mediaControl.xProperty().add(10));
-        mediaControlG.getChildren().add(timeSlider);
         
-        timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        
+        //setup entered and exited actions for media player
+        final Rectangle rect = RectangleBuilder.create()
+                        .opacity(0.6f)
+                        .fill(Color.BLACK)
+                        .build();
+        rect.setOnMouseClicked(playPauseEventH);
+        rect.widthProperty().bind(stackPane.widthProperty());
+        rect.heightProperty().bind(stackPane.heightProperty());
+        
+        final FadeTransition fT = FadeTransitionBuilder.create()
+                        .node(rect)
+                        .duration(Duration.millis(500))
+                        .fromValue(0.2f)
+                        .toValue(0.0f)
+                        .onFinished(new EventHandler<ActionEvent>(){ 
+                            @Override
+                            public void handle(ActionEvent t) {
+                                stackPane.getChildren().remove(rect);
+                            }
+                        })
+                        .cycleCount(1)
+                        .autoReverse(false)
+                        .build();
+                        
+        
+        //setup animation when mouse enters media player
+        this.scene.setOnMouseEntered(new EventHandler<MouseEvent>(){  
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                long dur = newValue.intValue() * 1000;
-                mp.seek(new Duration(dur));
+            public void handle(MouseEvent t) {
+                //show media control
+                mediaControlG.getChildren().add(mediaControl);
+                mediaControlG.getChildren().add(timeSlider); 
+                if(!stackPane.getChildren().contains(rect))
+                {
+                    stackPane.getChildren().add(rect);
+                    fT.play();
+                }
             }
         });
         
-        this.mp.setOnPlaying(new Runnable(){  
+        this.scene.setOnMouseExited(new EventHandler<MouseEvent>(){  
             @Override
-            public void run() {
-                
+            public void handle(MouseEvent t) {
+                //hide media control
+                mediaControlG.getChildren().remove(timeSlider); 
+                mediaControlG.getChildren().remove(mediaControl);
+                if(!stackPane.getChildren().contains(rect))
+                {
+                    stackPane.getChildren().add(rect);
+                    fT.play();
+                }
             }
         });
         
-        
+        //this.mp.set
     }
     
     private Path createPlayPath()

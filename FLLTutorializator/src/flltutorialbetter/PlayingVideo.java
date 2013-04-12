@@ -1,4 +1,4 @@
-package javafx2introbyexample.chapter3.recipe3_02;
+    package javafx2introbyexample.chapter3.recipe3_02;
 
 import java.io.File;
 import java.net.URI;
