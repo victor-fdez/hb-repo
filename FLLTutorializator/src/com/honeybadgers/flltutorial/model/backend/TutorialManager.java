@@ -41,6 +41,10 @@ public class TutorialManager {
         
         File tutorialsParentDirectory = new File(TutorialManager.projectsFolderPath+tutorialBase.getTitle());
         File[] tutorialProjectFiles = tutorialsParentDirectory.listFiles();
+        
+        if(tutorialProjectFiles == null)
+            return projectBases;
+        
         for(File projectFile : tutorialProjectFiles){
             if(projectFile.isFile()){
                 if(!projectFile.isHidden())

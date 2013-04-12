@@ -211,6 +211,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     /*mouse listener methods*/
     @Override
     public void mouseClicked(MouseEvent e) {
+        //System.out.println("is EDT in clicked"+SwingUtilities.isEventDispatchThread());
         if(clickedBlocked)
         {
             return;
@@ -226,8 +227,17 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     @Override
     public void mousePressed(MouseEvent e)
     {    
+        //System.out.println("is EDT in pressed"+SwingUtilities.isEventDispatchThread());
         if(eventsBlocked)
             return;
+        if(this.selectedOptionPanel != null && this.draggingOptionPanel != null)
+        {
+            //this may happen if the dropped methods is not called
+            this.selectedOptionPanel.setState(this.draggingOptionState);
+            this.selectedOptionPanel = null;
+            this.draggingOptionPanel = null;
+            this.draggingOptionState = null;
+        }
         Component component = this.contentPanel.getComponentAt(e.getPoint());
         if(component == this.optionsPanel)
         {
@@ -238,6 +248,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 this.draggingOptionPanel.setBounds(this.selectedOptionPanel.getBounds());
                 //this.draggingOptionPanel.setState(this.selectedOptionPanel.getState());
                 this.draggingOptionState = this.selectedOptionPanel.getState();
+                this.draggingOptionPanel.setState(draggingOptionState);
                 this.draggingOptionPanel.setState(OptionState.TRANSPARENT);
                 //may need to repaint the dragging option panel
                 
@@ -264,6 +275,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private boolean eventsBlocked = false;
     @Override
     public void mouseReleased(MouseEvent e) {
+        //System.out.println("is EDT in released"+SwingUtilities.isEventDispatchThread());
         if(eventsBlocked)
             return;
         /*check if there is a selectoption to drop*/
@@ -283,6 +295,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                     case 0:
                         if(this.stagePanel.isFinished())
                         {
+                            //this.stagePanel.printTracker();
                             this.receiver.receivePanel(null, null);
                         }
                         this.selectedOptionPanel.setState(OptionPanel.OptionState.CORRECT);
@@ -308,7 +321,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             }
             else
             {
-                this.selectedOptionPanel.setState(this.draggingOptionPanel.getState());
+                this.selectedOptionPanel.setState(this.draggingOptionState);
+                this.selectedOptionPanel.repaint();
             }
             this.draggingOptionPanel = null;
             this.selectedOptionPanel = null;
@@ -338,7 +352,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.moralityScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         moralityScrollPane.setBounds(halfWidth-(width/2), halfHeight-(height/2), width, height);
         
-        System.out.println("height: "+this.contentPanel.getSize()+"\n"+this.selectedOptionPanel.getOption().getReason());
+        //System.out.println("height: "+this.contentPanel.getSize()+"\n"+this.selectedOptionPanel.getOption().getReason());
         this.glassPanel.add(this.moralityScrollPane);
         this.glassPanel.invalidate();
     }

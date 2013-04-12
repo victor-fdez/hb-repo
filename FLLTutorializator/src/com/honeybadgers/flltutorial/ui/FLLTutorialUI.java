@@ -32,6 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
@@ -56,13 +58,20 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private FLLTutorialUI tutorialUI;
     private TutorialBase selectedTutorialBase;
     private Tutorial selectedTutorial;
+    private WindowFocusListener windowListener;
+    private JFrame extraFrame;
     /**
      * Creates new form BeginTopComponent
      */
     public FLLTutorialUI() {
         super();
         this.tutorialUI = this;
+        this.windowListener = new WindowFocusListener(this);
         this.selectedTutorialBase = null;
+        this.selectedTutorial = null;
+        this.extraFrame = null;
+        addWindowListener(windowListener);
+        this.setVisible(false);
     }
     //this variable is used change blurry graphics on a previously panel, that was
     //non blurry.
@@ -80,7 +89,8 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Container contentPane = getContentPane();
+                extraFrame = new JFrame();
+                Container contentPane = extraFrame.getContentPane();
                 contentPane.removeAll();
                 
                 previousSelectedTutorialPanel = null;
@@ -94,12 +104,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("opened clicked");
+                        ///System.out.println("opened clicked");
                         if(selectedTutorialBase == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(extraFrame, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         
@@ -112,12 +121,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("start clicked");
+                        ///System.out.println("start clicked");
                         if(selectedTutorialBase == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(extraFrame, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         
@@ -153,10 +161,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 contentPane.setLayout(new GridLayout(1,1));
                 contentPane.add(allTutorialsPanel);
         
-                pack();
-                setInCenterOfScreen();
-                setVisible(true);
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                extraFrame.pack();
+                setInCenterOfScreen(extraFrame);
+                extraFrame.setVisible(true);
+                extraFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         });
     }
@@ -201,7 +209,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 contentPane.add(detailedProjectPanel);
         
                 pack();
-                setInCenterOfScreen();
+                setInCenterOfScreen(tutorialUI);
                 setVisible(true);
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
@@ -218,7 +226,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Container contentPane = getContentPane();
+                Container contentPane = extraFrame.getContentPane();
                 contentPane.removeAll();
                 
                 selectedTutorial = null;
@@ -231,16 +239,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("opened clicked");
-                        if(selectedTutorial == null)
-                        {
-                            //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        
+                        ///System.out.println("opened clicked");
                         showAllTutorials(TutorialManager.getAllTutorialBases());
+                        extraFrame.dispose();
+                        //extraFrame.dispatchEvent(new WindowEvent(extraFrame, WindowEvent.WIN));
+                        extraFrame = null;
                     }
                 });
                 
@@ -248,12 +251,11 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.getOpenButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("start clicked");
+                        ///System.out.println("start clicked");
                         if(selectedTutorial == null)
                         {
                             //display dialog, telling user he has not selected a tutorial
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(null, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(extraFrame, "select a tutorial before continuing", "no tutorial selected", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         currentTutorial = TutorialManager.getTutorialBaseProject(selectedTutorial);
@@ -290,10 +292,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 contentPane.setLayout(new GridLayout(1,1));
                 contentPane.add(allTutorialsPanel);
         
-                pack();
-                setInCenterOfScreen();
-                setVisible(true);
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                extraFrame.pack();
+                setInCenterOfScreen(extraFrame);
+                extraFrame.setVisible(true);
+                extraFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         });
     }
@@ -313,6 +315,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
+                tutorialUI.setVisible(false);
                 //swap out allTutorialsPanel and start tutorial
                 tutorialUI.getContentPane().removeAll();
                
@@ -327,6 +330,8 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("FLLTutorialUI.showTutorial : open project");
+                        ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
+                        showAllTutorials(tutorialBases);
                     }
                 });
                 fileMenu.add(openMI);
@@ -403,7 +408,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 getContentPane().add(splitPane);
                 pack();   
-                setInCenterOfScreen();
+                setInCenterOfScreen(tutorialUI);
                 setVisible(true);
             }
         });
@@ -433,10 +438,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         this.contentPane.updateStagePanel((StagePanel)panelSent);
     }
     
-    public void setInCenterOfScreen()
+    public void setInCenterOfScreen(JFrame frame)
     {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     }
     
     /*For testing purposes*/
@@ -446,6 +451,13 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         FLLTutorialUI.currentTutorial = currentTutorial;
     }
 
+    public void gotFocus()
+    {
+        if(this.extraFrame == null)
+            return;
+        this.extraFrame.dispose();
+        this.extraFrame = null;
+    }
     
     public static void main(String[] args)
     {
@@ -483,6 +495,45 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         });
     }
     
+    private class WindowFocusListener implements WindowListener
+    {
+        private FLLTutorialUI fllTutorial;
+        public WindowFocusListener(FLLTutorialUI fllTutorial)
+        {
+            this.fllTutorial = fllTutorial;
+        }
+        @Override
+        public void windowOpened(WindowEvent e) {
+            System.out.println("opened");
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            ///should later save content here
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+            gotFocus();
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+            System.out.println("not active");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -510,4 +561,5 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
 }
