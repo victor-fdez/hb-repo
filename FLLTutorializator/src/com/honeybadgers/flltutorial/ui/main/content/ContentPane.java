@@ -37,8 +37,8 @@ import javax.swing.Timer;
  */
 public class ContentPane extends JLayeredPane implements ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener
 {
-    private Dimension preferedDimension = new Dimension(750, 500);
-    private Dimension minDimension = new Dimension(750, 400);
+    private Dimension preferedDimension = new Dimension(550, 500);
+    private Dimension minDimension = new Dimension(550, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
     private OptionState draggingOptionState;
     /*
