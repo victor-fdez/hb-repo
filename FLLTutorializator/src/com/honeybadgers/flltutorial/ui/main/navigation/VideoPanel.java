@@ -109,7 +109,7 @@ public class VideoPanel extends JPanel {
         this.add(fxContainer, BorderLayout.CENTER);
         
         this.setBorder(new EmptyBorder(0,0,0,0));
-        
+        Platform.setImplicitExit(false);
         //create java fx scene
         Platform.runLater(new Runnable() {
             @Override

@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main.navigation;
 
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
+import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import com.honeybadgers.flltutorial.ui.main.content.PanelReceiver;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
@@ -85,24 +86,17 @@ public class NavigationPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         //TODO: setup video panel
-        this.videoPanel = new VideoPanel(VideoPanel.MEDIA_URL);/*new JPanel(){
-         @Override
-         public void paintComponent(Graphics g)
-         {
-         super.paintComponent(g);
-         Graphics2D g2 = (Graphics2D)g;
-         g2.drawImage(image, 0, 0, videoPanel.getWidth(), videoPanel.getHeight(), null);
-         }
-         };*/
-
-        //this.videoPanel.setBackground(Color.BLACK);
-
+        this.videoPanel = new JPanel();
+        this.videoPanel.setBackground(Color.BLACK);
+        this.videoPanel.setBorder(null);
+        this.videoPanel.setLayout(new GridLayout(1,1));
 
         this.add(this.videoPanel);
         this.stagesMap = new HashMap();
         this.stageNumber = new HashMap();
 
         this.add(Box.createVerticalStrut(5));
+        
         //initiallized fitted scroll pane for stage panels
         this.scrollPane = new PanelsScrollPane(true);
         this.add(this.scrollPane);
@@ -147,6 +141,10 @@ public class NavigationPanel extends JPanel {
                     option.setType(NavigationOptionType.Finished);
                 } else if (i == this.lastUnlocked) {
                     option.setType(NavigationOptionType.StartedButNotFinished);
+                    StagePanel stage = (StagePanel)this.stagesMap.get(option);
+                    this.reciever.receivePanel(stage, null);
+                    videoPanel.removeAll();
+                    this.setVideoPanel(i);
                 } else {
                     option.setType(NavigationOptionType.Locked);
                 }
@@ -185,6 +183,15 @@ public class NavigationPanel extends JPanel {
         this.setMaximumSize(maxDimension);
     }
 
+    private void setVideoPanel(int i)
+    {
+        VideoPanel videoPlayer = new VideoPanel((String)FLLTutorialUI.videoFiles.get(i));
+        this.videoPanel.removeAll();
+        this.videoPanel.add(videoPlayer);
+        //get video contrast ratio
+        
+        this.videoPanel.invalidate();
+    }
     public void updateStages() {
         if (test == false) {
             if (this.stages.get(this.lastUnlocked).isFinished()) {
@@ -251,9 +258,13 @@ public class NavigationPanel extends JPanel {
                     if (test == false) {
                         if (optionIndex <= lastUnlocked) {
                             reciever.receivePanel(stagePanel, null);
+                            videoPanel.removeAll();
+                            setVideoPanel(optionIndex);
                         }
                     } else {
                         reciever.receivePanel(stagePanel, null);
+                        videoPanel.removeAll();
+                        setVideoPanel(optionIndex);
                     }
                 }
 

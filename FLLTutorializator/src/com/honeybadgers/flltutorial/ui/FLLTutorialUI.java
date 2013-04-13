@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -305,10 +306,15 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
-    private static String[] videos = {  TutorialManager.generalVideoPath+"video0.flv", 
-                                        TutorialManager.generalVideoPath+"video1.flv",
-                                        TutorialManager.generalVideoPath+"video2.flv",
-                                        TutorialManager.generalVideoPath+"video3.flv"};
+    public static HashMap videoFiles;
+    static
+    {
+        videoFiles = new HashMap();
+        videoFiles.put(0, TutorialManager.generalVideoPath+"video0.flv");
+        videoFiles.put(1, TutorialManager.generalVideoPath+"video1.flv");
+        videoFiles.put(2, TutorialManager.generalVideoPath+"video2.flv");
+        videoFiles.put(3, TutorialManager.generalVideoPath+"video3.flv");
+    }
     /**
      * Start a given project for a specific tutorial, at which was the last stage the
      * project was in.
@@ -330,7 +336,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 
                 
                 JMenuItem openMI = new JMenuItem("Open Project");
-               openMI.addActionListener(new ActionListener(){
+                openMI.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("FLLTutorialUI.showTutorial : open project");
