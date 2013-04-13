@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SliderBuilder;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -106,21 +105,7 @@ public class VideoPanel extends JPanel {
         fxContainer = new JFXPanel();
         fxContainer.setMinimumSize(new Dimension(JFXPANEL_WIDTH_INT, JFXPANEL_HEIGHT_INT));
         fxContainer.setPreferredSize(new Dimension(JFXPANEL_WIDTH_INT, JFXPANEL_HEIGHT_INT));
-        /*fxContainer.addComponentListener(new ComponentAdapter(){
-            @Override
-            public void componentResized(ComponentEvent cEv)
-            {
-                Platform.runLater(new Runnable(){
-                    @Override
-                    public void run() {
-                        if(scene != null){
-                            System.out.println("w "+scene.getWidth()+" h "+scene.getHeight());
-                        }
-                    }
-                });
-            }
-        });*/
-
+        
         this.add(fxContainer, BorderLayout.CENTER);
         
         this.setBorder(new EmptyBorder(0,0,0,0));
@@ -133,6 +118,7 @@ public class VideoPanel extends JPanel {
             }
         });
     }
+    
     
     private void createScene() {        
         //setup root of media player
@@ -154,7 +140,7 @@ public class VideoPanel extends JPanel {
                 .opacity(1.0f)
                 .smooth(true)
                 .build();
-        
+       
         stackPane.getChildren().add(mediaView);
         
         mediaView.fitHeightProperty().bind(stackPane.heightProperty());

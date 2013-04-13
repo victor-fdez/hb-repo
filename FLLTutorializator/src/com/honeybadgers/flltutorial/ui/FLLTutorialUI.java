@@ -305,6 +305,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
+    private static String[] videos = {  TutorialManager.generalVideoPath+"video0.flv", 
+                                        TutorialManager.generalVideoPath+"video1.flv",
+                                        TutorialManager.generalVideoPath+"video2.flv",
+                                        TutorialManager.generalVideoPath+"video3.flv"};
     /**
      * Start a given project for a specific tutorial, at which was the last stage the
      * project was in.

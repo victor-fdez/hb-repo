@@ -143,13 +143,11 @@ public class NavigationPanel extends JPanel {
         i = 0;
         for (NavigationOption option : this.options) {
             if (test == false) {
-                //System.out.println("i : "+);
                 if (i < this.lastUnlocked) {
                     option.setType(NavigationOptionType.Finished);
                 } else if (i == this.lastUnlocked) {
                     option.setType(NavigationOptionType.StartedButNotFinished);
                 } else {
-                    System.out.println("hey");
                     option.setType(NavigationOptionType.Locked);
                 }
             } else {
