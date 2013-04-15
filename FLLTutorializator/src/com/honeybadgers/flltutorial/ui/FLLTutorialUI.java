@@ -461,7 +461,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
      * 
      * @param frame     the frame to be centered
      */
-    public void setInCenterOfScreen(JFrame frame)
+    public static void setInCenterOfScreen(JFrame frame)
     {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
