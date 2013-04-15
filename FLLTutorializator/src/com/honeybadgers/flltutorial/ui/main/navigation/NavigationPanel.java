@@ -61,26 +61,27 @@ public class NavigationPanel extends JPanel {
     private HashMap stagesMap;
     private PanelReceiver reciever;
     private HashMap stageNumber;
-    private BufferedImage image;
     private int lastUnlocked;   /*number goes from 0 ... numberOfStage-1*/
 
-
+    /**
+     * Constructor of navigation panel sets up the panels that will be used to
+     * navigate thru the different stages.
+     * 
+     * @param stages        the list of stages used in the navigation
+     * @param reciever      the responsible class for updating the content pane,
+     *                      whenever a another stage is desired by the user, if 
+     *                      the user has clicked a desired stage
+     */
     public NavigationPanel(ArrayList<StagePanel> stages, PanelReceiver reciever) {
         super();
         this.stages = stages;
         this.reciever = reciever;
-        this.options = new ArrayList<>();
-        File moviePicFile = new File(TutorialManager.generalMediaPath + "moviePlaceholder.png");
-        try {
-            this.image = ImageIO.read(moviePicFile);
-            this.aspectRatio = (((float) this.image.getWidth()) / ((float) this.image.getHeight()));
-            this.resizeImage();
-        } catch (IOException ex) {
-            Logger.getLogger(PictureOptionPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.options = new ArrayList<>();  
         this.initComponents();
     }
-
+    /**
+     * Initializes all of the UI components in the navigation panel.
+     */
     private void initComponents() {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -182,16 +183,44 @@ public class NavigationPanel extends JPanel {
         this.setMinimumSize(minDimension);
         this.setMaximumSize(maxDimension);
     }
-
+    /**
+     * This method is called by the Video Panel whenever an aspect ration has been
+     * determined for the loaded video. This method must be invoked on the dispatcher
+     * thread, because it will be called by another thread used by javafx.
+     * 
+     * @param aspect       a float denoting the aspect ratio of the video
+     */
+    public void setAspectRatio(final float aspect)
+    {
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                aspectRatio = aspect;
+                invalidate();
+                setSize(new Dimension(getWidth(), getHeight()+1));
+                setSize(new Dimension(getWidth(), getHeight()-1));
+            }  
+        });
+    }
+    /**
+     * Setup up the video panel with the ith filepath stored in the FLLTutorialUI
+     * 
+     * @param i         int i denotes the ith filepath
+     */
     private void setVideoPanel(int i)
     {
-        VideoPanel videoPlayer = new VideoPanel((String)FLLTutorialUI.videoFiles.get(i));
+        VideoPanel videoPlayer = new VideoPanel((String)FLLTutorialUI.videoFiles.get(i), this);
         this.videoPanel.removeAll();
         this.videoPanel.add(videoPlayer);
         //get video contrast ratio
         
         this.videoPanel.invalidate();
     }
+    /**
+     * After the user has finished a stage, the FLLTutorialUI calls this method to
+     * make the navigation panel update the colors of the navigation option panels
+     * inside it.
+     */
     public void updateStages() {
         if (test == false) {
             if (this.stages.get(this.lastUnlocked).isFinished()) {
@@ -222,7 +251,10 @@ public class NavigationPanel extends JPanel {
         StartedButNotFinished,
         Locked
     };
-
+    /**
+     * Class is specifically used to draw the background of the navigation option
+     * panels with different colored gradients.
+     */
     private class NavigationOption extends JTextArea {
 
         NavigationOptionType type;

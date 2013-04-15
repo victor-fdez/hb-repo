@@ -60,6 +60,7 @@ public class VideoPanel extends JPanel {
     public static final String MEDIA_URL = TutorialManager.generalVideoPath+"linus.flv";
     private static JFXPanel fxContainer;
     private static VideoPanel videoPanel;
+    private NavigationPanel nav;
     private Scene scene;
     private MediaPlayer mp;
     private String videoPathName;
@@ -79,7 +80,7 @@ public class VideoPanel extends JPanel {
                 JFrame frame = new JFrame("JavaFX 2 in Swing");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 
-                VideoPanel panel = new VideoPanel(VideoPanel.MEDIA_URL);
+                VideoPanel panel = new VideoPanel(VideoPanel.MEDIA_URL, null);
                 
                 frame.getContentPane().add(panel);
                 
@@ -90,14 +91,14 @@ public class VideoPanel extends JPanel {
         });
     }
     
-    public VideoPanel(String videoFilePath)
+    public VideoPanel(String videoFilePath, NavigationPanel nav)
     {
         super();
         this.videoPathName = new File(videoFilePath).toURI().toString();
         VideoPanel.videoPanel = this;
         this.setBackground(java.awt.Color.BLACK);
         this.setLayout(new BorderLayout());
-        
+        this.nav = nav;
         this.initMediaPlayer();
     }
     
@@ -130,6 +131,7 @@ public class VideoPanel extends JPanel {
         
         //setup the main video panel
         Media m = new Media(this.videoPathName);
+        
         this.mp = new MediaPlayer(m);
         this.mp.setVolume(1.0f);
         
@@ -145,6 +147,8 @@ public class VideoPanel extends JPanel {
         
         mediaView.fitHeightProperty().bind(stackPane.heightProperty());
         mediaView.fitWidthProperty().bind(stackPane.widthProperty());
+        
+       
         
         //setup media player view settings
         this.mp.setOnError(new Runnable(){
@@ -226,7 +230,8 @@ public class VideoPanel extends JPanel {
         this.mp.setOnReady(new Runnable(){  
             @Override
             public void run() {
-      
+                if(nav != null)
+                    nav.setAspectRatio(((float)mp.getMedia().getWidth())/((float)mp.getMedia().getHeight()));
                 //start playing video
                 timeSlider.setMax(mp.getTotalDuration().toSeconds());
                 mp.play();
