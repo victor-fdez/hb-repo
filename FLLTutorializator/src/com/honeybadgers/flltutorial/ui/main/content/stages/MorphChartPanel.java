@@ -13,14 +13,20 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel
 import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AWTEvent;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,8 +147,9 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 //option panels in a sub panel. All of the options panels in the subpanel
                 //will be equally sized
 
-                JPanel rowPanel = new JPanel();
+                JPanel rowPanel = new BlurryPanel();
                 rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
+                rowPanel.setBorder(new EmptyBorder(4, 4, 4, 4));
                 rowPanel.setBackground(Color.GRAY);
                 
                 rowPanel.add(Box.createRigidArea(new Dimension(0,100)));
@@ -196,6 +203,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         this.revalidate();
         this.scrollPane.revalidate();
         this.repaint();
+        ((BlurryPanel)this.selectedPanel.getParent()).setBlurry(0);
     }
     
     @Override
@@ -359,8 +367,11 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 //panels are deleted from hash, and new ones are added. Parent becomes the selected parent panel.
                 this.panelTypeHashes.remove(this.selectedPanel.getBeacon());
                 this.panelTypeHashes.put(this.selectedPanel.getBeacon(), BeaconType.ParentPanel);
-                
+                //make the previous selected panel blurry
+                ((BlurryPanel)this.selectedPanel.getParent()).setBlurry(1);
                 this.selectedPanel = OptionPanel.getOptionPanelFromBeacon(beacon);
+                //make the new panel not blurry
+                ((BlurryPanel)this.selectedPanel.getParent()).setBlurry(0);
                 this.panelTypeHashes.remove(beacon);
                 this.panelTypeHashes.put(beacon, BeaconType.SelectedParentPanel);
                 
@@ -400,5 +411,85 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
     }
+    
+    private class BlurryPanel extends JPanel
+    {
+        int blurry = 0;
+        private BufferedImage panelImage;
+        public BlurryPanel()
+        {
+            blurry = 1;
+        }
+        public void setBlurry(int i)
+        {
+            blurry = i;
+            this.repaint();
+        }
+        
+        @Override
+        public void paint(Graphics g)
+        {
+            int radius = 7;
+            if(this.blurry == 1)
+            {
+                if(panelImage == null || panelImage.getWidth() != this.getWidth() || panelImage.getHeight() != this.getHeight())
+                {
+                    this.panelImage = (BufferedImage)this.createImage(this.getWidth(), this.getHeight());
+                }
+                int x0 = 2*radius, y0 = 2*radius;
+                Graphics gPanel = this.panelImage.getGraphics();
+                gPanel.setClip(g.getClip());
+                //super.repaint(); this fixes but has horrible performance
+                super.paint(gPanel);
+                gPanel.dispose();
+                
+                BufferedImage preImage = ((BufferedImage)this.createImage(this.getWidth()+(2*x0), this.getHeight()+(2*y0)));
+                preImage.getGraphics().setColor(Color.GRAY);
+                preImage.getGraphics().drawRect(0, 0, preImage.getWidth(), preImage.getHeight());
+                preImage.getGraphics().drawImage(this.panelImage, x0, y0, null);
+                this.panelImage = preImage;
+                this.panelImage = getGaussianBlurFilter(radius, true).filter(this.panelImage, null);
+                this.panelImage = getGaussianBlurFilter(radius, false).filter(this.panelImage, null);
+                
+                Graphics2D g2 = (Graphics2D)g;
+                g2.drawImage(this.panelImage, -x0, -y0, null);
+            }
+            else
+            {
+                super.paint(g);
+            }
+        }
+        private ConvolveOp getGaussianBlurFilter(int radius, boolean horizontal) {
+            if (radius < 1) {
+                throw new IllegalArgumentException("Radius must be >= 1");
+            }
 
+            int size = radius * 2 + 1;
+            float[] data = new float[size];
+
+            float sigma = radius / 3.0f;
+            float twoSigmaSquare = 2.0f * sigma * sigma;
+            float sigmaRoot = (float) Math.sqrt(twoSigmaSquare * Math.PI);
+            float total = 0.0f;
+
+            for (int i = -radius; i <= radius; i++) {
+                float distance = i * i;
+                int index = i + radius;
+                data[index] = (float) Math.exp(-distance / twoSigmaSquare) / sigmaRoot;
+                total += data[index];
+            }
+
+            for (int i = 0; i < data.length; i++) {
+                data[i] /= total;
+            }        
+
+            Kernel kernel = null;
+            if (horizontal) {
+                kernel = new Kernel(size, 1, data);
+            } else {
+                kernel = new Kernel(1, size, data);
+            }
+            return new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        }
+    }
 }

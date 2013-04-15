@@ -237,6 +237,7 @@ public class PictureOptionPanel extends OptionPanel {
         {
             //super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
+          
             GradientPaint gradPaint = new GradientPaint(0,0, backgroundColor, 0, getHeight(), backgroundColor.darker());
 
             Paint oldPaint = g2.getPaint();
