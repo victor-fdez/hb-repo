@@ -22,6 +22,8 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -419,6 +421,12 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         public BlurryPanel()
         {
             blurry = 1;
+            this.addComponentListener(new ComponentAdapter(){   
+                @Override
+                public void componentResized(ComponentEvent e){
+                    repaint();
+                }
+            });
         }
         public void setBlurry(int i)
         {

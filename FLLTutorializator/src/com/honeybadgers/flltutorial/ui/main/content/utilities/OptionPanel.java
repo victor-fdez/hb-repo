@@ -130,11 +130,9 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
             AlphaComposite srcComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
             g2.setComposite(srcComposite);
             g2.drawImage(this.panelImage, 0, 0, null);
-            System.out.println("painted 1");
         }
         else
         {
-            System.out.println("painted 2");
             super.paint(g);
         }
     }
