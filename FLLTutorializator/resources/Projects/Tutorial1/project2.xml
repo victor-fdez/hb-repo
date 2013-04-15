@@ -15,22 +15,22 @@
       <desc>Based on your robot's mission, identify the basic tasks that your robot should perform.</desc>
       <reason/>
       <img src=""/>
-      <option correct="true" oid="0.0" position="-1" selected="-1">
+      <option correct="true" oid="0.0" position="0" selected="-1">
         <desc>Move to guidepost</desc>
         <reason>The guidepost will tell you which side the ball is on. Getting to it is the first step to reading it!</reason>
         <img src=""/>
       </option>
-      <option correct="true" oid="0.1" position="-1" selected="-1">
+      <option correct="true" oid="0.1" position="1" selected="-1">
         <desc>Read color on guidepost</desc>
         <reason>Knowing which side the ball is on will allow you to control it quicker.</reason>
         <img src=""/>
       </option>
-      <option correct="true" oid="0.2" position="-1" selected="-1">
+      <option correct="true" oid="0.2" position="2" selected="-1">
         <desc>Move to ball location</desc>
         <reason>Controlling the ball is important for scoring points.</reason>
         <img src=""/>
       </option>
-      <option correct="true" oid="0.3" position="-1" selected="-1">
+      <option correct="true" oid="0.3" position="3" selected="-1">
         <desc>Transport ball to goal</desc>
         <reason>Bringing the ball to the goal is the main way to score points!</reason>
         <img src=""/>
@@ -42,16 +42,16 @@
       <desc>Select the limitations and constraints that apply to this project.</desc>
       <reason/>
       <img src=""/>
-      <option correct="true" oid="1.0" position="-2" selected="-1">
+      <option correct="true" oid="1.0" position="0" selected="-1">
         <desc>Number of Motors</desc>
         <reason>The problem statement limits the parts used to just those available in the standard kit, which means the use of only a few motors.</reason>
         <img src=""/>
-        <option correct="false" oid="1.0.0" position="-1" selected="-1">
+        <option correct="false" oid="1.0.0" position="-3" selected="-1">
           <desc>Lighting Conditions</desc>
           <reason>Lighting conditions are good during gameplay, and will not vary.</reason>
           <img src=""/>
         </option>
-        <option correct="false" oid="1.0.1" position="-1" selected="-1">
+        <option correct="false" oid="1.0.1" position="-3" selected="-1">
           <desc>Variable Size Ball Holding device</desc>
           <reason>The ball will be a constant size.</reason>
           <img src=""/>
@@ -72,7 +72,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.1" position="-2" selected="-1">
+      <option correct="true" oid="1.1" position="1" selected="-1">
         <desc>Number of Sensors</desc>
         <reason>The problem statement limits the parts used to just those available in the standard kit, which means you can only use sensors from it.</reason>
         <img src=""/>
@@ -102,7 +102,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.2" position="-2" selected="-1">
+      <option correct="true" oid="1.2" position="2" selected="-1">
         <desc>Robot Height</desc>
         <reason>The robot must fit in the 12" x 12" x 12" box.</reason>
         <img src=""/>
@@ -127,7 +127,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.3" position="-2" selected="-1">
+      <option correct="true" oid="1.3" position="3" selected="-1">
         <desc>Robot Width</desc>
         <reason>The robot must fit in the 12" x 12" x 12" box.</reason>
         <img src=""/>
@@ -152,7 +152,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.4" position="-2" selected="-1">
+      <option correct="true" oid="1.4" position="4" selected="-1">
         <desc>Robot Weight</desc>
         <reason>Weight is an important factor in how a robot works.</reason>
         <img src=""/>
@@ -172,7 +172,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.5" position="-2" selected="-1">
+      <option correct="true" oid="1.5" position="5" selected="-1">
         <desc>Conditions</desc>
         <reason>Arena conditions are important to consider when designing a robot.</reason>
         <img src=""/>
@@ -192,7 +192,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.6" position="-2" selected="-1">
+      <option correct="true" oid="1.6" position="6" selected="-1">
         <desc>Surface Conditions</desc>
         <reason>Surface conditions are important to consider when designing a robot.</reason>
         <img src=""/>
@@ -227,7 +227,7 @@
           <img src=""/>
         </option>
       </option>
-      <option correct="true" oid="1.7" position="-2" selected="-1">
+      <option correct="true" oid="1.7" position="7" selected="-1">
         <desc>Special Movement Requirements</desc>
         <reason>Considering the way the robot will move is important to designing it to work properly.</reason>
         <img src=""/>
@@ -351,7 +351,7 @@
       <desc>Create a morphological chart.</desc>
       <reason/>
       <img src=""/>
-      <option correct="true" oid="3.0" position="-2" selected="-1">
+      <option correct="true" oid="3.0" position="0" selected="-1">
         <desc>Move</desc>
         <reason/>
         <img src=""/>
@@ -376,7 +376,7 @@
           <img src="media/motion-ThreeWheels.png"/>
         </option>
       </option>
-      <option correct="true" oid="3.1" position="-2" selected="-1">
+      <option correct="true" oid="3.1" position="1" selected="-1">
         <desc>Carry</desc>
         <reason/>
         <img src=""/>
@@ -401,7 +401,7 @@
           <img src="media/ballHolding-RampAndBin.png"/>
         </option>
       </option>
-      <option correct="true" oid="3.2" position="-2" selected="-1">
+      <option correct="true" oid="3.2" position="2" selected="-1">
         <desc>Detection</desc>
         <reason/>
         <img src=""/>

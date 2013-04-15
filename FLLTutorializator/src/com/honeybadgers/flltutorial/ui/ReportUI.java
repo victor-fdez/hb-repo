@@ -4,12 +4,17 @@
  */
 package com.honeybadgers.flltutorial.ui;
 
+import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.model.Stage;
 import com.honeybadgers.flltutorial.model.Tutorial;
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
+import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 
 /**
@@ -18,21 +23,31 @@ import javax.swing.JButton;
  */
 public class ReportUI extends javax.swing.JFrame {
 
+    Tutorial tutorial;
+    ArrayList<OptionTracker> stageOptionTrackers;
     
     /**
      * Creates new form ReportUI
      */
-    public ReportUI(Tutorial tutorial) {
+    public ReportUI(Tutorial tutorial, ArrayList<OptionTracker> stageOptionTrackers) {
+        this.tutorial=tutorial;
+        this.stageOptionTrackers=stageOptionTrackers;
+        
         initComponents();
         //List<Stage> stages = tutorial.getStages();
-        fillProjectDetails(tutorial);
-        fillTable(tutorial);
+        fillProjectDetails();
+        fillTable();
+        
+        FLLTutorialUI.setInCenterOfScreen(this);
+        setTitle("Project Report");
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         setVisible(true);
-        System.out.println("4");
+        
+        
     }
     
-    private void fillProjectDetails(Tutorial tutorial){
+    private void fillProjectDetails(){
         teamNameJL.setText(tutorial.getTeamName());
         projectNameJL.setText(tutorial.getProjectName());
         List<String> teamMembers=tutorial.getMembers();
@@ -45,19 +60,25 @@ public class ReportUI extends javax.swing.JFrame {
         }
     }
     
-    private void fillTable(Tutorial tutorial){
+    private void fillTable(){
         List<Stage> stages=tutorial.getStages();
+        /*int numberIncorrectSelected=0;
+        int numberIncorrect=0;
+        boolean allComplete=true;*/
         for(int i=0;i<stages.size();i++){
             table.setValueAt(stages.get(i).getName(), i, 0);
-            ImageIcon icon = createImageIcon(TutorialManager.generalMediaPath+"check_mark.png","check mark");
-            table.setValueAt(icon, i, 1);
-            table.setValueAt("0/0", i, 2);
-            table.setValueAt("30 sec.", i, 3);
-            JButton viewStageButton = new JButton("View Page");
-            table.setValueAt(viewStageButton, i, 4);
-            viewStageButtons.add(viewStageButton);
+            table.setValueAt(stageOptionTrackers.get(i).isFinished() ? "yes" : "no", i, 1);
+            table.setValueAt(stageOptionTrackers.get(i).getNumberOfIncorrectSelected()+"/"+stageOptionTrackers.get(i).getTotalNumberOfIncorrect(), i, 2);
+            
+            /*numberIncorrectSelected+=stageOptionTrackers.get(i).getNumberOfIncorrectSelected();
+            numberIncorrect+=stageOptionTrackers.get(i).getTotalNumberOfIncorrect();
+            if(!stageOptionTrackers.get(i).isFinished())
+                allComplete=false;
+            */
         }
-        
+        /*table.setValueAt("Total", stages.size(), 0);
+        table.setValueAt(allComplete ? "yes" : "no", stages.size(), 1);
+        table.setValueAt(numberIncorrectSelected+"/"+numberIncorrect, stages.size(), 2);*/
     }
     
     /** Returns an ImageIcon, or null if the path was invalid. */
@@ -81,10 +102,8 @@ public class ReportUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        printButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
-        projectViewButton = new javax.swing.JButton();
         projectNameTitleJL = new javax.swing.JLabel();
         teamNameTitleJL = new javax.swing.JLabel();
         teamMembersTitleJL = new javax.swing.JLabel();
@@ -96,13 +115,6 @@ public class ReportUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        printButton.setText("Print");
-        printButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printButtonActionPerformed(evt);
-            }
-        });
-
         closeButton.setText("Close");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,9 +123,7 @@ public class ReportUI extends javax.swing.JFrame {
         });
 
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        titleLabel.setText("Project Report");
-
-        projectViewButton.setText("Project View");
+        titleLabel.setText("Project Details");
 
         projectNameTitleJL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         projectNameTitleJL.setText("Project Name:");
@@ -132,21 +142,21 @@ public class ReportUI extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Stage", "Complete?", "Errors", "Time", "View Page"
+                "Stage", "Complete?", "Errors"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -157,8 +167,11 @@ public class ReportUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        table.setColumnSelectionAllowed(true);
         table.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(table);
+        table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        table.getColumnModel().getColumn(0).setPreferredWidth(150);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,30 +183,25 @@ public class ReportUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(titleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(projectViewButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(printButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(closeButton))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(projectNameTitleJL)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(projectNameJL))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(teamNameTitleJL)
-                                            .addComponent(teamMembersTitleJL))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(teamMembersJL)
-                                            .addComponent(teamNameJL)))))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 74, Short.MAX_VALUE)))
+                                .addComponent(projectNameTitleJL)
+                                .addGap(18, 18, 18)
+                                .addComponent(projectNameJL))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(teamNameTitleJL)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(teamNameJL))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(teamMembersTitleJL)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(teamMembersJL)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 13, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,16 +209,13 @@ public class ReportUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(printButton)
-                        .addComponent(closeButton)
-                        .addComponent(projectViewButton))
+                    .addComponent(closeButton)
                     .addComponent(titleLabel))
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(projectNameTitleJL)
                     .addComponent(projectNameJL))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(teamNameTitleJL)
                     .addComponent(teamNameJL, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -218,30 +223,23 @@ public class ReportUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(teamMembersTitleJL)
                     .addComponent(teamMembersJL))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(653, 653, 653))
+                .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:
-        //figure out how to print
-    }//GEN-LAST:event_printButtonActionPerformed
-
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JButton printButton;
     private javax.swing.JLabel projectNameJL;
     private javax.swing.JLabel projectNameTitleJL;
-    private javax.swing.JButton projectViewButton;
     private javax.swing.JTable table;
     private javax.swing.JLabel teamMembersJL;
     private javax.swing.JLabel teamMembersTitleJL;
@@ -250,6 +248,5 @@ public class ReportUI extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 
-    private List<javax.swing.JButton> viewStageButtons;
     
 }

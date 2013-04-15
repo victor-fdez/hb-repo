@@ -172,6 +172,15 @@ public class OptionTracker {
     {
         return (List<OptionTracker>)this.correctOptionsList.clone();
     }
+    
+    public int getTotalNumberOfIncorrect(){
+        return incorrectOptionsList.size();
+    }
+    
+    public int getNumberOfIncorrectSelected(){
+        return numberOfIncorrect;
+    }
+    
     /**
      * Returns whether this option tracker can have any correct children
      * 
