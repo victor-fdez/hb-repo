@@ -37,8 +37,8 @@ import javax.swing.Timer;
  */
 public class ContentPane extends JLayeredPane implements ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener
 {
-    private Dimension preferedDimension = new Dimension(750, 500);
-    private Dimension minDimension = new Dimension(750, 400);
+    private Dimension preferedDimension = new Dimension(550, 500);
+    private Dimension minDimension = new Dimension(550, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
     private OptionState draggingOptionState;
     /*
@@ -203,7 +203,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.contentPanel.revalidate();
     }
     @Override
-    public void componentMoved(ComponentEvent e) {}
+    public void componentMoved(ComponentEvent e) {
+    }
     @Override
     public void componentShown(ComponentEvent e) {}
     @Override
@@ -262,7 +263,10 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 int halfWidth = this.draggingOptionPanel.getWidth()/2;
                 int halfHeight = this.draggingOptionPanel.getHeight()/2;
                 this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
-                this.glassPanel.paintImmediately(this.draggingOptionPanel.getVisibleRect());
+                //this.glassPanel.paintImmediately(this.draggingOptionPanel.getVisibleRect());
+                Rectangle vR = this.draggingOptionPanel.getVisibleRect();
+                this.glassPanel.repaint(0, vR.y-2 , this.glassPanel.getWidth(), vR.height+4);
+                this.glassPanel.repaint(vR.x-2, 0 , vR.width+4, this.glassPanel.getHeight());
                 return;
             }
         }
@@ -379,7 +383,10 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             int halfWidth = this.draggingOptionPanel.getWidth()/2;
             int halfHeight = this.draggingOptionPanel.getHeight()/2;
             this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);            
-            this.glassPanel.repaint(this.draggingOptionPanel.getVisibleRect());
+            this.draggingOptionPanel.hasMoved();
+            Rectangle vR = this.draggingOptionPanel.getVisibleRect();
+            this.glassPanel.repaint(0, vR.y-2 , this.glassPanel.getWidth(), vR.height+4);
+            this.glassPanel.repaint(vR.x-2, 0 , vR.width+4, this.glassPanel.getHeight());
         }
         else
         {
@@ -391,6 +398,15 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     public void mouseMoved(MouseEvent e) {
         if(eventsBlocked)
             return;
+        
+        if(this.selectedOptionPanel != null && this.draggingOptionPanel != null)
+        {
+            //this may happen if the dropped methods is not called
+            this.selectedOptionPanel.setState(this.draggingOptionState);
+            this.selectedOptionPanel = null;
+            this.draggingOptionPanel = null;
+            this.draggingOptionState = null;
+        }
         //System.out.println("moved ");
         Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
         

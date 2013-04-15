@@ -73,11 +73,11 @@
     the compile target as the regular run target does. Again, for a list of available 
     properties which you can use, check the target you are overriding in the
     nbproject/build-impl.xml file. 
-
-    -->
 	<target depends="-jfx-copylibs,-rebase-libs,jfx-deployment" name="-post-jar">
 		<copy todir="dist/resources">
 			<fileset dir="resources/"/>
 		</copy>
 	</target>
-</project>
+
+    -->
+	</project>

@@ -102,7 +102,11 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
     public Option getOption() {
         return option;
     }
-    
+    boolean moved = false;
+    public void hasMoved(){
+        repaint();
+        moved = true;
+    }
     @Override
     public void paint(Graphics g)
     {
@@ -114,6 +118,10 @@ public abstract class OptionPanel extends JLayeredPane implements Cloneable
             }
             Graphics gPanel = this.panelImage.getGraphics();
             gPanel.setClip(g.getClip());
+            if(!moved)
+            {
+                super.repaint(); 
+            }
             
             super.paint(gPanel);
             

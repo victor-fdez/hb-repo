@@ -18,6 +18,7 @@ public class TutorialManager {
     public static String projectsFolderPath = "resources/Projects/";
     public static String tutorialsFolderPath = "resources/Tutorials/";
     public static String generalMediaPath = "resources/General/media/";
+    public static String generalVideoPath = "resources/General/videos/";
     
     public static ArrayList<TutorialBase> getAllTutorialBases()
     {

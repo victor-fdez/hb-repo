@@ -36,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -48,7 +49,12 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * This class is the main UI class. It works by going through some states and displays
+ * different UI depending on the state that is being visited. It initially gives the user
+ * the option of either working on a previous project, or creating a new project.
+ * Afterwards it displays the project in either the start state of the state in which
+ * the project was right when it was saved.
+ * 
  * @author chingaman
  */
 public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
@@ -61,9 +67,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private Tutorial selectedTutorial;
     private WindowFocusListener windowListener;
     private JFrame extraFrame;
-    /**
-     * Creates new form BeginTopComponent
-     */
+    
     public FLLTutorialUI() {
         super();
         this.tutorialUI = this;
@@ -306,9 +310,18 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
+    public static HashMap videoFiles;
+    static
+    {
+        videoFiles = new HashMap();
+        videoFiles.put(0, TutorialManager.generalVideoPath+"video0.flv");
+        videoFiles.put(1, TutorialManager.generalVideoPath+"video1.flv");
+        videoFiles.put(2, TutorialManager.generalVideoPath+"video2.flv");
+        videoFiles.put(3, TutorialManager.generalVideoPath+"video3.flv");
+    }
     /**
-     * Start a given project for a specific tutorial, at which was the last stage the
-     * project was in.
+     * This method will display the current tutorial on the main frame of this class. It
+     * will also show a menu at the top with some options the user can take advantage of.
      */
     public void startTutorial()
     {
@@ -355,7 +368,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 
                 
                 JMenuItem openMI = new JMenuItem("Open Project");
-               openMI.addActionListener(new ActionListener(){
+                openMI.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("FLLTutorialUI.showTutorial : open project");
@@ -422,16 +435,23 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             return TutorialManager.tutorialsFolderPath+currentTutorial.getTutorialName()+"/";
         }
     }
-
+    /**
+     * This method is either used by the content panel or the navigation panel. It
+     * is used by the navigation panel whenever the user wants to look at another stage
+     * or by the content panel whenever a stage is finished to update the navigation panel.
+     * 
+     * @param panelSent
+     * @param point 
+     */
     @Override
     public void receivePanel(JPanel panelSent, Point point) {
-         
-        //ignore the point
         if(panelSent == null)
         {
+            //this case is used by the content panel
             this.navigationPanel.updateStages();
             return;
         }
+        //this case used by the navigation panel
         this.contentPane.updateStagePanel((StagePanel)panelSent);
     }
     
@@ -440,14 +460,14 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     }
-    
     /*For testing purposes*/
-    
     public static void setCurrentTutorial(Tutorial currentTutorial)
     {
         FLLTutorialUI.currentTutorial = currentTutorial;
     }
-
+    /**
+     * This is used to close frames whenever the main frame is focused.
+     */
     public void gotFocus()
     {
         if(this.extraFrame == null)
@@ -455,7 +475,9 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         this.extraFrame.dispose();
         this.extraFrame = null;
     }
-    
+    /**
+     * TESTING
+     */
     public static void main(String[] args)
     {
         //look and feel
