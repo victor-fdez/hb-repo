@@ -138,7 +138,8 @@ public class OptionTracker {
             answerOption.setPosition(-3);
             this.incorrectHashes.put(answerOption.getId(), answerOption);
             answerOptionTracker = new OptionTracker(answerOption);
-            this.incorrectOptionsList.set(this.numberOfIncorrect, answerOptionTracker);
+            //System.out.println(answerOption.getId()+" = number of incorrect "+this.numberOfIncorrect);
+            this.incorrectOptionsList.set(this.numberOfIncorrect++, answerOptionTracker);
             //not needed but just in case
             answerOptionTracker.setParent(this);
             return true;
@@ -322,6 +323,7 @@ public class OptionTracker {
     {
         OptionTracker rootTracker = new OptionTracker(rootOption);
         recursiveOptionTrackerTree(rootTracker);
+        //rootTracker.printTree();
         return rootTracker;
     }
     public static void recursiveOptionTrackerTree(OptionTracker parentOptionTracker)
