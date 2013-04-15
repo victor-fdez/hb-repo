@@ -272,15 +272,48 @@ public class OptionTracker {
         this.parent = parent;
     }
     /**
+     * Gets all the statistics of the all of the children of the option tracker tree,
+     * based on this option tracker being the root
+     * 
+     * @return      an integer array containing the different statistics
+     */
+    public int[] findStatsOnTreeFromThisRoot()
+    {
+        int[] statsArray = new int[4];
+        this.statsOnTreeFromThisRoot(statsArray);
+        return statsArray;
+    }
+    private void statsOnTreeFromThisRoot(int[] statsArray)
+    {
+        if(!this.option.isCorrect())
+        {
+            return;
+        }
+        statsArray[0] += this.numberOfCorrect;             
+        statsArray[1] += this.correctOptionsList.size(); 
+        statsArray[2] += this.numberOfIncorrect;
+        statsArray[3] += this.incorrectOptionsList.size();
+        
+        for(OptionTracker correctOption : this.correctOptionsList)
+        {
+            if(correctOption == null)
+            {
+                continue;
+            }
+            correctOption.statsOnTreeFromThisRoot(statsArray);
+        }
+        for(OptionTracker incorrectOption : this.incorrectOptionsList)
+        {
+            if(incorrectOption == null)
+            {
+                continue;
+            }
+            incorrectOption.statsOnTreeFromThisRoot(statsArray);
+        } 
+    }
+    /**
      * Print a recursive depiction of the current tracker tree.
      */
-    //@Override
-    /*public String toString()
-    {
-        String returnString = "";
-        
-        return returnString;
-    }*/
     public void printTree()
     {
         this.printTreeRecursive(0);
@@ -311,7 +344,7 @@ public class OptionTracker {
             }
             correctOption.printTreeRecursive(level+1);
         }
-        System.out.println(tabs+"-incorrect choosen "+this.finishedCorrect+"/"+this.incorrectOptionsList.size());
+        System.out.println(tabs+"-incorrect choosen "+this.numberOfIncorrect+"/"+this.incorrectOptionsList.size());
         for(OptionTracker incorrectOption : this.incorrectOptionsList)
         {
             if(incorrectOption == null)

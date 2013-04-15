@@ -7,14 +7,10 @@ package com.honeybadgers.flltutorial.ui;
 import com.honeybadgers.flltutorial.model.OptionTracker;
 import com.honeybadgers.flltutorial.model.Stage;
 import com.honeybadgers.flltutorial.model.Tutorial;
-import com.honeybadgers.flltutorial.model.backend.TutorialManager;
-import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 
 /**
@@ -68,7 +64,8 @@ public class ReportUI extends javax.swing.JFrame {
         for(int i=0;i<stages.size();i++){
             table.setValueAt(stages.get(i).getName(), i, 0);
             table.setValueAt(stageOptionTrackers.get(i).isFinished() ? "yes" : "no", i, 1);
-            table.setValueAt(stageOptionTrackers.get(i).getNumberOfIncorrectSelected()+"/"+stageOptionTrackers.get(i).getTotalNumberOfIncorrect(), i, 2);
+            int[] stats = stageOptionTrackers.get(i).findStatsOnTreeFromThisRoot();
+            table.setValueAt(stats[2]+"/"+stats[3], i, 2);
             
             /*numberIncorrectSelected+=stageOptionTrackers.get(i).getNumberOfIncorrectSelected();
             numberIncorrect+=stageOptionTrackers.get(i).getTotalNumberOfIncorrect();
