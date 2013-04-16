@@ -22,10 +22,12 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
@@ -52,7 +54,8 @@ import javax.swing.border.EmptyBorder;
  */
 public class MorphChartPanel extends StagePanel implements MouseListener{
     private final HashMap panelForIndexHashes;
-    private BufferedImage image;
+    private BufferedImage scrollImage;
+    private BufferedImage closeImage;
 
     
     protected enum BeaconType
@@ -90,13 +93,12 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         {
             this.initComponents();
         }
-        /*try {
-                //this.image = ImageIO.read(new File(TutorialManager.generalVideoPath+""));
-                //this.resizeImage();
-                
+        try {
+                this.scrollImage = ImageIO.read(new File(TutorialManager.generalMediaPath+"scroll.png"));
+                this.closeImage = ImageIO.read(new File(TutorialManager.generalMediaPath+"click.png"));
         } catch (IOException ex) {
             Logger.getLogger(PictureOptionPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }
     protected void initComponents()
     {
@@ -451,6 +453,8 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         public void paint(Graphics g)
         {
             int radius = 7;
+            float scrollScale = 0.20f;
+            float clickScale = 0.25f;
             if(this.blurry == 1)
             {
                 if(panelImage == null || panelImage.getWidth() != this.getWidth() || panelImage.getHeight() != this.getHeight())
@@ -475,6 +479,18 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 
                 Graphics2D g2 = (Graphics2D)g;
                 g2.drawImage(this.panelImage, -x0, -y0, null);
+                
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                //show scroll image
+                AffineTransform transformer0 = new AffineTransform();
+                transformer0.translate(47, 5);
+                transformer0.scale(scrollScale, scrollScale);
+                g2.drawImage(scrollImage, transformer0, null);
+                //show 
+                AffineTransform transformer1 = new AffineTransform();
+                transformer1.translate(104, 47);
+                transformer1.scale(clickScale, clickScale);
+                g2.drawImage(closeImage, transformer1, null);
             }
             else
             {
