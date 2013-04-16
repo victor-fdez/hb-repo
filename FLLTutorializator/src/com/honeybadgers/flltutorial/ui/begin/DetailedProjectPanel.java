@@ -9,7 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -124,6 +127,8 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tutorialDescriptionTextArea = new javax.swing.JTextArea();
         tutorialAuthorLabel = new javax.swing.JLabel();
+        membersUserMsg = new javax.swing.JLabel();
+        cancelButton = new javax.swing.JButton();
 
         jTextField3.setText("jTextField3");
 
@@ -168,6 +173,11 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
 
         tutorialAuthorLabel.setText("by author");
 
+        membersUserMsg.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        membersUserMsg.setText("add at least a team member");
+
+        cancelButton.setText("cancel");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -177,49 +187,52 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(separator)
                     .add(separatorBelow)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(addTeamMember)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                                .add(153, 153, 153)
-                                .add(nameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 316, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                                .add(153, 153, 153)
-                                .add(teamNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 316, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                                .add(46, 46, 46)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(layout.createSequentialGroup()
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jLabel2)
-                                            .add(jLabel3)
-                                            .add(jLabel4))
-                                        .add(18, 18, 18)
-                                        .add(memberNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 312, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                        .add(layout.createSequentialGroup()
-                                            .add(tutorialNameLabel)
-                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .add(tutorialAuthorLabel))
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane2)))))
-                        .add(52, 52, 52))
                     .add(layout.createSequentialGroup()
                         .add(15, 15, 15)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(title)
-                            .add(jLabel1))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 394, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 359, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(deleteMemberButton))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .add(46, 46, 46)
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                                        .add(46, 46, 46)
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(layout.createSequentialGroup()
+                                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                                    .add(jLabel2)
+                                                    .add(jLabel3)
+                                                    .add(jLabel4))
+                                                .add(18, 18, 18)
+                                                .add(memberNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 312, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                                .add(layout.createSequentialGroup()
+                                                    .add(tutorialNameLabel)
+                                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .add(tutorialAuthorLabel))
+                                                .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane2))))
+                                    .add(layout.createSequentialGroup()
+                                        .add(46, 46, 46)
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(layout.createSequentialGroup()
+                                                .add(saveProjectButton)
+                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                                .add(cancelButton)
+                                                .add(0, 0, Short.MAX_VALUE))
+                                            .add(jScrollPane1)))
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                                        .add(153, 153, 153)
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, nameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 316, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, teamNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 316, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                        .add(0, 0, Short.MAX_VALUE))
+                                    .add(membersUserMsg, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                        .add(deleteMemberButton)
+                                        .add(addTeamMember)))
+                                .add(52, 52, 52))
+                            .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(saveProjectButton)
-                                    .add(jScrollPane1))))
-                        .add(52, 52, 52)))
+                                    .add(title)
+                                    .add(jLabel1))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 394, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -245,6 +258,8 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
                 .add(separator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel1)
+                .add(5, 5, 5)
+                .add(membersUserMsg)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel4)
@@ -252,13 +267,15 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(addTeamMember)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(deleteMemberButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(separatorBelow, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(saveProjectButton)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(saveProjectButton)
+                    .add(cancelButton))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -294,27 +311,33 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_deleteMemberButtonActionPerformed
 
-    public boolean checkSaveIsCorrect()
+    public boolean checkSaveIsCorrect(JFrame frame)
     {
         boolean anyWrong = false;
-        if(this.teamNameTextField.getText().isEmpty())
-        {
-            anyWrong = true;
-        }
+        String wrongMessage = "";
+       
         
         if(this.nameTextField.getText().isEmpty())
         {
+            wrongMessage += "Need to fill in a project name\n";
+            anyWrong = true;
+        }
+        
+        if(this.teamNameTextField.getText().isEmpty())
+        {
+            wrongMessage += "Need to fill in a team name\n";
             anyWrong = true;
         }
         
         if(this.membersListModel.isEmpty())
         {
+            wrongMessage += "Need to add at least a team member\n";
             anyWrong = true;
         }
         
         if(anyWrong) //if something is wrong
         {
-            
+            JOptionPane.showMessageDialog(frame, wrongMessage, "incorrectly filled project form", JOptionPane.ERROR_MESSAGE);
         }
         else //if nothing is wrong
         {
@@ -343,9 +366,13 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
         return saveProjectButton;
     }
 
-    
+    public JButton getCancelButton() {
+        return cancelButton;
+    }    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTeamMember;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JButton deleteMemberButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -357,6 +384,7 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField memberNameTextField;
     private javax.swing.JList membersList;
+    private javax.swing.JLabel membersUserMsg;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JButton saveProjectButton;
     private javax.swing.JSeparator separator;

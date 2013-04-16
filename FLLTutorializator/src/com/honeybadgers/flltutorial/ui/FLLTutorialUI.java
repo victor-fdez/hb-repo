@@ -103,6 +103,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel = new AllTutorialsPanel();
                 allTutorialsPanel.setTitle("All Tutorials");
                 allTutorialsPanel.setDescription(null);
+                allTutorialsPanel.setUserMessage("select one of the following tutorials");
                 tutorialsScrollPane = new PanelsScrollPane(true);
                 
                 //add every tutorial to the scroll pane in the content pane
@@ -189,7 +190,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Container contentPane = getContentPane();
+                Container contentPane = extraFrame.getContentPane();
                 contentPane.removeAll();
                 
                 currentTutorial = TutorialManager.getNewProject(selectedTutorialBase);
@@ -198,11 +199,13 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 detailedProjectPanel.getSaveProjectButton().addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        boolean saveTutorial = detailedProjectPanel.checkSaveIsCorrect();
+                        boolean saveTutorial = detailedProjectPanel.checkSaveIsCorrect(tutorialUI);
                         if(saveTutorial)
                         {
                             System.out.println("FLLTutorialUI.showNewProjectDetailes : saving new project");
                             Tutorial newProject = detailedProjectPanel.getTutorial();
+                            extraFrame.dispose();
+                            extraFrame = null;
                             TutorialManager.saveNewProject(newProject);
                             currentTutorial = newProject;
                             startTutorial();
@@ -210,13 +213,21 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     }
                     
                 });
+                detailedProjectPanel.getCancelButton().addActionListener(new ActionListener(){  
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        showAllTutorials(TutorialManager.getAllTutorialBases());
+                        extraFrame.dispose();
+                        extraFrame = null;
+                    }
+                });
                 contentPane.setLayout(new GridLayout(1,1));
                 contentPane.add(detailedProjectPanel);
         
-                pack();
-                setInCenterOfScreen(tutorialUI);
-                setVisible(true);
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                extraFrame.pack();
+                setInCenterOfScreen(extraFrame);
+                extraFrame.setVisible(true);
+                extraFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         });
     }
@@ -238,6 +249,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel = new AllTutorialsPanel();
                 allTutorialsPanel.setTitle("All Projects - "+allProjectsBaseTutorial.getTitle());
                 allTutorialsPanel.setDescription(allProjectsBaseTutorial.getDescription());
+                allTutorialsPanel.setUserMessage("select one of the following projects");
                 tutorialsScrollPane = new PanelsScrollPane(true);
         
                 allTutorialsPanel.getStartButton().setText("cancel");

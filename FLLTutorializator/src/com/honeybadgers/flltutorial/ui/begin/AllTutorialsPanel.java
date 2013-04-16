@@ -4,7 +4,6 @@
  */
 package com.honeybadgers.flltutorial.ui.begin;
 
-import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -36,6 +35,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         openButton = new javax.swing.JButton();
         descriptionScrollPane = new javax.swing.JScrollPane();
         descriptionArea = new javax.swing.JTextArea();
+        userMessage = new javax.swing.JLabel();
 
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         titleLabel.setText("long title");
@@ -56,23 +56,27 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
         descriptionArea.setRequestFocusEnabled(false);
         descriptionScrollPane.setViewportView(descriptionArea);
 
+        userMessage.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        userMessage.setText("1");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(0, 319, Short.MAX_VALUE)
                         .add(openButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(startButton))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                    .add(descriptionScrollPane)
+                    .add(layout.createSequentialGroup()
                         .add(titleLabel)
                         .add(0, 0, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, descriptionScrollPane))
+                    .add(userMessage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -81,8 +85,10 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(titleLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(descriptionScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(descriptionScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 111, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(userMessage)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(listPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -99,6 +105,7 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
     private javax.swing.JButton openButton;
     private javax.swing.JButton startButton;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel userMessage;
     // End of variables declaration//GEN-END:variables
 
     public JPanel getListPanel() {
@@ -127,5 +134,14 @@ public class AllTutorialsPanel extends javax.swing.JPanel {
             return;
         }
         this.descriptionArea.setText(description);
+    }
+    public void setUserMessage(String msg)
+    {
+        if(msg == null)
+        {
+            this.userMessage.setVisible(false);
+            return;
+        }
+        this.userMessage.setText(msg);
     }
 }
