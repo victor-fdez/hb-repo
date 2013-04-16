@@ -4,9 +4,11 @@
  */
 package com.honeybadgers.flltutorial.ui.main.content;
 
+import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,6 +17,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -24,6 +27,13 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -57,6 +67,8 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     OptionPanel selectedOptionPanel;
     OptionPanel draggingOptionPanel;
     PanelReceiver receiver;
+    boolean drawClose = false;
+    private BufferedImage image;
     /**
      * Class constructor initializes all panels for the first stage of the robot
      * design. Both a stage panel, and options panel create by the stage panel are
@@ -74,9 +86,23 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             @Override
             public void actionPerformed(ActionEvent e) {
                 clickedBlocked = false;
+                drawClose = true;
+                SwingUtilities.invokeLater(new Runnable(){  
+                    @Override
+                    public void run() {
+                        glassPanel.repaint();
+                    }
+                });
                 System.out.println("timer fired");
             }
         });
+        //get the close image
+        try {
+                this.image = ImageIO.read(new File(TutorialManager.generalMediaPath+"close.png"));
+                
+        } catch (IOException ex) {
+            Logger.getLogger(PictureOptionPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.receiver = receiver;
         this.messageTimer.setRepeats(false);
         this.stagePanel = stage;
@@ -104,12 +130,29 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                     g2.setComposite(alpha);
                     g2.setColor(Color.BLACK);
                     g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+                    if(drawClose)
+                     {
+                        float scale = 0.5f;
+                        AffineTransform transform = new AffineTransform();
+                        
+                        //get top position of text area
+                        int x = moralityScrollPane.getX();
+                        int y = moralityScrollPane.getY();
+                        
+                        transform.translate(x+(10*scale), y-((image.getHeight()+20)*scale));
+                        transform.scale(scale, scale);
+                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+                        g2.drawImage(image, transform, this);
+                        
+                        //g2.drawImage(image, x, y-image.getHeight(), this);
+                        //g2.dispose();
+                     }
                     super.paintComponent(g);
-
                 }
                 else
                 {
-                    super.paintComponent(g);
+                     super.paintComponent(g);
                 }
             }
         };
@@ -222,6 +265,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
             this.glassPanel.removeAll();
             this.repaint();
             this.eventsBlocked = false;
+            this.drawClose = false;
         }
         this.redispatchEvent(e);
     }

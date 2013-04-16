@@ -6,6 +6,7 @@ package com.honeybadgers.flltutorial.ui.main.content.stages;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
+import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
@@ -13,7 +14,6 @@ import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel
 import com.honeybadgers.flltutorial.ui.main.content.utilities.TextOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AWTEvent;
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,9 +29,14 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -47,6 +52,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class MorphChartPanel extends StagePanel implements MouseListener{
     private final HashMap panelForIndexHashes;
+    private BufferedImage image;
 
     
     protected enum BeaconType
@@ -84,6 +90,13 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         {
             this.initComponents();
         }
+        /*try {
+                //this.image = ImageIO.read(new File(TutorialManager.generalVideoPath+""));
+                //this.resizeImage();
+                
+        } catch (IOException ex) {
+            Logger.getLogger(PictureOptionPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
     protected void initComponents()
     {
@@ -452,9 +465,10 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
                 gPanel.dispose();
                 
                 BufferedImage preImage = ((BufferedImage)this.createImage(this.getWidth()+(2*x0), this.getHeight()+(2*y0)));
-                preImage.getGraphics().setColor(Color.GRAY);
-                preImage.getGraphics().drawRect(0, 0, preImage.getWidth(), preImage.getHeight());
-                preImage.getGraphics().drawImage(this.panelImage, x0, y0, null);
+                Graphics2D g2Pre = (Graphics2D)preImage.getGraphics();
+                g2Pre.setColor(Color.GRAY);
+                g2Pre.fillRect(0, 0, preImage.getWidth(), preImage.getHeight());
+                g2Pre.drawImage(this.panelImage, x0, y0, null);
                 this.panelImage = preImage;
                 this.panelImage = getGaussianBlurFilter(radius, true).filter(this.panelImage, null);
                 this.panelImage = getGaussianBlurFilter(radius, false).filter(this.panelImage, null);
