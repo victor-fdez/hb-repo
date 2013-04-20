@@ -16,7 +16,7 @@ public class ConsiderationsAndConstraintsPanel extends MorphChartPanel{
     public ConsiderationsAndConstraintsPanel(Option rootOption)
     {
         super(rootOption);
-        this.stageName = "Considerations and Constraints";
+        this.stageName = "Limitations and Constraints";
         this.initComponents();
     }
     @Override

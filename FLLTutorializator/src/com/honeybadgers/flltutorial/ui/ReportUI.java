@@ -35,7 +35,7 @@ public class ReportUI extends javax.swing.JFrame {
         fillTable();
         
         FLLTutorialUI.setInCenterOfScreen(this);
-        setTitle("Project Report");
+        setTitle("Project Details");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         setVisible(true);
@@ -50,7 +50,7 @@ public class ReportUI extends javax.swing.JFrame {
         if(teamMembers.size()>0){
             String teamMembersString=teamMembers.get(0);
             for(int i=1;i<teamMembers.size();i++){
-                teamMembersString.concat(", "+teamMembers.get(i));
+                teamMembersString=teamMembersString.concat(", "+teamMembers.get(i));
             }
             teamMembersJL.setText(teamMembersString);
         }

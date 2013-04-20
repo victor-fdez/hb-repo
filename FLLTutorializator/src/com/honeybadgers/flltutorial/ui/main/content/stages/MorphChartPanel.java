@@ -76,7 +76,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     public MorphChartPanel(Option rootOption)
     {
         super();
-        this.stageName = "Morph Chart";
+        this.stageName = "Morphological Chart";
         //this.morphChartGenerator();
         this.problem = rootOption;
         this.solutionTracker = OptionTracker.generateOptionTrackerTree(rootOption);

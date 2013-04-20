@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <tutorial name="Tutorial1">
   <mission>Design a robot that will navigate an area based on visual input to obtain a ball and transport it to the goal area. The location of the ball is shown by one of two colors displayed on the guidepost. The robot must fit within a 12" x 12" x 12" box.</mission>
-  <project name="potato">
-    <team name="potato">
-      <member>dan</member>
+  <project name="a">
+    <team name="a">
+      <member>a</member>
+      <member>b</member>
+      <member>c</member>
     </team>
   </project>
   <stage name="Problem Statement" time="0" video="">
