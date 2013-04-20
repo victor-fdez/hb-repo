@@ -4,8 +4,6 @@
  */
 package com.honeybadgers.flltutorial.model;
 
-import java.util.List;
-
 /**
  *
  * @author Dan

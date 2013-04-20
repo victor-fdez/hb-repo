@@ -14,7 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Manages tutorials and project in the resources/Tutorials and resources/Projects
+ * folders
+ * 
  * @author chingaman
  */
 public class TutorialManager {

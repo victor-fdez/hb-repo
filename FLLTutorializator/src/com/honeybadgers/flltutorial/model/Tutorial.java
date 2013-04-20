@@ -4,7 +4,6 @@
  */
 package com.honeybadgers.flltutorial.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

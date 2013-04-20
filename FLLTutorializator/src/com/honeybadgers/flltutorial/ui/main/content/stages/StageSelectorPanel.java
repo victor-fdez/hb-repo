@@ -6,6 +6,7 @@ package com.honeybadgers.flltutorial.ui.main.content.stages;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
+import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
@@ -18,7 +19,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
@@ -49,7 +49,6 @@ public class StageSelectorPanel extends StagePanel{
         titleLabel.setLineWrap(true);
         titleLabel.setWrapStyleWord(true);
         titleLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
-        //titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         titleLabel.setBackground(Color.GREEN);
         
         //add title to selector problem
@@ -63,6 +62,24 @@ public class StageSelectorPanel extends StagePanel{
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(titleLabel, c);
+        
+        //add a mission description label
+        /*
+        JTextArea missionLabel = new JTextArea(FLLTutorialUI.currentTutorial.getMission());
+        missionLabel.setLineWrap(true);
+        missionLabel.setWrapStyleWord(true);
+        missionLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
+        missionLabel.setBackground(Color.GREEN);
+        
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(10, 4, 4, 4);
+        c.ipady = 0;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.PAGE_START;
+        this.add(missionLabel, c);*/
         
         //add main option description option panel
         c = new GridBagConstraints();
