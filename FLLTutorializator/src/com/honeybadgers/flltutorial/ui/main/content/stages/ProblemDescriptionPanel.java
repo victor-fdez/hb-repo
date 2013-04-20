@@ -15,7 +15,7 @@ public class ProblemDescriptionPanel extends StageSelectorPanel
     public ProblemDescriptionPanel(Option rootOption)
     {
         super(rootOption);
-        this.stageName = "Problem Description and constrains";
+        this.stageName = "Problem Statement";
         this.initComponents();
     }
 }

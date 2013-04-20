@@ -356,7 +356,6 @@ public class DetailedProjectPanel extends javax.swing.JPanel {
         Object[] objectArray = this.membersListModel.toArray();
         String[] memberStrings = Arrays.copyOf(objectArray, objectArray.length, String[].class);
         List<String> members = Arrays.asList(memberStrings);
-
         this.tutorial.setMembers(members);
         
         return this.tutorial;
