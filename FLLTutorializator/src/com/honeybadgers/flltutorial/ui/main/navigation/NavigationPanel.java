@@ -4,11 +4,9 @@
  */
 package com.honeybadgers.flltutorial.ui.main.navigation;
 
-import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import com.honeybadgers.flltutorial.ui.main.content.PanelReceiver;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
-import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,16 +21,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -224,12 +218,16 @@ public class NavigationPanel extends JPanel {
     public void updateStages() {
         if (test == false) {
             if (this.stages.get(this.lastUnlocked).isFinished()) {
-                //update navigation types
+                //update navigation types, and change stage if there is a next stage
                 this.options.get(this.lastUnlocked).setType(NavigationOptionType.Finished);
                 if (this.lastUnlocked + 1 < this.options.size()) {
+                    JOptionPane.showMessageDialog((JFrame)this.reciever, "finished the "+this.stages.get(this.lastUnlocked).getStageName()+" stage", "stage information", JOptionPane.INFORMATION_MESSAGE);
                     this.lastUnlocked++;
                     this.options.get(this.lastUnlocked).setType(NavigationOptionType.StartedButNotFinished);
+                    this.reciever.receivePanel(this.stages.get(this.lastUnlocked), null);
+                    return;
                 }
+                JOptionPane.showMessageDialog((JFrame)this.reciever, "finished the "+this.stages.get(this.lastUnlocked).getStageName()+" stage\n\nCongratulations! You have the design process of this tutorial. Your results may be found in file > Project Details menu", "stage information", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
             for (NavigationOption option : this.options) {
@@ -316,7 +314,6 @@ public class NavigationPanel extends JPanel {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    //System.out.println(e.getSource()+"");
                     if (SwingUtilities.isEventDispatchThread()) {
                         if (e.getSource() instanceof JTextArea) {
                             NavigationOption option = (NavigationOption) e.getSource();
@@ -329,7 +326,7 @@ public class NavigationPanel extends JPanel {
                 }
             });
         }
-
+        
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;

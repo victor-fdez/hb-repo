@@ -383,7 +383,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 openMI.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("FLLTutorialUI.showTutorial : open project");
+                        //System.out.println("FLLTutorialUI.showTutorial : open project");
                         ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
                         showAllTutorials(tutorialBases);
                     }
@@ -394,8 +394,9 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 saveMI.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("FLLTutorialUI.showTutorial : saving project");
+                        //System.out.println("FLLTutorialUI.showTutorial : saving project");
                         TutorialManager.saveProject(currentTutorial);
+                        JOptionPane.showMessageDialog(extraFrame, "the project \""+currentTutorial.getProjectName()+"\" has been saved!", "project information", JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
                 fileMenu.add(saveMI);
@@ -405,7 +406,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 showDetailsMI.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("FLLTutorialUI.showTutorial : show project details");
+                        //System.out.println("FLLTutorialUI.showTutorial : show project details");
                         ArrayList<OptionTracker> stageOptionTrackers = new ArrayList<OptionTracker>();
                         for(StagePanel stagePanel : stagePanels)
                             stageOptionTrackers.add(stagePanel.getSolutionTracker());
@@ -413,20 +414,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                     }
                 });
                 fileMenu.add(showDetailsMI);
-                
-                /*fileMenu.addSeparator();
-                JMenuItem createReportMI = new JMenuItem("Create Project Report");
-                createReportMI.addActionListener(new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println("FLLTutorialUI.showTutorial : create project report");
-                    }
-                });
-                fileMenu.add(createReportMI);
-                */
                 setJMenuBar(menuBar);
-                
-                
                 
                 contentPane = new ContentPane((PanelReceiver)tutorialUI, stagePanels.get(0));
                 navigationPanel = new NavigationPanel(stagePanels, tutorialUI);
@@ -441,6 +429,8 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 pack();   
                 setInCenterOfScreen(tutorialUI);
                 setVisible(true);
+                //System.out.println("frame size: "+tutorialUI.getSize());
+                tutorialUI.setMinimumSize(tutorialUI.getSize());
             }
         });
     }
@@ -468,7 +458,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     public void receivePanel(JPanel panelSent, Point point) {
         if(panelSent == null)
         {
-            //this case is used by the content panel
+            //should display message here, and 
             this.navigationPanel.updateStages();
             return;
         }

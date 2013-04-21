@@ -20,7 +20,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -38,7 +37,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -321,8 +322,12 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         {
             this.glassPanel.removeAll();
             this.repaint();
-            this.eventsBlocked = false;
-            this.drawClose = false;
+            if(this.eventsBlocked)
+            {
+                this.eventsBlocked = false;
+                this.drawClose = false;
+                return;
+            }
         }
         this.redispatchEvent(e);
     }
@@ -364,7 +369,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                 int halfWidth = this.draggingOptionPanel.getWidth()/2;
                 int halfHeight = this.draggingOptionPanel.getHeight()/2;
                 this.draggingOptionPanel.setBounds(e.getX()-halfWidth, e.getY()-halfHeight, this.draggingOptionPanel.getSize().width, this.draggingOptionPanel.getSize().height);
-                //this.glassPanel.paintImmediately(this.draggingOptionPanel.getVisibleRect());
+
                 Rectangle vR = this.draggingOptionPanel.getVisibleRect();
                 this.glassPanel.repaint(0, vR.y-2 , this.glassPanel.getWidth(), vR.height+4);
                 this.glassPanel.repaint(vR.x-2, 0 , vR.width+4, this.glassPanel.getHeight());
@@ -380,7 +385,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     private boolean eventsBlocked = false;
     @Override
     public void mouseReleased(MouseEvent e) {
-        //System.out.println("is EDT in released"+SwingUtilities.isEventDispatchThread());
+
         if(eventsBlocked)
             return;
         /*check if there is a selectoption to drop*/
@@ -400,7 +405,6 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                     case 0:
                         if(this.stagePanel.isFinished())
                         {
-                            //this.stagePanel.printTracker();
                             this.receiver.receivePanel(null, null);
                         }
                         this.selectedOptionPanel.setState(OptionPanel.OptionState.CORRECT);

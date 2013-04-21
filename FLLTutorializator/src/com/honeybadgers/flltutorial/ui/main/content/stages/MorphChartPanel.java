@@ -294,19 +294,12 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         y -= this.getY();
         
         Component beacon = SwingUtilities.getDeepestComponentAt(this, x, y);
-        System.out.println("MorphChartPanel.dropOptionPanel : dropped in morph chart x "+x+" y "+y);
         if(beacon == null)
         {
             return 2;
         }
         
         //if it returns null it means the children are not childs of the the selection option
-        System.out.println("MorphChartPanel.dropOptionPanel : dropped at incorrect/correct child "+this.selectedPanel.getOption().getDescription()+" and beacon "+beacon);
-        if(beacon instanceof OptionPanel || beacon instanceof TextOptionPanel)
-        {
-            System.out.println("Option panel : "+beacon);
-        }
-        System.out.println(this.indexesChildrenHashes);
         Object index = this.indexesChildrenHashes.get(beacon);
         if(index == null)
         {
@@ -320,10 +313,10 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         Option dropOption = optionPanel.getOption();
         OptionTracker parentOptionTracker = solutionTracker.getCorrectChild(selectedIndex);
         boolean addedCorrectly = parentOptionTracker.addOptionAt(childIndex, dropOption);
-        System.out.println("MorphChartPanel.dropOptionPanel : option dropped at "+selectedIndex+" and "+childIndex);
+        //System.out.println("MorphChartPanel.dropOptionPanel : option dropped at "+selectedIndex+" and "+childIndex);
         if(addedCorrectly)
         {
-            System.out.println("MorphChartPanel.dropOptionPanel : dropped correctly");
+            //System.out.println("MorphChartPanel.dropOptionPanel : dropped correctly");
             if(dropOption.isCorrect())
             {
                 OptionTracker childOptionTracker = parentOptionTracker.getCorrectChild(childIndex);
@@ -369,18 +362,18 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
     
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("MorphChartPanel.mouseClicked : clicked something");
+        //System.out.println("MorphChartPanel.mouseClicked : clicked something");
 
         Component beacon = (Component)e.getSource();
         if(beacon == null)
         {
-            System.out.println("MorphChartPanel.mouseClicked : got a null beacon");
+            //System.out.println("MorphChartPanel.mouseClicked : got a null beacon");
             return;
         }
         Object result = this.panelTypeHashes.get(beacon);
         if(result == null || !(result instanceof BeaconType))
         {
-            System.out.println("MorphChartPanel.mouseClicked : no result for beacon");
+            //System.out.println("MorphChartPanel.mouseClicked : no result for beacon");
             return;
         }
         BeaconType beaconType = (BeaconType)result;
