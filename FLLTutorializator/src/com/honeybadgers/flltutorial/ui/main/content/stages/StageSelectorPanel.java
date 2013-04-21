@@ -53,6 +53,9 @@ public class StageSelectorPanel extends StagePanel{
         
         //add title to selector problem
         this.setLayout(new GridBagLayout());
+        GridBagConstraints c;
+        
+        /*
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
@@ -62,6 +65,7 @@ public class StageSelectorPanel extends StagePanel{
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(titleLabel, c);
+        * */
         
         //add a mission description label
         /*
@@ -85,7 +89,7 @@ public class StageSelectorPanel extends StagePanel{
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 0;
         c.insets = new Insets(10, 4, 4, 4);
         c.ipady = 0;
         c.weightx = 1.0;
@@ -106,7 +110,7 @@ public class StageSelectorPanel extends StagePanel{
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 1;
         c.insets = new Insets(4, 4, 4, 4);
         c.ipady = 0;
         c.weightx = 1.0;

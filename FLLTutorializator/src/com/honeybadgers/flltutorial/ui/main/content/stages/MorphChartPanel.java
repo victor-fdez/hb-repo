@@ -112,6 +112,8 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         
         //add title to selector problem
         this.setLayout(new GridBagLayout());
+        GridBagConstraints c;
+        /*
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
@@ -121,12 +123,12 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(titleLabel, c);
-        
+        */
         //add main option description option panel
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 0;
         c.insets = new Insets(10, 4, 4, 4);
         c.ipady = 0;
         c.weightx = 1.0;
@@ -208,7 +210,7 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 1;
         c.insets = new Insets(4, 4, 4, 4);
         c.ipady = 0;
         c.weightx = 1.0;
@@ -288,20 +290,28 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         //selected panel.
         int x = (int)optionPanel.getBounds().getCenterX();
         int y = (int)optionPanel.getBounds().getCenterY();
+        x -= this.getX();
+        y -= this.getY();
         
         Component beacon = SwingUtilities.getDeepestComponentAt(this, x, y);
+        System.out.println("MorphChartPanel.dropOptionPanel : dropped in morph chart x "+x+" y "+y);
         if(beacon == null)
         {
             return 2;
         }
         
         //if it returns null it means the children are not childs of the the selection option
+        System.out.println("MorphChartPanel.dropOptionPanel : dropped at incorrect/correct child "+this.selectedPanel.getOption().getDescription()+" and beacon "+beacon);
+        if(beacon instanceof OptionPanel || beacon instanceof TextOptionPanel)
+        {
+            System.out.println("Option panel : "+beacon);
+        }
+        System.out.println(this.indexesChildrenHashes);
         Object index = this.indexesChildrenHashes.get(beacon);
         if(index == null)
         {
             return 2;
         }
-        
         
         int childIndex = (int)index;
         int selectedIndex = (int)this.indexesHashes.get(this.selectedPanel);
@@ -310,9 +320,10 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         Option dropOption = optionPanel.getOption();
         OptionTracker parentOptionTracker = solutionTracker.getCorrectChild(selectedIndex);
         boolean addedCorrectly = parentOptionTracker.addOptionAt(childIndex, dropOption);
+        System.out.println("MorphChartPanel.dropOptionPanel : option dropped at "+selectedIndex+" and "+childIndex);
         if(addedCorrectly)
         {
-            System.out.println("MorphChartPanel.mouseClicked : dropped correctly");
+            System.out.println("MorphChartPanel.dropOptionPanel : dropped correctly");
             if(dropOption.isCorrect())
             {
                 OptionTracker childOptionTracker = parentOptionTracker.getCorrectChild(childIndex);

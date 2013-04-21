@@ -528,7 +528,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
             public void run() 
             {
                 ArrayList<TutorialBase> tutorialBases = TutorialManager.getAllTutorialBases();
-                ArrayList<Tutorial> projectBases = TutorialManager.getAllTutorialBaseProjects(tutorialBases.get(0));
+                ArrayList<Tutorial> projectBases = TutorialManager.getAllTutorialBaseProjects(tutorialBases.get(1));
                 Tutorial project = TutorialManager.getTutorialBaseProject(projectBases.get(0));
                 FLLTutorialUI topComp = new FLLTutorialUI(); 
                 //topComp.showAllTutorials(tutorialBases);

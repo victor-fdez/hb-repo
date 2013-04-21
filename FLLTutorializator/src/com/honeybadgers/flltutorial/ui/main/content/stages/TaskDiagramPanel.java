@@ -111,6 +111,8 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         //setup vertical gridlayout
         GridBagLayout gridBagLayout = new GridBagLayout();
         this.setLayout(gridBagLayout);
+        GridBagConstraints c;
+        /*
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
@@ -119,6 +121,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         c.ipady = 0;
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(titleLabel, c);
+        */
         
             //add all of the depth panels to the stage panel
             for(int i = 0; i < this.depthPanels.length; i++)
@@ -128,7 +131,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
                 c = new GridBagConstraints();
                 c.fill = GridBagConstraints.BOTH;
                 c.gridx = 0;
-                c.gridy = i + 1;
+                c.gridy = i;
                 c.weightx = 1.0;
                 c.weighty = 1.0;
                 c.ipady = 10;
@@ -176,6 +179,9 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         //check if the give option panel can be dropped as one of the children
         int x = (int)optionPanel.getBounds().getCenterX();
         int y = (int)optionPanel.getBounds().getCenterY();
+        
+        x -= this.getX();
+        y -= this.getY();
         
         //get the beacon for all components in task diagram
         Component beacon = SwingUtilities.getDeepestComponentAt(this, x, y);
@@ -305,7 +311,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("TaskDiagram.mouseClicked : clicked something");
+        //System.out.println("TaskDiagram.mouseClicked : clicked something");
         //everything will be handeled here instead of clicked
         Component beacon = (Component)e.getSource();
         if(beacon == null)
@@ -321,7 +327,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
             OptionPanel childPanel;
             OptionsSelectorPanel childOptionsPanel;
 
-            System.out.println("TaskDiagram.mouseClicked : child clicked");
+            //System.out.println("TaskDiagram.mouseClicked : child clicked");
             
             //get child data structs
             cIndex = (int)childIndex;
@@ -369,7 +375,7 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
             int pIndex;
             OptionPanel parentPanel;
             OptionsSelectorPanel childOptionsPanel;
-            System.out.println("TaskDiagram.mouseClicked : parent clicked");
+            //System.out.println("TaskDiagram.mouseClicked : parent clicked");
 
             
             //parent data structs
@@ -392,11 +398,11 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
             childOptionsPanel = (OptionsSelectorPanel)this.optionsPanel;
             if(this.bottomMostSolutionTracker.isEmptyCorrectChildren())
             {
-                System.out.println("TaskDiagram.mouseClicked : parent childs not added");
+                //System.out.println("TaskDiagram.mouseClicked : parent childs not added");
                 childOptionsPanel.updateOptionPanels(null);
                 return;
             }
-            System.out.println("TaskDiagram.mouseClicked : parent childs added");
+            //System.out.println("TaskDiagram.mouseClicked : parent childs added");
             //else add children and finish
             this.addOptionPanels(this.currentDepth, this.bottomMostSolutionTracker);
             

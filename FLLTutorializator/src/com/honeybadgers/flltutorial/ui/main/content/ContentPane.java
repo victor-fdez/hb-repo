@@ -5,6 +5,7 @@
 package com.honeybadgers.flltutorial.ui.main.content;
 
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
+import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel.OptionState;
@@ -13,11 +14,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -41,6 +44,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 /**
  *
  * @author chingaman
@@ -69,6 +73,9 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     PanelReceiver receiver;
     boolean drawClose = false;
     private BufferedImage image;
+    private JTextArea missionLabel;
+    private JTextArea missionTitleLabel;
+    private JScrollPane missionPane;
     /**
      * Class constructor initializes all panels for the first stage of the robot
      * design. Both a stage panel, and options panel create by the stage panel are
@@ -80,7 +87,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
     public ContentPane(PanelReceiver receiver, StagePanel stage)
     {
         super();
-       
+        this.setBackground(Color.GRAY);
         //init content panel
         this.messageTimer = new Timer(2000, new ActionListener(){
             @Override
@@ -106,6 +113,34 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.receiver = receiver;
         this.messageTimer.setRepeats(false);
         this.stagePanel = stage;
+        
+        //setup the misson title on top of each stage
+        this.missionTitleLabel = new JTextArea("Mission");
+        Font titleFont = this.missionTitleLabel.getFont();
+        titleFont = titleFont.deriveFont(titleFont.getStyle() | Font.BOLD);
+        titleFont = titleFont.deriveFont(titleFont.getSize() + 3.0f);
+        this.missionTitleLabel.setFont(titleFont);
+        this.missionTitleLabel.setLineWrap(true);
+        this.missionTitleLabel.setWrapStyleWord(true);
+        this.missionTitleLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
+        this.missionTitleLabel.setBackground(Color.GRAY);
+        this.missionTitleLabel.setMinimumSize(new Dimension(StagePanel.minDimension.width, 30));
+        this.missionTitleLabel.setPreferredSize(new Dimension(StagePanel.preferedDimension.width, 30));
+        this.missionTitleLabel.setMaximumSize(new Dimension(StagePanel.maxDimension.width, 30));
+
+        //setup the mission statement on top of each stage
+        this.missionLabel = new JTextArea(FLLTutorialUI.currentTutorial.getMission());
+        this.missionLabel.setLineWrap(true);
+        this.missionLabel.setWrapStyleWord(true);
+        this.missionLabel.setBackground(Color.GRAY.brighter());
+        
+        this.missionPane = new JScrollPane(this.missionLabel);
+        this.missionPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.missionLabel.setBorder(new EmptyBorder(2, 4, 4, 6));
+        this.missionPane.setMinimumSize(new Dimension(StagePanel.minDimension.width, 70));
+        this.missionPane.setPreferredSize(new Dimension(StagePanel.preferedDimension.width, 70));
+        this.missionPane.setMaximumSize(new Dimension(StagePanel.maxDimension.width,100));
+        
         this.initComponents();
     }
     /**
@@ -198,19 +233,41 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         //setup the layouts for this content panel
         GroupLayout contentLayout = new GroupLayout(this.contentPanel);
         this.contentPanel.setLayout(contentLayout);
-        
+        this.contentPanel.setBackground(Color.GRAY);
+        //stage title setup
+        JTextArea stageTitleLabel = new JTextArea(this.stagePanel.getStageName());
+        Font titleFont = stageTitleLabel.getFont();
+        titleFont = titleFont.deriveFont(titleFont.getStyle() | Font.BOLD);
+        titleFont = titleFont.deriveFont(titleFont.getSize() + 3.0f);
+        stageTitleLabel.setFont(titleFont);
+        stageTitleLabel.setLineWrap(true);
+        stageTitleLabel.setWrapStyleWord(true);
+        stageTitleLabel.setBorder(new EmptyBorder(4, 4, 0, 4));
+        stageTitleLabel.setBackground(Color.GRAY);
+        stageTitleLabel.setMinimumSize(new Dimension(StagePanel.minDimension.width, 30));
+        stageTitleLabel.setPreferredSize(new Dimension(StagePanel.preferedDimension.width, 30));
+        stageTitleLabel.setMaximumSize(new Dimension(StagePanel.maxDimension.width, 30));
+                        
         contentLayout.setHorizontalGroup(
-            contentLayout.createSequentialGroup()
-                .addComponent(this.stagePanel)
-                .addComponent(this.optionsPanel)
-            );
+                contentLayout.createSequentialGroup()
+                .addGroup(
+                    contentLayout.createParallelGroup()
+                        .addComponent(this.missionTitleLabel)
+                        .addComponent(this.missionPane)
+                        .addComponent(stageTitleLabel)
+                        .addComponent(this.stagePanel))
+                .addComponent(this.optionsPanel));
         
         contentLayout.setVerticalGroup(
-            contentLayout.createParallelGroup()
-                .addComponent(this.stagePanel)
-                .addComponent(this.optionsPanel)
-            ); 
-        
+                contentLayout.createParallelGroup()
+                    .addGroup(
+                        contentLayout.createSequentialGroup()
+                            .addComponent(this.missionTitleLabel)
+                            .addComponent(this.missionPane)
+                            .addComponent(stageTitleLabel)
+                            .addComponent(this.stagePanel))
+                    .addComponent(this.optionsPanel)
+                );
         this.revalidate();
 
         //add all listeners
@@ -453,14 +510,14 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         }
         //System.out.println("moved ");
         Component component = SwingUtilities.getDeepestComponentAt(this.contentPanel, e.getX(), e.getY());
-        
+
         if(lastMouseMovedComponent == null)
         {
             this.redispatchEvent(e, component);
             lastMouseMovedComponent = component;
             return;
         }
-        
+                
         if(lastMouseMovedComponent != component)
         {
             Point exitPoint = e.getPoint();
