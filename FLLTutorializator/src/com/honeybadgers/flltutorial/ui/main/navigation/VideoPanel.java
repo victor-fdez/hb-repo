@@ -395,8 +395,8 @@ public class VideoPanel extends JPanel {
         Path path = new Path();
         
         path.getElements().add(new MoveTo(0.0f,0.0f));
-        path.getElements().add(new LineTo(75.0f, 40.0f));
-        path.getElements().add(new LineTo(75.0f, -40.0f));
+        path.getElements().add(new LineTo(-75.0f, 40.0f));
+        path.getElements().add(new LineTo(-75.0f, -40.0f));
         path.getElements().add(new LineTo(0.0f,0.0f));
         
         path.setFill(Color.WHITE);

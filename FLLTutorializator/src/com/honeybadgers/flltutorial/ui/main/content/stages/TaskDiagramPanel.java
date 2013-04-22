@@ -146,7 +146,14 @@ public class TaskDiagramPanel extends StagePanel implements MouseListener{
         //should make to setup the tutorial at a specific depth
         JPanel setupPanel = this.depthPanels[0];
         OptionPanel setupOption = new TextOptionPanel(this.tutorialOption);
-        setupOption.setState(OptionPanel.OptionState.CORRECT);
+        if(this.solutionTracker.isFinished())
+        {
+            setupOption.setState(OptionPanel.OptionState.FINISHED);
+        }
+        else
+        {
+            setupOption.setState(OptionPanel.OptionState.CORRECT);
+        }
         setupPanel.add(setupOption);
         this.depthPanelsHashes[0].put(setupOption, 0);
         

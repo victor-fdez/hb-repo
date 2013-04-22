@@ -101,29 +101,11 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         }
     }
     protected void initComponents()
-    {
-        //setup title of stage
-        JTextArea titleLabel = new JTextArea(this.stageName);
-        titleLabel.setLineWrap(true);
-        titleLabel.setWrapStyleWord(true);
-        titleLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
-        //titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        titleLabel.setBackground(Color.GREEN);
-        
+    {   
         //add title to selector problem
         this.setLayout(new GridBagLayout());
         GridBagConstraints c;
-        /*
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(10, 4, 4, 4);
-        c.ipady = 0;
-        c.weightx = 1.0;
-        c.anchor = GridBagConstraints.PAGE_START;
-        this.add(titleLabel, c);
-        */
+       
         //add main option description option panel
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -135,7 +117,14 @@ public class MorphChartPanel extends StagePanel implements MouseListener{
         c.anchor = GridBagConstraints.PAGE_START;
         this.mainOptionPanel = new TextOptionPanel(this.problem);
         this.add(this.mainOptionPanel, c);
-        
+        if(this.solutionTracker.isFinished())
+        {
+            this.mainOptionPanel.setState(OptionPanel.OptionState.FINISHED);
+        }
+        else
+        {
+            this.mainOptionPanel.setState(OptionPanel.OptionState.CORRECT);
+        }
         //setup scroll pane
         this.scrollPane = new PanelsScrollPane(true);
         
