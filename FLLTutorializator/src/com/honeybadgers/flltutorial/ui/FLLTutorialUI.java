@@ -35,16 +35,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
@@ -104,6 +107,49 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.setTitle("All Tutorials");
                 allTutorialsPanel.setDescription(null);
                 allTutorialsPanel.setUserMessage("select one of the following tutorials");
+                allTutorialsPanel.getRemoveAllButton().addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JPanel panel = new JPanel();
+                        JLabel label = new JLabel("Enter a password:");
+                        JPasswordField pass = new JPasswordField(10);
+                        panel.add(label);
+                        panel.add(pass);
+                        String[] options = new String[]{"OK", "Cancel"};
+                        int option = JOptionPane.showOptionDialog(extraFrame, panel, "The title",
+                                                 JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                                 null, options, options[1]);
+                        if(option == 0) // pressing OK button
+                        {
+                            String password = new String(pass.getPassword());
+                            if(password.equals("flltutorial"))
+                            {
+                                File projectFolder = new File(TutorialManager.projectsFolderPath);
+                                for(String tutorialProjectFolder : projectFolder.list())
+                                {
+                                    //System.out.println("--remvoing all files in "+tutorialProjectFolder);
+                                    File tutorialProjects = new File(projectFolder, tutorialProjectFolder);
+                                    if(!tutorialProjects.isDirectory())
+                                    {
+                                        continue;
+                                    }
+                                    
+                                    for(String fileName : tutorialProjects.list())
+                                    {
+                                        //System.out.println("-removing "+fileName);
+                                        File project = new File(tutorialProjects, fileName);
+                                        project.delete();
+                                    }
+                                }
+                                JOptionPane.showMessageDialog(extraFrame, "cleaned all old project for all tutorials", "cleaned", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else
+                            {
+                                JOptionPane.showMessageDialog(extraFrame, "you have entered an incorrect password!", "incorrect", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                });
                 tutorialsScrollPane = new PanelsScrollPane(true);
                 
                 //add every tutorial to the scroll pane in the content pane
@@ -147,7 +193,6 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         @Override
                         public void mouseClicked(MouseEvent event)
                         {
-                            //System.out.println("this listened to mouse click");
                             //this will actually ask for the list of stages, but still need xml base for that
                             selectedTutorialBase = TutorialPanel.getTutorialBaseFromBeacon((Component)event.getSource());
                             //show some animation while loading
@@ -253,6 +298,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 allTutorialsPanel.setUserMessage("select one of the following projects");
                 tutorialsScrollPane = new PanelsScrollPane(true);
         
+                allTutorialsPanel.getRemoveAllButton().setVisible(false);
                 allTutorialsPanel.getStartButton().setText("cancel");
                 allTutorialsPanel.getStartButton().addActionListener(new ActionListener(){
                     @Override
