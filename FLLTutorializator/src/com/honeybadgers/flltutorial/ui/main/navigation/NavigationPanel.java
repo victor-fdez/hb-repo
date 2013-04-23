@@ -138,7 +138,6 @@ public class NavigationPanel extends JPanel {
                     option.setType(NavigationOptionType.StartedButNotFinished);
                     StagePanel stage = (StagePanel)this.stagesMap.get(option);
                     this.reciever.receivePanel(stage, null);
-                    videoPanel.removeAll();
                     this.setVideoPanel(i);
                 } else {
                     option.setType(NavigationOptionType.Locked);
@@ -204,10 +203,16 @@ public class NavigationPanel extends JPanel {
     private void setVideoPanel(int i)
     {
         VideoPanel videoPlayer = new VideoPanel((String)FLLTutorialUI.videoFiles.get(i), this);
-        this.videoPanel.removeAll();
+        if(this.videoPanel.getComponentCount() > 0){
+            VideoPanel oldVideoPlayer = (VideoPanel)this.videoPanel.getComponent(0);
+            this.videoPanel.removeAll();
+            oldVideoPlayer.kill();
+        }else{
+            this.videoPanel.removeAll();
+        }
         this.videoPanel.add(videoPlayer);
+       
         //get video contrast ratio
-        
         this.videoPanel.invalidate();
     }
     /**
@@ -225,6 +230,7 @@ public class NavigationPanel extends JPanel {
                     this.lastUnlocked++;
                     this.options.get(this.lastUnlocked).setType(NavigationOptionType.StartedButNotFinished);
                     this.reciever.receivePanel(this.stages.get(this.lastUnlocked), null);
+                    this.setVideoPanel(this.lastUnlocked);
                     return;
                 }
                 JOptionPane.showMessageDialog((JFrame)this.reciever, "finished the "+this.stages.get(this.lastUnlocked).getStageName()+" stage\n\nCongratulations! You have the design process of this tutorial. Your results may be found in file > Project Details menu", "stage information", JOptionPane.INFORMATION_MESSAGE);
@@ -288,12 +294,10 @@ public class NavigationPanel extends JPanel {
                     if (test == false) {
                         if (optionIndex <= lastUnlocked) {
                             reciever.receivePanel(stagePanel, null);
-                            videoPanel.removeAll();
                             setVideoPanel(optionIndex);
                         }
                     } else {
                         reciever.receivePanel(stagePanel, null);
-                        videoPanel.removeAll();
                         setVideoPanel(optionIndex);
                     }
                 }

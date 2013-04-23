@@ -6,7 +6,6 @@ package com.honeybadgers.flltutorial.ui.main.content.stages;
 
 import com.honeybadgers.flltutorial.model.Option;
 import com.honeybadgers.flltutorial.model.OptionTracker;
-import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsPanel;
 import com.honeybadgers.flltutorial.ui.main.content.OptionsSelectorPanel;
 import com.honeybadgers.flltutorial.ui.main.content.utilities.OptionPanel;
@@ -54,36 +53,6 @@ public class StageSelectorPanel extends StagePanel{
         //add title to selector problem
         this.setLayout(new GridBagLayout());
         GridBagConstraints c;
-        
-        /*
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(10, 4, 4, 4);
-        c.ipady = 0;
-        c.weightx = 1.0;
-        c.anchor = GridBagConstraints.PAGE_START;
-        this.add(titleLabel, c);
-        * */
-        
-        //add a mission description label
-        /*
-        JTextArea missionLabel = new JTextArea(FLLTutorialUI.currentTutorial.getMission());
-        missionLabel.setLineWrap(true);
-        missionLabel.setWrapStyleWord(true);
-        missionLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
-        missionLabel.setBackground(Color.GREEN);
-        
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(10, 4, 4, 4);
-        c.ipady = 0;
-        c.weightx = 1.0;
-        c.anchor = GridBagConstraints.PAGE_START;
-        this.add(missionLabel, c);*/
         
         //add main option description option panel
         c = new GridBagConstraints();
@@ -148,9 +117,9 @@ public class StageSelectorPanel extends StagePanel{
         int y = (int)optionPanel.getBounds().getCenterY();
         int sx = (int)this.scrollPane.getX();
         int sy = (int)this.scrollPane.getY();
-        //System.out.println("x : "+x+" y : "+y);
-        //System.out.println("scroll sx: "+sx+" sy: "+sy);
-        Point dropPoint = new Point(x-sx, y-sy);
+        int ssx = (int)this.getX();
+        int ssy = (int)this.getY();
+        Point dropPoint = new Point(x-sx-ssx, y-sy-ssy);
         //check whether the option fell inside the answers panel
         if(this.scrollPane.contains(dropPoint))
         {

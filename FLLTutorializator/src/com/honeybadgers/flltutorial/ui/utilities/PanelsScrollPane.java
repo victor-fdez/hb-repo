@@ -156,7 +156,7 @@ public class PanelsScrollPane extends JScrollPane{
         //Point translated
         point.translate(-this.getX(), -this.getY());
         point.translate(-this.fittedViewportPanel.getX(), -this.fittedViewportPanel.getY());
-        System.out.println(point.toString());
+        //System.out.println(point.toString());
         JComponent panelAtPoint = (JComponent)this.fittedViewportPanel.getComponentAt(point);
         if(panelAtPoint == this.glue)
         {

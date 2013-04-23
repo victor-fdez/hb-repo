@@ -431,7 +431,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                 pack();   
                 setInCenterOfScreen(tutorialUI);
                 setVisible(true);
-                //System.out.println("frame size: "+tutorialUI.getSize());
+                
                 tutorialUI.setMinimumSize(tutorialUI.getSize());
             }
         });
@@ -540,7 +540,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         }
         @Override
         public void windowOpened(WindowEvent e) {
-            System.out.println("opened");
+            //System.out.println("opened");
         }
 
         @Override
@@ -567,7 +567,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
 
         @Override
         public void windowDeactivated(WindowEvent e) {
-            System.out.println("not active");
+            //System.out.println("not active");
         }
     }
     /**

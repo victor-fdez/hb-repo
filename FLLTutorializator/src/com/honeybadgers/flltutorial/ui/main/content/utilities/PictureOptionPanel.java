@@ -109,7 +109,7 @@ public class PictureOptionPanel extends OptionPanel {
         }
         else
         {
-            System.out.println("does not exist");
+            //System.out.println("does not exist");
         }
         
         if(this.contentPanel.getComponentListeners().length == 0)

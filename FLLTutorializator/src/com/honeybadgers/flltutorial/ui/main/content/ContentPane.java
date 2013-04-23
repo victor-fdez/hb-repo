@@ -37,9 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -101,7 +99,7 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
                         glassPanel.repaint();
                     }
                 });
-                System.out.println("timer fired");
+                //System.out.println("timer fired");
             }
         });
         //get the close image

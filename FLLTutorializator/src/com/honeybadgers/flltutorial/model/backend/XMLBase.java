@@ -136,7 +136,7 @@ public class XMLBase {
         {
             Element projectElement = (Element)projectInfo.item(0);
             Element teamNode = (Element)projectElement.getElementsByTagName("team").item(0);
-            System.out.println(teamNode);
+            //System.out.println(teamNode);
             
             projectName = projectElement.getAttribute("name");
             teamName = teamNode.getAttribute("name");
@@ -289,7 +289,7 @@ public class XMLBase {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
-            System.out.println("trying to save to "+TutorialManager.projectsFolderPath+name+"/"+fileName);
+            //System.out.println("trying to save to "+TutorialManager.projectsFolderPath+name+"/"+fileName);
             StreamResult result = new StreamResult(new File(TutorialManager.projectsFolderPath+name+"/"+fileName)); //***not sure if I can save here
 
             // Output to console for testing

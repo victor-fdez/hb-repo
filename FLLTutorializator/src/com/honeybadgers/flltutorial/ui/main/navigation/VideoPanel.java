@@ -7,6 +7,8 @@ package com.honeybadgers.flltutorial.ui.main.navigation;
 import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
@@ -91,6 +93,8 @@ public class VideoPanel extends JPanel {
         });
     }
     
+    private SimpleBooleanProperty running;
+    
     public VideoPanel(String videoFilePath, NavigationPanel nav)
     {
         super();
@@ -118,6 +122,8 @@ public class VideoPanel extends JPanel {
                 createScene();
             }
         });
+        
+        
     }
     
     
@@ -148,7 +154,6 @@ public class VideoPanel extends JPanel {
         mediaView.fitHeightProperty().bind(stackPane.heightProperty());
         mediaView.fitWidthProperty().bind(stackPane.widthProperty());
         
-       
         
         //setup media player view settings
         this.mp.setOnError(new Runnable(){
@@ -227,6 +232,7 @@ public class VideoPanel extends JPanel {
             }
         });
         
+        this.running = new SimpleBooleanProperty(false);
         this.mp.setOnReady(new Runnable(){  
             @Override
             public void run() {
@@ -235,6 +241,7 @@ public class VideoPanel extends JPanel {
                 //start playing video
                 timeSlider.setMax(mp.getTotalDuration().toSeconds());
                 mp.play();
+                running.set(true);
             }
         });
         
@@ -387,7 +394,6 @@ public class VideoPanel extends JPanel {
             }
         });
         
-        //this.mp.set
     }
     
     private Path createPlayPath()
@@ -435,5 +441,17 @@ public class VideoPanel extends JPanel {
         pause.getChildren().addAll(rectLeft, rectRight);
         
         return pause;
+    }
+
+    void kill() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(running.getValue())
+                {
+                    mp.stop();
+                }
+            }
+        });
     }
 }
