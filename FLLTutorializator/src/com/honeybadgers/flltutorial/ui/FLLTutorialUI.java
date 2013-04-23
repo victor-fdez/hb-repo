@@ -147,6 +147,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         @Override
                         public void mouseClicked(MouseEvent event)
                         {
+                            //System.out.println("this listened to mouse click");
                             //this will actually ask for the list of stages, but still need xml base for that
                             selectedTutorialBase = TutorialPanel.getTutorialBaseFromBeacon((Component)event.getSource());
                             //show some animation while loading
@@ -202,7 +203,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         boolean saveTutorial = detailedProjectPanel.checkSaveIsCorrect(tutorialUI);
                         if(saveTutorial)
                         {
-                            System.out.println("FLLTutorialUI.showNewProjectDetailes : saving new project");
+                            //System.out.println("FLLTutorialUI.showNewProjectDetailes : saving new project");
                             Tutorial newProject = detailedProjectPanel.getTutorial();
                             extraFrame.dispose();
                             extraFrame = null;
@@ -289,6 +290,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
                         @Override
                         public void mouseClicked(MouseEvent event)
                         {
+                            //System.out.println("this listened to mouse click");
                             //this will actually ask for the list of stages, but still need xml base for that
                             selectedTutorial = ProjectPanel.getTutorialFromBeacon((Component)event.getSource());
                             //show some animation while loading

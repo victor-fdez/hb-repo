@@ -6,20 +6,30 @@ package com.honeybadgers.flltutorial.ui.begin;
 
 import com.honeybadgers.flltutorial.model.Tutorial;
 import com.honeybadgers.flltutorial.ui.utilities.Blocked;
+import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author chingaman
  */
-public class ProjectPanel extends javax.swing.JPanel implements Blocked{
+public class ProjectPanel extends javax.swing.JPanel implements Blocked, MouseWheelListener{
 
     /**
      * Creates new form tutorialPanel
@@ -41,6 +51,7 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
             this.membersListModel.addElement(memberName);
         }
         this.membersList.setModel(this.membersListModel);
+        this.memberScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
 
     /**
@@ -56,7 +67,7 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
         tutorialContentPanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         authorLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        memberScrollPane = new javax.swing.JScrollPane();
         membersList = new javax.swing.JList();
         beaconPanel = new javax.swing.JPanel(){
             @Override
@@ -97,7 +108,7 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(membersList);
+        memberScrollPane.setViewportView(membersList);
 
         org.jdesktop.layout.GroupLayout tutorialContentPanelLayout = new org.jdesktop.layout.GroupLayout(tutorialContentPanel);
         tutorialContentPanel.setLayout(tutorialContentPanelLayout);
@@ -106,7 +117,7 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
             .add(tutorialContentPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(tutorialContentPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1)
+                    .add(memberScrollPane)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, tutorialContentPanelLayout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(authorLabel))
@@ -121,7 +132,7 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
                 .add(12, 12, 12)
                 .add(titleLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .add(memberScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(authorLabel)
                 .addContainerGap())
@@ -144,7 +155,7 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
             .add(0, 144, Short.MAX_VALUE)
         );
 
-        beaconPanel.setBounds(0, 0, 0, 0);
+        beaconPanel.setBounds(0, 0, 404, 144);
         layeredPane.add(beaconPanel, javax.swing.JLayeredPane.DRAG_LAYER);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -193,8 +204,8 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel;
     private javax.swing.JPanel beaconPanel;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLayeredPane layeredPane;
+    private javax.swing.JScrollPane memberScrollPane;
     private javax.swing.JList membersList;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel tutorialContentPanel;
@@ -203,7 +214,55 @@ public class ProjectPanel extends javax.swing.JPanel implements Blocked{
     
     @Override
     public void setBlocked(boolean block) {
+        if(!block)
+        {
+            //System.out.println("Viewport size"+this.memberScrollPane.getViewport().getViewSize());
+            //System.out.println("Scroll Pane size"+this.memberScrollPane.getViewport().getSize());
+            Dimension viewSize = this.memberScrollPane.getViewport().getViewSize();
+            Dimension viewportSize = this.memberScrollPane.getViewport().getSize();
+            if(viewSize.height > viewportSize.height)
+            {
+                //System.out.println("added listener");
+                this.addMouseWheelListener(this);
+            }
+        }
+        else
+        {
+            this.removeMouseWheelListener(this);
+        }
         this.blocked = block;
         this.repaint();
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        this.redispatch(e);
+    }
+    
+    private void redispatch(MouseWheelEvent e) {
+        Component comp = SwingUtilities.getDeepestComponentAt(this.tutorialContentPanel, e.getX(), e.getY());
+        if(comp == null || !(comp instanceof JList))
+        {
+            if(comp != null)
+            {
+                //System.out.println("[[[[[recursing");
+                while(comp != null && Component.class.isAssignableFrom(comp.getClass()))
+                {
+                    if(comp instanceof PanelsScrollPane)
+                    {
+                        e.setSource(comp);
+                        comp.dispatchEvent(e);
+                        return;
+                    }
+                    //System.out.println("-] "+comp);
+                    comp = comp.getParent();
+                }
+                //System.out.println("]]]]]recursing");
+            }
+            return;
+        }
+        e.setSource(comp);
+        comp.dispatchEvent(e);
+        //System.out.println("-> redispatched event: "+e);
     }
 }

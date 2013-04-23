@@ -85,7 +85,7 @@ public class XMLBase {
         {
             Element projectElement = (Element)projectInfo.item(0);
             Element teamNode = (Element)projectElement.getElementsByTagName("team").item(0);
-            System.out.println(teamNode);
+            //System.out.println(teamNode);
             
             projectName = projectElement.getAttribute("name");
             teamName = teamNode.getAttribute("name");
@@ -297,7 +297,7 @@ public class XMLBase {
 
             transformer.transform(source, result); //throws TransformerException
 
-            System.out.println("File saved!");
+            //System.out.println("File saved!");
 
         } catch (ParserConfigurationException | TransformerException e) {
             //handle exception here
