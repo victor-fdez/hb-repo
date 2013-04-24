@@ -4,9 +4,11 @@
  */
 package com.honeybadgers.flltutorial.ui.main.navigation;
 
+import com.honeybadgers.flltutorial.model.backend.TutorialManager;
 import com.honeybadgers.flltutorial.ui.FLLTutorialUI;
 import com.honeybadgers.flltutorial.ui.main.content.PanelReceiver;
 import com.honeybadgers.flltutorial.ui.main.content.stages.StagePanel;
+import com.honeybadgers.flltutorial.ui.main.content.utilities.PictureOptionPanel;
 import com.honeybadgers.flltutorial.ui.utilities.PanelsScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,8 +23,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -45,7 +53,7 @@ public class NavigationPanel extends JPanel {
     private Dimension preferedDimension = new Dimension(300, 500);
     private Dimension minDimension = new Dimension(300, 400);
     private Dimension maxDimension = new Dimension(32767, 32767);
-    private JPanel videoPanel;
+    private VideoHolder videoPanel;
     private PanelsScrollPane scrollPane;
     private ArrayList<StagePanel> stages;
     private ArrayList<NavigationOption> options;
@@ -81,7 +89,7 @@ public class NavigationPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         //TODO: setup video panel
-        this.videoPanel = new JPanel();
+        this.videoPanel = new VideoHolder(false);
         this.videoPanel.setBackground(Color.BLACK);
         this.videoPanel.setBorder(null);
         this.videoPanel.setLayout(new GridLayout(1,1));
@@ -160,8 +168,6 @@ public class NavigationPanel extends JPanel {
                 int parentHeight = getSize().height;
                 int videoHeight = (int) (((float) parentWidth) / aspectRatio);
                 float videoToScrollHeightRatio = (((float) videoHeight) / ((float) parentHeight));
-                //System.out.println("actuall size of window "+this.videoPanel.getSize());
-                //System.out.println("resizing this window "+parentWidth+" "+(int)(((float)parentWidth)/this.aspectRatio));
                 if (videoToScrollHeightRatio < 0.75f) {
                     videoPanel.setPreferredSize(new Dimension(parentWidth, videoHeight));
                     videoPanel.repaint();
@@ -202,7 +208,6 @@ public class NavigationPanel extends JPanel {
      */
     private void setVideoPanel(int i)
     {
-        VideoPanel videoPlayer = new VideoPanel((String)FLLTutorialUI.videoFiles.get(i), this);
         if(this.videoPanel.getComponentCount() > 0){
             VideoPanel oldVideoPlayer = (VideoPanel)this.videoPanel.getComponent(0);
             this.videoPanel.removeAll();
@@ -210,8 +215,18 @@ public class NavigationPanel extends JPanel {
         }else{
             this.videoPanel.removeAll();
         }
-        this.videoPanel.add(videoPlayer);
-       
+        String videoFileName = (String)FLLTutorialUI.videoFiles.get(i);
+        File videoFile = new File(videoFileName);
+        if(videoFile.exists())
+        {
+            this.videoPanel.setShowImage(false);
+            VideoPanel videoPlayer = new VideoPanel(videoFileName, this);
+            this.videoPanel.add(videoPlayer);
+        }
+        else
+        {
+            this.videoPanel.setShowImage(true);
+        }
         //get video contrast ratio
         this.videoPanel.invalidate();
     }
@@ -367,6 +382,38 @@ public class NavigationPanel extends JPanel {
                     break;
             }
             this.repaint();
+        }
+    }
+    
+    private class VideoHolder extends JPanel{
+        boolean showImage;
+        BufferedImage image;
+        boolean imageFound = true;
+        VideoHolder(boolean showImage){
+            this.showImage = showImage;
+            try {
+                this.image = ImageIO.read(new File(TutorialManager.generalMediaPath+"moviePlaceholder.png"));
+            } catch (IOException ex) {
+                imageFound = false;
+                Logger.getLogger(PictureOptionPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        void setShowImage(boolean showImage){
+            this.showImage = showImage;
+            this.repaint();
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g); 
+            if(!showImage){
+                return;
+            }
+            if(!imageFound){
+                return;
+            }
+            aspectRatio = ((float)this.image.getWidth()) / ((float)this.image.getHeight());
+            g.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), null);
+            
         }
     }
 }
