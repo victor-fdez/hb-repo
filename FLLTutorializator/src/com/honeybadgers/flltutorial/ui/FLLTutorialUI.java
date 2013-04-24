@@ -62,6 +62,9 @@ import javax.swing.SwingUtilities;
  */
 public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
 
+    /**
+     *
+     */
     public static Tutorial currentTutorial;
     private PanelsScrollPane tutorialsScrollPane;
     private AllTutorialsPanel allTutorialsPanel;
@@ -71,6 +74,9 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private WindowFocusListener windowListener;
     private JFrame extraFrame;
     
+    /**
+     *
+     */
     public FLLTutorialUI() {
         super();
         this.tutorialUI = this;
@@ -370,6 +376,9 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     private NavigationPanel navigationPanel;
     private JSplitPane splitPane;
     private ContentPane contentPane;
+    /**
+     *
+     */
     public static HashMap videoFiles;
     static
     {
@@ -483,6 +492,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         });
     }
     
+    /**
+     *
+     * @return
+     */
     public static String getMainTutorialDirectoryPath()
     {
         if(currentTutorial == null)
@@ -524,6 +537,10 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     }
     /*For testing purposes*/
+    /**
+     *
+     * @param currentTutorial
+     */
     public static void setCurrentTutorial(Tutorial currentTutorial)
     {
         FLLTutorialUI.currentTutorial = currentTutorial;
@@ -540,6 +557,7 @@ public class FLLTutorialUI extends javax.swing.JFrame implements PanelReceiver{
     }
     /**
      * TESTING
+     * @param args 
      */
     public static void main(String[] args)
     {

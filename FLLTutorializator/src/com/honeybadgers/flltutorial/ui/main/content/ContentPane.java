@@ -132,6 +132,10 @@ public class ContentPane extends JLayeredPane implements ComponentListener, Mous
         this.missionLabel.setLineWrap(true);
         this.missionLabel.setWrapStyleWord(true);
         this.missionLabel.setBackground(Color.GRAY.brighter());
+        this.missionLabel.setFocusCycleRoot(false);
+        this.missionLabel.setFocusable(false);
+        this.missionLabel.setEditable(false);
+        this.missionLabel.setFocusTraversalKeysEnabled(false);
         
         this.missionPane = new JScrollPane(this.missionLabel);
         this.missionPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);

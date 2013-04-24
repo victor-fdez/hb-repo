@@ -19,6 +19,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -64,6 +65,7 @@ public class NavigationPanel extends JPanel {
     private PanelReceiver reciever;
     private HashMap stageNumber;
     private int lastUnlocked;   /*number goes from 0 ... numberOfStage-1*/
+    private InstructionsPanel instructionPanel;
 
     /**
      * Constructor of navigation panel sets up the panels that will be used to
@@ -86,6 +88,7 @@ public class NavigationPanel extends JPanel {
      */
     private void initComponents() {
 
+        this.setBackground(Color.GRAY);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         //TODO: setup video panel
@@ -97,6 +100,12 @@ public class NavigationPanel extends JPanel {
         this.add(this.videoPanel);
         this.stagesMap = new HashMap();
         this.stageNumber = new HashMap();
+        
+        this.add(Box.createVerticalStrut(2));
+        
+        this.instructionPanel = new InstructionsPanel();
+        this.instructionPanel.setBackground(new Color(120,120,120));
+        this.add(this.instructionPanel);
 
         this.add(Box.createVerticalStrut(5));
         
@@ -167,11 +176,20 @@ public class NavigationPanel extends JPanel {
                 int parentWidth = getSize().width;
                 int parentHeight = getSize().height;
                 int videoHeight = (int) (((float) parentWidth) / aspectRatio);
+                //System.out.println("video height: "+videoHeight+" aspect: "+aspectRatio);
                 float videoToScrollHeightRatio = (((float) videoHeight) / ((float) parentHeight));
                 if (videoToScrollHeightRatio < 0.75f) {
+                    videoPanel.setMinimumSize(new Dimension(parentWidth, videoHeight));
                     videoPanel.setPreferredSize(new Dimension(parentWidth, videoHeight));
+                    videoPanel.setMaximumSize(new Dimension(parentWidth, videoHeight));
                     videoPanel.repaint();
-                    scrollPane.setPreferredSize(new Dimension(parentWidth, parentHeight - videoHeight));
+                    int restHeight = parentHeight - videoHeight;
+                    instructionPanel.setPreferredSize(new Dimension(parentWidth, ((int)0.4f*restHeight)-10));
+                    instructionPanel.getjScrollPane1().getViewport().setViewPosition(new Point(0,0));
+                    scrollPane.setPreferredSize(new Dimension(parentWidth, ((int)0.6f*restHeight)-10));
+                    
+                    //System.out.println(instructionPanel);
+                    //System.out.println(scrollPane);
                     revalidate();
                 } else {
                     //don't allow the user to resize more than this
@@ -181,6 +199,8 @@ public class NavigationPanel extends JPanel {
         this.setPreferredSize(preferedDimension);
         this.setMinimumSize(minDimension);
         this.setMaximumSize(maxDimension);
+        
+        this.scrollPane.getViewport().setViewPosition(new Point(0,0));
     }
     /**
      * This method is called by the Video Panel whenever an aspect ration has been
